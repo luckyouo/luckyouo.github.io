@@ -1,0 +1,281 @@
+<!doctype html><html lang=en-us dir=ltr>
+<head><meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="前言 第一次使用linux系统，查询linux各个版本的区别，最后看上了arch的aur，故选择arch作为主力linux系统(人的生命在于折腾，折腾就完事了)
+这篇主要记录了基本系统的安装，不包含桌面系统
+EFI模式验证 首先确认安装模式是否为EFI模式
+1  ls /sys/firmware/efi/efivars   系统时钟校正 1  timedatectl set-ntp true   进行网络连接 arch系统网络连接方式主要有两种，有线连接和无线连接
+有线连接 可以使用手机线与电脑进行连接，进行网络共享
+无线连接 arch live系统默认为开启iwd,使用iwd进行无线网络连接
+1 2 3 4  iwctl device list station wlan0 get-networks station waln0 connect WIFI-NAME   首先进入iwctl模式，查询当前设备无线网卡设备名,比如wlan0），再使用网卡查询当前wifi网络情况，最后对目标WIFI-NAME进行连接，提示输入密码进行确认
+数据分区及格式化 分区 常见分区工具有cfdisk,gdisk等。为了方便，可以使用GUI的cfdisk进行分区
+ 为了防止某些异常，优先对efi进行分区，大小500M～1G即可 剩下分区方式根据个人习惯进行。    比以将home分区单独分区，缺点是home分区和其他分区大小需要控制好，防止某分区空间爆满而需要对文件系统挪动，
+  将剩余分区大小划分为一个分区，缺点是重装系统麻烦
+  为了节省存储空间，故采用第二种方式。分区完成后，对主分区进行加密(Optional)
+加密(可选) 为了保证自己的数据安全，可以对主要分区内容进行加密，防止他人挂载直接进入系统读取文件。
+ 使用LUKS对主分区进行加密，没有特殊要求采用默认参数即可   默认使用手动输入密码对文件进行加密  1  cryptsetup -y -v luksFormat /path/to/device     使用keyfile对文件进行加密"><title>Archlinux的基础系统安装流程</title><link rel=canonical href=https://example.com/posts/arch_general_install/>
+<link rel=stylesheet href=/scss/style.min.b80bf249ce4a22cf55e8d7340a0b37a2f2c10f54f3a9a49cb94b694a2eb0bbea.css><meta property="og:title" content="Archlinux的基础系统安装流程">
+<meta property="og:description" content="前言 第一次使用linux系统，查询linux各个版本的区别，最后看上了arch的aur，故选择arch作为主力linux系统(人的生命在于折腾，折腾就完事了)
+这篇主要记录了基本系统的安装，不包含桌面系统
+EFI模式验证 首先确认安装模式是否为EFI模式
+1  ls /sys/firmware/efi/efivars   系统时钟校正 1  timedatectl set-ntp true   进行网络连接 arch系统网络连接方式主要有两种，有线连接和无线连接
+有线连接 可以使用手机线与电脑进行连接，进行网络共享
+无线连接 arch live系统默认为开启iwd,使用iwd进行无线网络连接
+1 2 3 4  iwctl device list station wlan0 get-networks station waln0 connect WIFI-NAME   首先进入iwctl模式，查询当前设备无线网卡设备名,比如wlan0），再使用网卡查询当前wifi网络情况，最后对目标WIFI-NAME进行连接，提示输入密码进行确认
+数据分区及格式化 分区 常见分区工具有cfdisk,gdisk等。为了方便，可以使用GUI的cfdisk进行分区
+ 为了防止某些异常，优先对efi进行分区，大小500M～1G即可 剩下分区方式根据个人习惯进行。    比以将home分区单独分区，缺点是home分区和其他分区大小需要控制好，防止某分区空间爆满而需要对文件系统挪动，
+  将剩余分区大小划分为一个分区，缺点是重装系统麻烦
+  为了节省存储空间，故采用第二种方式。分区完成后，对主分区进行加密(Optional)
+加密(可选) 为了保证自己的数据安全，可以对主要分区内容进行加密，防止他人挂载直接进入系统读取文件。
+ 使用LUKS对主分区进行加密，没有特殊要求采用默认参数即可   默认使用手动输入密码对文件进行加密  1  cryptsetup -y -v luksFormat /path/to/device     使用keyfile对文件进行加密">
+<meta property="og:url" content="https://example.com/posts/arch_general_install/">
+<meta property="og:site_name" content="Example Site">
+<meta property="og:type" content="article"><meta property="article:section" content="Posts"><meta property="article:published_time" content="2022-03-07T17:31:17+08:00"><meta property="article:modified_time" content="2022-03-07T17:31:17+08:00">
+<meta name=twitter:title content="Archlinux的基础系统安装流程">
+<meta name=twitter:description content="前言 第一次使用linux系统，查询linux各个版本的区别，最后看上了arch的aur，故选择arch作为主力linux系统(人的生命在于折腾，折腾就完事了)
+这篇主要记录了基本系统的安装，不包含桌面系统
+EFI模式验证 首先确认安装模式是否为EFI模式
+1  ls /sys/firmware/efi/efivars   系统时钟校正 1  timedatectl set-ntp true   进行网络连接 arch系统网络连接方式主要有两种，有线连接和无线连接
+有线连接 可以使用手机线与电脑进行连接，进行网络共享
+无线连接 arch live系统默认为开启iwd,使用iwd进行无线网络连接
+1 2 3 4  iwctl device list station wlan0 get-networks station waln0 connect WIFI-NAME   首先进入iwctl模式，查询当前设备无线网卡设备名,比如wlan0），再使用网卡查询当前wifi网络情况，最后对目标WIFI-NAME进行连接，提示输入密码进行确认
+数据分区及格式化 分区 常见分区工具有cfdisk,gdisk等。为了方便，可以使用GUI的cfdisk进行分区
+ 为了防止某些异常，优先对efi进行分区，大小500M～1G即可 剩下分区方式根据个人习惯进行。    比以将home分区单独分区，缺点是home分区和其他分区大小需要控制好，防止某分区空间爆满而需要对文件系统挪动，
+  将剩余分区大小划分为一个分区，缺点是重装系统麻烦
+  为了节省存储空间，故采用第二种方式。分区完成后，对主分区进行加密(Optional)
+加密(可选) 为了保证自己的数据安全，可以对主要分区内容进行加密，防止他人挂载直接进入系统读取文件。
+ 使用LUKS对主分区进行加密，没有特殊要求采用默认参数即可   默认使用手动输入密码对文件进行加密  1  cryptsetup -y -v luksFormat /path/to/device     使用keyfile对文件进行加密">
+</head><body class=article-page>
+<script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky">
+<button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label="Toggle Menu">
+<span class=hamburger-box>
+<span class=hamburger-inner></span>
+</span>
+</button>
+<header>
+<figure class=site-avatar>
+<a href=/>
+<img src=/img/avatar_huda2458f72ce188392d75c5d51cd8e24e_373_300x0_resize_box_3.png width=300 height=300 class=site-logo loading=lazy alt=Avatar>
+</a>
+<span class=emoji>🍥</span>
+</figure><div class=site-meta>
+<h1 class=site-name><a href=/>Example Site</a></h1><h2 class=site-description>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h2></div></header><ol class=social-menu>
+<li>
+<a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank title=GitHub><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg>
+</a>
+</li><li>
+<a href=https://twitter.com target=_blank title=Twitter><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84.0 00.497-3.753C20.18 7.773 21.692 5.25 22 4.009z"/></svg>
+</a>
+</li></ol><ol class=menu id=main-menu>
+<div class=menu-bottom-section>
+<li id=i18n-switch><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg>
+<select name=language onchange="window.location.href=this.selectedOptions[0].value"><option value=https://example.com/ selected>English</option><option value=https://example.com/cn/>中文</option></select>
+</li><li id=dark-mode-toggle><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>Dark Mode</span>
+</li></div></ol></aside><main class="main full-width">
+<article class=main-article>
+<header class=article-header>
+<div class=article-details>
+<div class=article-title-wrapper>
+<h2 class=article-title>
+<a href=/posts/arch_general_install/>Archlinux的基础系统安装流程</a>
+</h2></div><footer class=article-time>
+<div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>Mar 07, 2022</time>
+</div><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>
+2 minute read
+</time>
+</div></footer></div></header><section class=article-content>
+<h2 id=前言>前言</h2><p>第一次使用linux系统，查询linux各个版本的区别，最后看上了arch的aur，故选择arch作为主力linux系统(人的生命在于折腾，折腾就完事了)</p><p>这篇主要记录了基本系统的安装，不包含桌面系统</p><h2 id=efi模式验证>EFI模式验证</h2><p>首先确认安装模式是否为EFI模式</p><div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>ls /sys/firmware/efi/efivars
+</span></span></code></pre></td></tr></table></div></div><h2 id=系统时钟校正>系统时钟校正</h2><div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>timedatectl set-ntp <span class=nb>true</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=进行网络连接>进行网络连接</h2><p>arch系统网络连接方式主要有两种，有线连接和无线连接</p><h3 id=有线连接>有线连接</h3><p>可以使用手机线与电脑进行连接，进行网络共享</p><h3 id=无线连接>无线连接</h3><p>arch live系统默认为开启iwd,使用iwd进行无线网络连接</p><div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>iwctl
+</span></span><span class=line><span class=cl>device list
+</span></span><span class=line><span class=cl>station wlan0 get-networks
+</span></span><span class=line><span class=cl>station waln0 connect WIFI-NAME
+</span></span></code></pre></td></tr></table></div></div><p>首先进入iwctl模式，查询当前设备无线网卡设备名,比如wlan0），再使用网卡查询当前wifi网络情况，最后对目标WIFI-NAME进行连接，提示输入密码进行确认</p><h2 id=数据分区及格式化>数据分区及格式化</h2><h3 id=分区>分区</h3><p>常见分区工具有cfdisk,gdisk等。为了方便，可以使用GUI的cfdisk进行分区</p><ol>
+<li>为了防止某些异常，优先对efi进行分区，大小500M～1G即可</li><li>剩下分区方式根据个人习惯进行。</li></ol><ul>
+<li>
+<p>比以将home分区单独分区，缺点是home分区和其他分区大小需要控制好，防止某分区空间爆满而需要对文件系统挪动，</p></li><li>
+<p>将剩余分区大小划分为一个分区，缺点是重装系统麻烦</p></li></ul><p>为了节省存储空间，故采用第二种方式。分区完成后，对主分区进行加密(Optional)</p><h3 id=加密可选>加密(可选)</h3><p>为了保证自己的数据安全，可以对主要分区内容进行加密，防止他人挂载直接进入系统读取文件。</p><ol>
+<li>使用LUKS对主分区进行加密，没有特殊要求采用默认参数即可</li></ol><ul>
+<li>默认使用手动输入密码对文件进行加密</li></ul><div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>cryptsetup -y -v luksFormat /path/to/device
+</span></span></code></pre></td></tr></table></div></div><ul>
+<li>
+<p>使用keyfile对文件进行加密</p><p>首先生成所需要的keyfile文件，根据生成keyfile文件的类型不同，可以分为密码方式和随机字符或二进制。</p><p>为了简便，采用密码对文件进行加密，并将密码制作为keyfile,用作开机自动解密。</p></li></ul><div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>echo -n &#39;your_passphrase&#39; &gt; /etc/keyfile
+</span></span><span class=line><span class=cl>chown root:root /etc/keyfile; chmod 400 /etc/keyfile
+</span></span></code></pre></td></tr></table></div></div><ol start=2>
+<li>
+<p>解密分区</p><p>cryptroot 为解密后对应的文件名，可以自定义</p></li></ol><div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>cryptsetup open /path/to/device/ cryptroot
+</span></span></code></pre></td></tr></table></div></div><h3 id=格式化>格式化</h3><p>efi分区采用mkfs.fat进行格式化。主分区根据不同的文件类型特性进行选择格式化，比如mkfs.ext4格式化为ext4,mkfs.btrfs格式化为btrfs，其中ext4速度整体快于btrfs,而btrfs存在快照等特性。</p><div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>mkfs.fat -F 32 /path/to/efi
+</span></span><span class=line><span class=cl>mkfs.ext4 /path/to/device
+</span></span></code></pre></td></tr></table></div></div><h2 id=挂载分区并安装基本软件>挂载分区，并安装基本软件</h2><p>先挂载/mnt分区，在创建/mnt/boot分区，并挂载(也可以创建/mnt/efi分区并进行挂载，二者不同之处可以查看archwiki)</p><div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>mount /dev/mapper/cryptroot /mnt
+</span></span><span class=line><span class=cl>mount /path/to/efi /mnt/boot
+</span></span></code></pre></td></tr></table></div></div><p>其中cryptroot为解密后分区所对应的名字，挂载时需要选择解密后的分区名</p><p>使用pacstarp在/mnt分区中安装基本软件，并生成分区文件，最后进入安装系统(根据电脑CPU类型安装所需要的微码，intel的cpu安装intel-ucode，amd的安装amd-ucode)</p><div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>pacstarp /mnt base base-devel linux linux-headers linux-firmware  sudo amd-ucode
+</span></span><span class=line><span class=cl>genfstab -U /mnt &gt;&gt; /mnt/etc/fstab
+</span></span><span class=line><span class=cl>arch-chroot /mnt
+</span></span></code></pre></td></tr></table></div></div><h2 id=更改镜像源并启用32位库>更改镜像源并启用32位库</h2><p>由于国外镜像站网速限制，可以使用国内教育镜像站进行加速，镜像配置文件为/etc/pacman.d/mirrorlist，可以设置多个镜像站</p><div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>Server = https://mirrors.ustc.edu.cn/archlinux/$repo/os/$arch
+</span></span></code></pre></td></tr></table></div></div><p>由于部分软件需要32位库，比如wine,而默认32位库是注释掉了，需要取消注释才能启用，不需要32位软件的可以不进行该操作。pacman的默认库文件位/etc/pacman.conf，取消注释multilib库</p><div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>[multilib]
+</span></span><span class=line><span class=cl>Server = /etc/pacman.d/mirrorlist
+</span></span></code></pre></td></tr></table></div></div><h2 id=修改密码>修改密码</h2><p>修改root的密码</p><div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>passwd
+</span></span></code></pre></td></tr></table></div></div><h2 id=基础软件安装>基础软件安装</h2><p>安装基础软件，比如网络，编辑器等</p><div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>pacman -S networkmanager vim git wget curl dhcpcd iwd bash-completion dialog wpa_supplicant
+</span></span></code></pre></td></tr></table></div></div><h2 id=时区和区域设置>时区和区域设置</h2><p>使用软链设置时区，比如设置位亚洲的上海时区，并同步</p><div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+</span></span><span class=line><span class=cl>hwclock --systohc
+</span></span></code></pre></td></tr></table></div></div><p>区域设置，对应文件位/etc/locale.gen，编辑并取消所需要的区域设置，并生成对应文件</p><div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>vim /etc/locale.gen             # 取消en_US.UTF-8和zh_CN.UTF-8的注销
+</span></span><span class=line><span class=cl>locale-gen
+</span></span></code></pre></td></tr></table></div></div><p>向/etc/locale.conf导入本地语言设置，防止乱码</p><div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>echo &#39;LANG=en_US.UTF-8&#39;  &gt; /etc/locale.conf
+</span></span></code></pre></td></tr></table></div></div><h2 id=主机名设置>主机名设置</h2><p>编辑/etc/hostname，设置主机名，比如arch，并根据主机名设置host文件</p><div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>echo arch &gt; /etc/hostname
+</span></span><span class=line><span class=cl>cat &gt; /etc/hosts &lt;&lt;EOF
+</span></span><span class=line><span class=cl>127.0.0.1 localhost
+</span></span><span class=line><span class=cl>::1 localhost
+</span></span><span class=line><span class=cl>127.0.1.1 arch.localdomain arch
+</span></span><span class=line><span class=cl>EOF
+</span></span></code></pre></td></tr></table></div></div><h2 id=安装引导文件>安装引导文件</h2><p>引导文件有grub和system-boot，system-boot需要手动写入启动文件，grub指令可以直接生成，较为方便，故采用grub(若efi分区挂载为/mnt/efi，则将efi-directory更改为/efi)</p><div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>pacman -S grub efibootmgr
+</span></span><span class=line><span class=cl>grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+</span></span><span class=line><span class=cl>grub-mkconfig -o /boot/grub/grub.cfg
+</span></span></code></pre></td></tr></table></div></div><h2 id=解密参数配置可选>解密参数配置(可选)</h2><p>如果对磁盘设置了加密，必须设置一些hook和内核参数来告诉内核加密磁盘的位置</p><p>具体操作可以参见<a class=link href=https://fate96.github.io/arch_auto_decrypt/ target=_blank rel=noopener>Archlinux自动解密磁盘</a></p><h2 id=完成安装>完成安装</h2><p>基本系统已经完成安装，退出系统，并取消文件挂载，重启既可以进入安装好的系统</p><div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>exit
+</span></span><span class=line><span class=cl>umount -a
+</span></span><span class=line><span class=cl>reboot
+</span></span></code></pre></td></tr></table></div></div><h2 id=参考资料>参考资料</h2><p><a class=link href=https://wiki.archlinux.org/title/installation_guide target=_blank rel=noopener>Archlinux Installation guide</a></p><p><a class=link href=https://wiki.archlinux.org/title/Dm-crypt/Encrypting_an_entire_system target=_blank rel=noopener>dm-crypt/Encrypting an entire system</a></p><p><a class=link href=https://archlinuxstudio.github.io/ArchLinuxTutorial/#/ target=_blank rel=noopener>Arch Linux 安装使用教程 - ArchTutorial - Arch Linux Studio</a></p><p><a class=link href=https://teaper.dev/ target=_blank rel=noopener>Arch Linux 搭建 java 开发环境</a></p><p><a class=link href=https://zhuanlan.zhihu.com/p/138951848 target=_blank rel=noopener>2021 Archlinux双系统安装教程（超详细）</a></p><p><a class=link href="https://www.youtube.com/watch?v=7btEUHjECAo&t=2362s" target=_blank rel=noopener>Arch Linux Monthly Install: January 2022</a></p></section><footer class=article-footer>
+<section class=article-copyright><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>Licensed under CC BY-NC-SA 4.0</span>
+</section></footer></article><div class=disqus-container>
+<div id=disqus_thread></div><script type=application/javascript>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//hugo-theme-stack.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script>
+<noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a>
+</div><style>.disqus-container{background-color:var(--card-background);border-radius:var(--card-border-radius);box-shadow:var(--shadow-l1);padding:var(--card-padding)}</style><script>window.addEventListener("onColorSchemeChange",e=>{DISQUS&&DISQUS.reset({reload:!0})})</script>
+<footer class=site-footer>
+<section class=copyright>
+&copy;
+2020 -
+2022 Example Site
+</section><section class=powerby>
+Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> <br>
+Theme <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.10.0>Stack</a></b> designed by <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a>
+</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true>
+<div class=pswp__bg></div><div class=pswp__scroll-wrap>
+<div class=pswp__container>
+<div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden">
+<div class=pswp__top-bar>
+<div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+<div class=pswp__preloader>
+<div class=pswp__preloader__icn>
+<div class=pswp__preloader__cut>
+<div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+<div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+</button>
+<div class=pswp__caption>
+<div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css integrity="sha256-c0uckgykQ9v5k+IqViZOZKc47Jn7KQil4/MP3ySA3F8=" crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE=" crossorigin=anonymous>
+</main><aside class="sidebar right-sidebar sticky">
+<section class="widget archives">
+<div class=widget-icon><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg>
+</div><h2 class="widget-title section-title">Table of contents</h2><div class=widget--toc>
+<nav id=TableOfContents>
+<ol>
+<li><a href=#前言>前言</a></li><li><a href=#efi模式验证>EFI模式验证</a></li><li><a href=#系统时钟校正>系统时钟校正</a></li><li><a href=#进行网络连接>进行网络连接</a>
+<ol>
+<li><a href=#有线连接>有线连接</a></li><li><a href=#无线连接>无线连接</a></li></ol></li><li><a href=#数据分区及格式化>数据分区及格式化</a>
+<ol>
+<li><a href=#分区>分区</a></li><li><a href=#加密可选>加密(可选)</a></li><li><a href=#格式化>格式化</a></li></ol></li><li><a href=#挂载分区并安装基本软件>挂载分区，并安装基本软件</a></li><li><a href=#更改镜像源并启用32位库>更改镜像源并启用32位库</a></li><li><a href=#修改密码>修改密码</a></li><li><a href=#基础软件安装>基础软件安装</a></li><li><a href=#时区和区域设置>时区和区域设置</a></li><li><a href=#主机名设置>主机名设置</a></li><li><a href=#安装引导文件>安装引导文件</a></li><li><a href=#解密参数配置可选>解密参数配置(可选)</a></li><li><a href=#完成安装>完成安装</a></li><li><a href=#参考资料>参考资料</a></li></ol></nav></div></section></aside></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.js defer></script>
+<script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script>
+</body></html>

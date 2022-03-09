@@ -1,0 +1,184 @@
+<!doctype html><html lang=en-us dir=ltr>
+<head><meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="前言 由于我的Archlinux使用了LUKS进行磁盘加密，所以在启动系统时，必须输入两次密码，一次是加密磁盘的密码，另一次是用户密码
+为了减少每次进入输入系统输入两次密码的麻烦，可以设置开机后自动解锁磁盘
+加密磁盘 加密磁盘操作具体可以参照Archlinux基础系统安装
+开机磁盘解密 配置开机钩子 开机解密，需要配置开机的钩子(Hook)，根据解密钩子的方式可以分为encrypt hook和sd-encrypt hook，其中后者特性更多，因此采用后者进行解密。编辑/etc/mkinitcpio.conf文件 ，将udev更换为systemd，并添加sd-vconsole和sd-encrypt
+修改前
+1  HOOKS=(base udev autodetect keyboard modconf block filesystems fsck)   修改后为
+1  HOOKS=(base systemd autodetect keyboard sd-vconsole modconf block sd-encrypt filesystems fsck)   在FILES=()这一栏中添加开机解密密钥的文件所在的位置
+1  FILES=(/path/to/keyfile)   配置完后，重新生成mkinitcpio配置文件
+1  mkinitcpio -P   配置内核参数 开机解密磁盘需要告诉内核加密磁盘所在的位置，所以需要配置对应的内核参数，编辑/etc/default/grub文件，在GRUB_CMDLINE_LINUX_DEFAULT或者GRUB_CMDLINE_LINUX参数栏中增加需要添加的内核参数，前者在每次开机都会进行加载，而后者在紧急启动进入系统时则不会加载，所以建议添加在前者栏中
+  rd.luks.uuid=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX，使用此标志指定要在启动时解密的设备的UUID
+  rd.luks.name=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX=name，指定加密磁盘的UUID和解密后的磁盘名，使用了该内核参数，则可以省略上面的uuid参数
+  rd.luks.key=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX=/path/to/keyfile，使用keyfile进行系统解密，并传入keyfile的文件位置
+  rd.luks.options=options，设置解密参数，可选设置。如果是SSD，可以使用discard参数提供TRIM功能
+  root=/dev/mapper/cryptroot: 指定解密设备，该参数不管是encrypt还是sd-crypt，都必须要设置"><title>Archlinux自动解密磁盘</title><link rel=canonical href=https://example.com/posts/arch_auto_decrypt/>
+<link rel=stylesheet href=/scss/style.min.b80bf249ce4a22cf55e8d7340a0b37a2f2c10f54f3a9a49cb94b694a2eb0bbea.css><meta property="og:title" content="Archlinux自动解密磁盘">
+<meta property="og:description" content="前言 由于我的Archlinux使用了LUKS进行磁盘加密，所以在启动系统时，必须输入两次密码，一次是加密磁盘的密码，另一次是用户密码
+为了减少每次进入输入系统输入两次密码的麻烦，可以设置开机后自动解锁磁盘
+加密磁盘 加密磁盘操作具体可以参照Archlinux基础系统安装
+开机磁盘解密 配置开机钩子 开机解密，需要配置开机的钩子(Hook)，根据解密钩子的方式可以分为encrypt hook和sd-encrypt hook，其中后者特性更多，因此采用后者进行解密。编辑/etc/mkinitcpio.conf文件 ，将udev更换为systemd，并添加sd-vconsole和sd-encrypt
+修改前
+1  HOOKS=(base udev autodetect keyboard modconf block filesystems fsck)   修改后为
+1  HOOKS=(base systemd autodetect keyboard sd-vconsole modconf block sd-encrypt filesystems fsck)   在FILES=()这一栏中添加开机解密密钥的文件所在的位置
+1  FILES=(/path/to/keyfile)   配置完后，重新生成mkinitcpio配置文件
+1  mkinitcpio -P   配置内核参数 开机解密磁盘需要告诉内核加密磁盘所在的位置，所以需要配置对应的内核参数，编辑/etc/default/grub文件，在GRUB_CMDLINE_LINUX_DEFAULT或者GRUB_CMDLINE_LINUX参数栏中增加需要添加的内核参数，前者在每次开机都会进行加载，而后者在紧急启动进入系统时则不会加载，所以建议添加在前者栏中
+  rd.luks.uuid=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX，使用此标志指定要在启动时解密的设备的UUID
+  rd.luks.name=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX=name，指定加密磁盘的UUID和解密后的磁盘名，使用了该内核参数，则可以省略上面的uuid参数
+  rd.luks.key=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX=/path/to/keyfile，使用keyfile进行系统解密，并传入keyfile的文件位置
+  rd.luks.options=options，设置解密参数，可选设置。如果是SSD，可以使用discard参数提供TRIM功能
+  root=/dev/mapper/cryptroot: 指定解密设备，该参数不管是encrypt还是sd-crypt，都必须要设置">
+<meta property="og:url" content="https://example.com/posts/arch_auto_decrypt/">
+<meta property="og:site_name" content="Example Site">
+<meta property="og:type" content="article"><meta property="article:section" content="Posts"><meta property="article:published_time" content="2022-03-08T12:25:55+08:00"><meta property="article:modified_time" content="2022-03-08T12:25:55+08:00">
+<meta name=twitter:title content="Archlinux自动解密磁盘">
+<meta name=twitter:description content="前言 由于我的Archlinux使用了LUKS进行磁盘加密，所以在启动系统时，必须输入两次密码，一次是加密磁盘的密码，另一次是用户密码
+为了减少每次进入输入系统输入两次密码的麻烦，可以设置开机后自动解锁磁盘
+加密磁盘 加密磁盘操作具体可以参照Archlinux基础系统安装
+开机磁盘解密 配置开机钩子 开机解密，需要配置开机的钩子(Hook)，根据解密钩子的方式可以分为encrypt hook和sd-encrypt hook，其中后者特性更多，因此采用后者进行解密。编辑/etc/mkinitcpio.conf文件 ，将udev更换为systemd，并添加sd-vconsole和sd-encrypt
+修改前
+1  HOOKS=(base udev autodetect keyboard modconf block filesystems fsck)   修改后为
+1  HOOKS=(base systemd autodetect keyboard sd-vconsole modconf block sd-encrypt filesystems fsck)   在FILES=()这一栏中添加开机解密密钥的文件所在的位置
+1  FILES=(/path/to/keyfile)   配置完后，重新生成mkinitcpio配置文件
+1  mkinitcpio -P   配置内核参数 开机解密磁盘需要告诉内核加密磁盘所在的位置，所以需要配置对应的内核参数，编辑/etc/default/grub文件，在GRUB_CMDLINE_LINUX_DEFAULT或者GRUB_CMDLINE_LINUX参数栏中增加需要添加的内核参数，前者在每次开机都会进行加载，而后者在紧急启动进入系统时则不会加载，所以建议添加在前者栏中
+  rd.luks.uuid=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX，使用此标志指定要在启动时解密的设备的UUID
+  rd.luks.name=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX=name，指定加密磁盘的UUID和解密后的磁盘名，使用了该内核参数，则可以省略上面的uuid参数
+  rd.luks.key=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX=/path/to/keyfile，使用keyfile进行系统解密，并传入keyfile的文件位置
+  rd.luks.options=options，设置解密参数，可选设置。如果是SSD，可以使用discard参数提供TRIM功能
+  root=/dev/mapper/cryptroot: 指定解密设备，该参数不管是encrypt还是sd-crypt，都必须要设置">
+</head><body class=article-page>
+<script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky">
+<button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label="Toggle Menu">
+<span class=hamburger-box>
+<span class=hamburger-inner></span>
+</span>
+</button>
+<header>
+<figure class=site-avatar>
+<a href=/>
+<img src=/img/avatar_huda2458f72ce188392d75c5d51cd8e24e_373_300x0_resize_box_3.png width=300 height=300 class=site-logo loading=lazy alt=Avatar>
+</a>
+<span class=emoji>🍥</span>
+</figure><div class=site-meta>
+<h1 class=site-name><a href=/>Example Site</a></h1><h2 class=site-description>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h2></div></header><ol class=social-menu>
+<li>
+<a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank title=GitHub><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg>
+</a>
+</li><li>
+<a href=https://twitter.com target=_blank title=Twitter><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84.0 00.497-3.753C20.18 7.773 21.692 5.25 22 4.009z"/></svg>
+</a>
+</li></ol><ol class=menu id=main-menu>
+<div class=menu-bottom-section>
+<li id=i18n-switch><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg>
+<select name=language onchange="window.location.href=this.selectedOptions[0].value"><option value=https://example.com/ selected>English</option><option value=https://example.com/cn/>中文</option></select>
+</li><li id=dark-mode-toggle><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>Dark Mode</span>
+</li></div></ol></aside><main class="main full-width">
+<article class=main-article>
+<header class=article-header>
+<div class=article-details>
+<div class=article-title-wrapper>
+<h2 class=article-title>
+<a href=/posts/arch_auto_decrypt/>Archlinux自动解密磁盘</a>
+</h2></div><footer class=article-time>
+<div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>Mar 08, 2022</time>
+</div><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>
+1 minute read
+</time>
+</div></footer></div></header><section class=article-content>
+<h2 id=前言>前言</h2><p>由于我的Archlinux使用了LUKS进行磁盘加密，所以在启动系统时，必须输入两次密码，一次是加密磁盘的密码，另一次是用户密码</p><p>为了减少每次进入输入系统输入两次密码的麻烦，可以设置开机后自动解锁磁盘</p><h2 id=加密磁盘>加密磁盘</h2><p>加密磁盘操作具体可以参照<a class=link href=https://fate96.github.io/arch_general_install/#%E5%8A%A0%E5%AF%86 target=_blank rel=noopener>Archlinux基础系统安装</a></p><h2 id=开机磁盘解密>开机磁盘解密</h2><h3 id=配置开机钩子>配置开机钩子</h3><p>开机解密，需要配置开机的钩子(Hook)，根据解密钩子的方式可以分为<code>encrypt hook</code>和<code>sd-encrypt hook</code>，其中后者特性更多，因此采用后者进行解密。编辑<code>/etc/mkinitcpio.conf</code>文件 ，将<code>udev</code>更换为<code>systemd</code>，并添加<code>sd-vconsole</code>和<code>sd-encrypt</code></p><p>修改前</p><div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>HOOKS=(base udev autodetect keyboard modconf block  filesystems fsck)
+</span></span></code></pre></td></tr></table></div></div><p>修改后为</p><div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>HOOKS=(base systemd autodetect keyboard sd-vconsole modconf block sd-encrypt filesystems fsck)
+</span></span></code></pre></td></tr></table></div></div><p>在FILES=()这一栏中添加开机解密密钥的文件所在的位置</p><div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>FILES=(/path/to/keyfile)
+</span></span></code></pre></td></tr></table></div></div><p>配置完后，重新生成mkinitcpio配置文件</p><div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>mkinitcpio -P
+</span></span></code></pre></td></tr></table></div></div><h3 id=配置内核参数>配置内核参数</h3><p>开机解密磁盘需要告诉内核加密磁盘所在的位置，所以需要配置对应的内核参数，编辑<code>/etc/default/grub</code>文件，在<code>GRUB_CMDLINE_LINUX_DEFAULT</code>或者<code>GRUB_CMDLINE_LINUX</code>参数栏中增加需要添加的内核参数，前者在每次开机都会进行加载，而后者在紧急启动进入系统时则不会加载，所以建议添加在前者栏中</p><ul>
+<li>
+<p>rd.luks.uuid=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX，使用此标志指定要在启动时解密的设备的UUID</p></li><li>
+<p>rd.luks.name=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX=name，指定加密磁盘的UUID和解密后的磁盘名，使用了该内核参数，则可以省略上面的uuid参数</p></li><li>
+<p>rd.luks.key=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX=/path/to/keyfile，使用keyfile进行系统解密，并传入keyfile的文件位置</p></li><li>
+<p>rd.luks.options=options，设置解密参数，可选设置。如果是SSD，可以使用<code>discard</code>参数提供<code>TRIM</code>功能</p></li><li>
+<p><strong>root=<em>/dev/mapper/cryptroot</em></strong>: 指定解密设备，<strong>该参数不管是encrypt还是sd-crypt，都必须要设置</strong></p></li></ul><p>其中UUID获取指令如下，<strong>获取的是解密前的磁盘UUID</strong>，而不是解密后的磁盘UUID</p><div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>lsblk -f
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>└─nvme0n1p2   crypto <span class=m>2</span>           a0ea985c-f2c0-4c6c-af66-2bc10a158b0a
+</span></span><span class=line><span class=cl>  └─cryptroot ext4   1.0         96055a51-9138-431a-8976-845ca1d09e20 
+</span></span></code></pre></td></tr></table></div></div><p>上述查询结果中，<code>a0ea985c-f2c0-4c6c-af66-2bc10a158b0a</code>才是我们需要的UUID参数</p><p><strong>注意：这和休眠设置的UUID参数不同，休眠需要的是解密后的UUID</strong></p><p>如下示例:</p><div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>GRUB_CMDLINE_LINUX_DEFAULT=&#34;rd.luks.name=a0ea985c-f2c0-4c6c-af66-2bc10a158b0a=cryptroot rd.luks.options=timeout=10s,discard rd.luks.key=a0ea985c-f2c0-4c6c-af66-2bc10a158b0a=/etc/mykeyfile root=/dev/mapper/cryptroot&#34;
+</span></span></code></pre></td></tr></table></div></div><p>修改后，重新生成grub的配置文件</p><div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grub-mkconfig -o /boot/grub/grub.cfg
+</span></span></code></pre></td></tr></table></div></div><p>至此，重启开机便可以自动使用密钥进行解锁，而需要手动输入密码进行解锁磁盘了。</p><h2 id=参考资料>参考资料</h2><p><a class=link href=https://wiki.archlinux.org/title/Dm-crypt/System_configuration target=_blank rel=noopener>dm-crypt/System configuration</a></p><p><a class=link href=https://nwn.moe/posts/btrfs-on-luks target=_blank rel=noopener>让系统更安全 - 系统分区加密 (Btrfs on LUKS) 操作实录</a></p></section><footer class=article-footer>
+<section class=article-copyright><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>Licensed under CC BY-NC-SA 4.0</span>
+</section></footer></article><div class=disqus-container>
+<div id=disqus_thread></div><script type=application/javascript>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//hugo-theme-stack.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script>
+<noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a>
+</div><style>.disqus-container{background-color:var(--card-background);border-radius:var(--card-border-radius);box-shadow:var(--shadow-l1);padding:var(--card-padding)}</style><script>window.addEventListener("onColorSchemeChange",e=>{DISQUS&&DISQUS.reset({reload:!0})})</script>
+<footer class=site-footer>
+<section class=copyright>
+&copy;
+2020 -
+2022 Example Site
+</section><section class=powerby>
+Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> <br>
+Theme <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.10.0>Stack</a></b> designed by <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a>
+</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true>
+<div class=pswp__bg></div><div class=pswp__scroll-wrap>
+<div class=pswp__container>
+<div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden">
+<div class=pswp__top-bar>
+<div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+<div class=pswp__preloader>
+<div class=pswp__preloader__icn>
+<div class=pswp__preloader__cut>
+<div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+<div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+</button>
+<div class=pswp__caption>
+<div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css integrity="sha256-c0uckgykQ9v5k+IqViZOZKc47Jn7KQil4/MP3ySA3F8=" crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE=" crossorigin=anonymous>
+</main><aside class="sidebar right-sidebar sticky">
+<section class="widget archives">
+<div class=widget-icon><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg>
+</div><h2 class="widget-title section-title">Table of contents</h2><div class=widget--toc>
+<nav id=TableOfContents>
+<ol>
+<li><a href=#前言>前言</a></li><li><a href=#加密磁盘>加密磁盘</a></li><li><a href=#开机磁盘解密>开机磁盘解密</a>
+<ol>
+<li><a href=#配置开机钩子>配置开机钩子</a></li><li><a href=#配置内核参数>配置内核参数</a></li></ol></li><li><a href=#参考资料>参考资料</a></li></ol></nav></div></section></aside></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.js defer></script>
+<script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script>
+</body></html>
