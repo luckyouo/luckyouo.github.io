@@ -1,119 +1,19 @@
-<!doctype html><html lang=zh-cn>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=robots content="noodp">
-<meta http-equiv=x-ua-compatible content="IE=edge, chrome=1">
-<title>Clash安装与使用 - Luckyouo Blog</title><meta name=Description content="Clash 在 linux 下的的基本安装和使用"><meta property="og:title" content="Clash安装与使用">
-<meta property="og:description" content="Clash 在 linux 下的的基本安装和使用">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://luckyouo.github.io/posts/archlinux%E5%AE%89%E8%A3%85.html/"><meta property="og:image" content="https://luckyouo.github.io/logo.png"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2022-03-07T22:50:54+08:00">
-<meta property="article:modified_time" content="2022-03-07T22:50:54+08:00">
-<meta name=twitter:card content="summary_large_image">
-<meta name=twitter:image content="https://luckyouo.github.io/logo.png">
-<meta name=twitter:title content="Clash安装与使用">
-<meta name=twitter:description content="Clash 在 linux 下的的基本安装和使用">
-<meta name=application-name content="LoveIt">
-<meta name=apple-mobile-web-app-title content="LoveIt"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico>
-<link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png>
-<link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://luckyouo.github.io/posts/archlinux%E5%AE%89%E8%A3%85.html/><link rel=prev href=https://luckyouo.github.io/posts/archlinux%E5%AE%89%E8%A3%85.html/><link rel=next href=https://luckyouo.github.io/posts/yadm%E4%BD%BF%E7%94%A8.html/><link rel=stylesheet href=/lib/normalize/normalize.min.css><link rel=stylesheet href=/css/style.min.css><link rel=stylesheet href=/lib/fontawesome-free/all.min.css><link rel=stylesheet href=/lib/animate/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Clash安装与使用","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/luckyouo.github.io\/posts\/archlinux%E5%AE%89%E8%A3%85.html\/"},"genre":"posts","keywords":"Clash","wordcount":6178,"url":"https:\/\/luckyouo.github.io\/posts\/archlinux%E5%AE%89%E8%A3%85.html\/","datePublished":"2022-03-07T22:50:54+08:00","dateModified":"2022-03-07T22:50:54+08:00","publisher":{"@type":"Organization","name":""},"author":{"@type":"Person","name":"luckyouo"},"description":"Clash 在 linux 下的的基本安装和使用"}</script></head><body header-desktop=fixed header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"auto"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"auto"==="dark")&&document.body.setAttribute("theme","dark")</script>
-<div id=mask></div><div class=wrapper><header class=desktop id=header-desktop>
-<div class=header-wrapper>
-<a href=https://github.com/luckyouo class=github-corner target=_blank title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="3.5rem" height="3.5rem" viewBox="0 0 250 250" style="fill:#70b7fd;color:#fff;position:absolute;top:0;border:0;left:0;transform:scale(-1,1)" aria-hidden="true"><path d="M0 0 115 115h15l12 27L250 250V0z"/><path d="M128.3 109C113.8 99.7 119 89.6 119 89.6 122 82.7 120.5 78.6 120.5 78.6 119.2 72 123.4 76.3 123.4 76.3 127.3 80.9 125.5 87.3 125.5 87.3 122.9 97.6 130.6 101.9 134.4 103.2" fill="currentcolor" style="transform-origin:130px 106px" class="octo-arm"/><path d="M115 115C114.9 115.1 118.7 116.5 119.8 115.4l13.9-13.8C136.9 99.2 139.9 98.4 142.2 98.6 133.8 88 127.5 74.4 143.8 58 148.5 53.4 154 51.2 159.7 51 160.3 49.4 163.2 43.6 171.4 40.1 171.4 40.1 176.1 42.5 178.8 56.2 183.1 58.6 187.2 61.8 190.9 65.4 194.5 69 197.7 73.2 200.1 77.6 213.8 80.2 216.3 84.9 216.3 84.9 212.7 93.1 206.9 96 205.4 96.6 205.1 102.4 203 107.8 198.3 112.5 181.9 128.9 168.3 122.5 157.7 114.1 157.9 116.9 156.7 120.9 152.7 124.9L141 136.5C139.8 137.7 141.6 141.9 141.8 141.8z" fill="currentcolor" class="octo-body"/></svg></a>
-<div class=header-title>
-<a href=/ title="Luckyouo Blog">Luckyouo Blogs</a>
-</div><div class=menu>
-<div class=menu-inner><a class=menu-item href=/posts/> 归档 </a><a class=menu-item href=/tags/> 标签 </a><a class=menu-item href=/categories/> 分类 </a><a class=menu-item href=/friends/><i class="fas fa-fw fa-fan fa-spin"></i> 友链 </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=x-ua-compatible content="IE=edge, chrome=1"><title>Clash安装与使用 - Luckyouo Blog</title><meta name=Description content="Clash 在 linux 下的的基本安装和使用"><meta property="og:title" content="Clash安装与使用"><meta property="og:description" content="Clash 在 linux 下的的基本安装和使用"><meta property="og:type" content="article"><meta property="og:url" content="https://luckyouo.github.io/posts/archlinux%E5%AE%89%E8%A3%85.html/"><meta property="og:image" content="https://luckyouo.github.io/logo.png"><meta property="article:section" content="posts"><meta property="article:published_time" content="2022-03-07T22:50:54+08:00"><meta property="article:modified_time" content="2022-03-07T22:50:54+08:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://luckyouo.github.io/logo.png"><meta name=twitter:title content="Clash安装与使用"><meta name=twitter:description content="Clash 在 linux 下的的基本安装和使用"><meta name=application-name content="LoveIt"><meta name=apple-mobile-web-app-title content="LoveIt"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://luckyouo.github.io/posts/archlinux%E5%AE%89%E8%A3%85.html/><link rel=prev href=https://luckyouo.github.io/posts/archlinux%E5%AE%89%E8%A3%85.html/><link rel=next href=https://luckyouo.github.io/posts/yadm%E4%BD%BF%E7%94%A8.html/><link rel=stylesheet href=/lib/normalize/normalize.min.css><link rel=stylesheet href=/css/style.min.css><link rel=stylesheet href=/lib/fontawesome-free/all.min.css><link rel=stylesheet href=/lib/animate/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Clash安装与使用","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/luckyouo.github.io\/posts\/archlinux%E5%AE%89%E8%A3%85.html\/"},"genre":"posts","keywords":"Clash","wordcount":6178,"url":"https:\/\/luckyouo.github.io\/posts\/archlinux%E5%AE%89%E8%A3%85.html\/","datePublished":"2022-03-07T22:50:54+08:00","dateModified":"2022-03-07T22:50:54+08:00","publisher":{"@type":"Organization","name":""},"author":{"@type":"Person","name":"luckyouo"},"description":"Clash 在 linux 下的的基本安装和使用"}</script></head><body header-desktop=fixed header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"auto"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"auto"==="dark")&&document.body.setAttribute("theme","dark")</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><a href=https://github.com/luckyouo class=github-corner target=_blank title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="3.5rem" height="3.5rem" viewBox="0 0 250 250" style="fill:#70b7fd;color:#fff;position:absolute;top:0;border:0;left:0;transform:scale(-1,1)" aria-hidden="true"><path d="M0 0 115 115h15l12 27L250 250V0z"/><path d="M128.3 109C113.8 99.7 119 89.6 119 89.6 122 82.7 120.5 78.6 120.5 78.6 119.2 72 123.4 76.3 123.4 76.3 127.3 80.9 125.5 87.3 125.5 87.3 122.9 97.6 130.6 101.9 134.4 103.2" fill="currentcolor" style="transform-origin:130px 106px" class="octo-arm"/><path d="M115 115C114.9 115.1 118.7 116.5 119.8 115.4l13.9-13.8C136.9 99.2 139.9 98.4 142.2 98.6 133.8 88 127.5 74.4 143.8 58 148.5 53.4 154 51.2 159.7 51 160.3 49.4 163.2 43.6 171.4 40.1 171.4 40.1 176.1 42.5 178.8 56.2 183.1 58.6 187.2 61.8 190.9 65.4 194.5 69 197.7 73.2 200.1 77.6 213.8 80.2 216.3 84.9 216.3 84.9 212.7 93.1 206.9 96 205.4 96.6 205.1 102.4 203 107.8 198.3 112.5 181.9 128.9 168.3 122.5 157.7 114.1 157.9 116.9 156.7 120.9 152.7 124.9L141 136.5C139.8 137.7 141.6 141.9 141.8 141.8z" fill="currentcolor" class="octo-body"/></svg></a><div class=header-title><a href=/ title="Luckyouo Blog">Luckyouo Blogs</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/>归档 </a><a class=menu-item href=/tags/>标签 </a><a class=menu-item href=/categories/>分类 </a><a class=menu-item href=/friends/><i class="fas fa-fw fa-fan fa-spin"></i> 友链 </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
 <input type=text placeholder=搜索文章标题或内容... id=search-input-desktop>
-<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=搜索>
-<i class="fas fa-search fa-fw"></i>
-</a>
-<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=清空>
-<i class="fas fa-times-circle fa-fw"></i>
-</a>
-<span class="search-button search-loading" id=search-loading-desktop>
-<i class="fas fa-spinner fa-fw fa-spin"></i>
-</span>
-</span><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题>
-<i class="fas fa-adjust fa-fw"></i>
-</a>
-</div></div></div></header><header class=mobile id=header-mobile>
-<div class=header-container>
-<div class=header-wrapper>
-<div class=header-title>
-<a href=/ title="Luckyouo Blog">Luckyouo Blogs</a>
-</div><div class=menu-toggle id=menu-toggle-mobile>
-<span></span><span></span><span></span>
-</div></div><div class=menu id=menu-mobile><div class=search-wrapper>
-<div class="search mobile" id=search-mobile>
-<input type=text placeholder=搜索文章标题或内容... id=search-input-mobile>
-<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=搜索>
-<i class="fas fa-search fa-fw"></i>
-</a>
-<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=清空>
-<i class="fas fa-times-circle fa-fw"></i>
-</a>
-<span class="search-button search-loading" id=search-loading-mobile>
-<i class="fas fa-spinner fa-fw fa-spin"></i>
-</span>
-</div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>
-取消
-</a>
-</div><a class=menu-item href=/posts/ title>归档</a><a class=menu-item href=/tags/ title>标签</a><a class=menu-item href=/categories/ title>分类</a><a class=menu-item href=/friends/ title><i class="fas fa-fw fa-fan fa-spin"></i>友链</a><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题>
-<i class="fas fa-adjust fa-fw"></i>
-</a></div></div></header><div class="search-dropdown desktop">
-<div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile">
-<div id=search-dropdown-mobile></div></div><main class=main>
-<div class=container><div class=toc id=toc-auto>
-<h2 class=toc-title>目录</h2><div class="toc-content always-active" id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">Clash安装与使用</h1><div class=post-meta>
-<div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>luckyouo</a></span>&nbsp;<span class=post-category>收录于 <a href=/categories/clash/><i class="far fa-folder fa-fw"></i>Clash</a></span></div><div class=post-meta-line><i class="far fa-calendar fa-fw"></i>&nbsp;<time datetime=2022-03-07>2022-03-07</time>&nbsp;<i class="far fa-calendar-plus fa-fw"></i>&nbsp;<time datetime=2022-03-07>2022-03-07</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 6178 字&nbsp;
-<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 13 分钟&nbsp;</div></div><div class="details toc" id=toc-static kept>
-<div class="details-summary toc-title">
-<span>目录</span>
-<span><i class="details-icon fas fa-angle-right"></i></span>
-</div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents>
-<ol>
-<li><a href=#前言>前言</a></li><li><a href=#安装>安装</a></li><li><a href=#文件配置>文件配置</a></li><li><a href=#tproxy代理设置>TProxy代理设置</a></li><li><a href=#iptables规则持久化>iptables规则持久化</a></li><li><a href=#启动服务>启动服务</a></li><li><a href=#docker流量问题解决>docker流量问题解决</a></li><li><a href=#参考资料>参考资料</a></li></ol></nav></div></div><div class=content id=content><h2 id=前言>前言</h2><p>Clash 是一个跨平台、支持 SS/V2ray 等协议、基于规则的网络代理软件</p><p>Clash 只是一个内核，为开源软件，而 Clash-premium 是闭源软件，后者多了scripts，rule-set和tun(windows只能使用该功能实现全局代理)</p><p>从clash的内核衍生了众多版本，用的最多的有 Clash for windows (简称 cfw )，Open Clash，Clashx。其中cfw不仅支持windows，还支持macos和linux，open Clash只支持路由器的openwrt系统，Clashx只支持macos</p><h2 id=安装>安装</h2><p>在 arch 的官方仓库当中有根据 clash 内核打包好的组件，aur社区有打包好的 cfw 和 clash-user。其中cfw有ui界面，与 windows 上设置没有什么区别，而 clash-user 自带 clash 用户，可以根据用户的 uid 来设置防止流量回环</p><p>由于 linux 可以使用 tproxy 实现全局代理，可以直接使用官方仓库的 clash (或者 aur 的 clash-user ），来减少 clash 的资源占用( cfw 的 gui 需要占用资源)</p><div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
-</span></code></pre></td><td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>sudo pacman -S clash
-</span></span></code></pre></td></tr></table></div></div><p>使用<code>yacd</code>面板对Clash管理和流量监控</p><div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
-</span></code></pre></td><td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>yay -S yacd
-</span></span></code></pre></td></tr></table></div></div><h2 id=文件配置>文件配置</h2><p>clash 默认的配置文件位于用户目录下，而 clash-user 的配置位于<code>/etc/clash</code>目录下</p><p>配置中主要参数解释：</p><ul>
-<li>
-<p>port: http(s)代理端口</p></li><li>
-<p>socks-port: socks5代理端口</p></li><li>
-<p>redir-port: redir tcp代理端口</p></li><li>
-<p>tproxy-port: tproxy udp(tcp)代理端口</p></li><li>
-<p>mode: 代理方式，有全局代理(gloable)、规则代理(rule)和直连(direct)。其rle根据配置所提供的规则流量代理</p></li><li>
-<p>external-controller: clash提供的api控制地址</p></li><li>
-<p>external-ui: 外部控制ui地址</p></li><li>
-<p>profile: clash部分存储设置模块</p><ul>
-<li>
-<p>store-selected: 策略组节点选择后，是否需要存储选择记录，默认不存储(false)</p></li><li>
-<p>store-fake-ip: 设置为 true 是，将 fake-ip 与真实 dns 的 ip 对应记录存储在本地，以达到持久存储 dns 记录，加快 dns 解析速度</p></li></ul></li><li>
-<p>dns: clash的dns模块</p><ul>
-<li>
-<p>enable: 设置为 true 时开启 clash 内置的dns模块</p></li><li>
-<p>listen: dns 的监听端口</p></li><li>
-<p>enhanced-mode: clash 提供两种 dns 查询模式，一种为正常 redir 转发模式，另一种为 fake-ip 模式，每次应用 dns 请求时，clash 将返回一个 fake 的 ip 地址，来达到加速建立 tcp 连接需求，但也会导致得到的 ip 不是真实的 ip，从而对某些网络调试带来麻烦</p></li><li>
-<p>nameserver: dns 查询服务器，可以设置为 doh，tls 等dns查询方式。具体可以根根据个人习惯设置</p></li><li>
-<p>fake-ip-filter: 过滤不使用 fake-ip 查来询dns的地址</p></li></ul></li><li>
-<p>proxies: 代理节点设置模块，请根据官方要求进行设置</p></li><li>
-<p>proxy-groups: clash 的策略组，与 surge 类似。包含 relay(轮询)，url-test(ping最低优先)，load-balance(负载均衡)，fallback(按节点顺序优先使用可用节点)，select(手动选择节点)</p></li><li>
-<p>proxy-providers: 节点提供模块，一次可以提供多个级诶但，clash的<code>1.9.0</code>中增加了filter用来过滤节点</p><ul>
-<li>
-<p>type: 节点组提供的类型，可选 http (远程提供)和 file (本地文件提供)</p></li><li>
-<p>filter: 节点过滤方式，支持正则</p></li></ul></li><li>
-<p>rules: 规则模块，以下是官方提供的说明，可以根据需要进行规则设置</p><ul>
-<li>DOMAIN: 规则会匹配与请求完全相同的地址</li><li>DOMAIN-SUFFIX: 规则会匹配与请求与主域名相同的地址，比如，<code>google.com</code>匹配<code>www.google.com</code>, <code>mail.google.com</code>和<code>google.com</code>本身，但不会匹配<code>content-google.com</code></li><li>DOMAIN-KEYWORD: 规则会匹配包含相应关键字的域名，除了 &ldquo;apple&rdquo; 会匹配 <code>www.apple.com</code>，&ldquo;app&rdquo; 同样也会匹配到</li><li>GEOIP: 规则会匹配相应国家和地区的 IP 地址</li><li>IP-CIDR: 规则会匹配规则范围内请求的 IP 地址</li><li>IP-CIDR6: 规则会匹配规则范围内请求的 IPv6 地址</li><li>SRC-IP-CIDR: 规则会匹配源 IP 地址</li><li>SRC-PORT: 规则会匹配源端口地址</li><li>DST-PORT: 规则会匹配目的地端口地址</li><li>PROCESS-NAME: 规则会匹配这个进程名的程序</li><li>MATCH: 将其余数据包路由到策略。此规则是必需的</li></ul></li></ul><p>以下为本人根据 clash 提供的官方配置进行更改的自用配置。dns 设置为 fake-ip 模式，dns 服务器均采用 doh，防止国内而 dns 污染，并使用 yacd 模块。因为 clash 开源版不支持rule-set模块(clash-premium支持)，所以不能像 surge 一样简洁书写规则，嫌规则冗长的可以使用 clash-premium 闭源软件书写，其他模块书写规则一致</p><div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>   1
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=搜索><i class="fas fa-search fa-fw"></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=清空><i class="fas fa-times-circle fa-fw"></i></a>
+<span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin"></i></span>
+</span><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题><i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title="Luckyouo Blog">Luckyouo Blogs</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder=搜索文章标题或内容... id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=搜索><i class="fas fa-search fa-fw"></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=清空><i class="fas fa-times-circle fa-fw"></i></a>
+<span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin"></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>取消</a></div><a class=menu-item href=/posts/ title>归档</a><a class=menu-item href=/tags/ title>标签</a><a class=menu-item href=/categories/ title>分类</a><a class=menu-item href=/friends/ title><i class="fas fa-fw fa-fan fa-spin"></i>友链</a><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题>
+<i class="fas fa-adjust fa-fw"></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>目录</h2><div class="toc-content always-active" id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">Clash安装与使用</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>luckyouo</a></span>&nbsp;<span class=post-category>收录于 <a href=/categories/clash/><i class="far fa-folder fa-fw"></i>Clash</a></span></div><div class=post-meta-line><i class="far fa-calendar fa-fw"></i>&nbsp;<time datetime=2022-03-07>2022-03-07</time>&nbsp;<i class="far fa-calendar-plus fa-fw"></i>&nbsp;<time datetime=2022-03-07>2022-03-07</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 6178 字&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 13 分钟&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>目录</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ol><li><a href=#前言>前言</a></li><li><a href=#安装>安装</a></li><li><a href=#文件配置>文件配置</a></li><li><a href=#tproxy代理设置>TProxy代理设置</a></li><li><a href=#iptables规则持久化>iptables规则持久化</a></li><li><a href=#启动服务>启动服务</a></li><li><a href=#docker流量问题解决>docker流量问题解决</a></li><li><a href=#参考资料>参考资料</a></li></ol></nav></div></div><div class=content id=content><h2 id=前言>前言</h2><p>Clash 是一个跨平台、支持 SS/V2ray 等协议、基于规则的网络代理软件</p><p>Clash 只是一个内核，为开源软件，而 Clash-premium 是闭源软件，后者多了scripts，rule-set和tun(windows只能使用该功能实现全局代理)</p><p>从clash的内核衍生了众多版本，用的最多的有 Clash for windows (简称 cfw )，Open Clash，Clashx。其中cfw不仅支持windows，还支持macos和linux，open Clash只支持路由器的openwrt系统，Clashx只支持macos</p><h2 id=安装>安装</h2><p>在 arch 的官方仓库当中有根据 clash 内核打包好的组件，aur社区有打包好的 cfw 和 clash-user。其中cfw有ui界面，与 windows 上设置没有什么区别，而 clash-user 自带 clash 用户，可以根据用户的 uid 来设置防止流量回环</p><p>由于 linux 可以使用 tproxy 实现全局代理，可以直接使用官方仓库的 clash (或者 aur 的 clash-user ），来减少 clash 的资源占用( cfw 的 gui 需要占用资源)</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>sudo pacman -S clash
+</span></span></code></pre></td></tr></table></div></div><p>使用<code>yacd</code>面板对Clash管理和流量监控</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>yay -S yacd
+</span></span></code></pre></td></tr></table></div></div><h2 id=文件配置>文件配置</h2><p>clash 默认的配置文件位于用户目录下，而 clash-user 的配置位于<code>/etc/clash</code>目录下</p><p>配置中主要参数解释：</p><ul><li><p>port: http(s)代理端口</p></li><li><p>socks-port: socks5代理端口</p></li><li><p>redir-port: redir tcp代理端口</p></li><li><p>tproxy-port: tproxy udp(tcp)代理端口</p></li><li><p>mode: 代理方式，有全局代理(gloable)、规则代理(rule)和直连(direct)。其rle根据配置所提供的规则流量代理</p></li><li><p>external-controller: clash提供的api控制地址</p></li><li><p>external-ui: 外部控制ui地址</p></li><li><p>profile: clash部分存储设置模块</p><ul><li><p>store-selected: 策略组节点选择后，是否需要存储选择记录，默认不存储(false)</p></li><li><p>store-fake-ip: 设置为 true 是，将 fake-ip 与真实 dns 的 ip 对应记录存储在本地，以达到持久存储 dns 记录，加快 dns 解析速度</p></li></ul></li><li><p>dns: clash的dns模块</p><ul><li><p>enable: 设置为 true 时开启 clash 内置的dns模块</p></li><li><p>listen: dns 的监听端口</p></li><li><p>enhanced-mode: clash 提供两种 dns 查询模式，一种为正常 redir 转发模式，另一种为 fake-ip 模式，每次应用 dns 请求时，clash 将返回一个 fake 的 ip 地址，来达到加速建立 tcp 连接需求，但也会导致得到的 ip 不是真实的 ip，从而对某些网络调试带来麻烦</p></li><li><p>nameserver: dns 查询服务器，可以设置为 doh，tls 等dns查询方式。具体可以根根据个人习惯设置</p></li><li><p>fake-ip-filter: 过滤不使用 fake-ip 查来询dns的地址</p></li></ul></li><li><p>proxies: 代理节点设置模块，请根据官方要求进行设置</p></li><li><p>proxy-groups: clash 的策略组，与 surge 类似。包含 relay(轮询)，url-test(ping最低优先)，load-balance(负载均衡)，fallback(按节点顺序优先使用可用节点)，select(手动选择节点)</p></li><li><p>proxy-providers: 节点提供模块，一次可以提供多个级诶但，clash的<code>1.9.0</code>中增加了filter用来过滤节点</p><ul><li><p>type: 节点组提供的类型，可选 http (远程提供)和 file (本地文件提供)</p></li><li><p>filter: 节点过滤方式，支持正则</p></li></ul></li><li><p>rules: 规则模块，以下是官方提供的说明，可以根据需要进行规则设置</p><ul><li>DOMAIN: 规则会匹配与请求完全相同的地址</li><li>DOMAIN-SUFFIX: 规则会匹配与请求与主域名相同的地址，比如，<code>google.com</code>匹配<code>www.google.com</code>, <code>mail.google.com</code>和<code>google.com</code>本身，但不会匹配<code>content-google.com</code></li><li>DOMAIN-KEYWORD: 规则会匹配包含相应关键字的域名，除了 &ldquo;apple&rdquo; 会匹配 <code>www.apple.com</code>，&ldquo;app&rdquo; 同样也会匹配到</li><li>GEOIP: 规则会匹配相应国家和地区的 IP 地址</li><li>IP-CIDR: 规则会匹配规则范围内请求的 IP 地址</li><li>IP-CIDR6: 规则会匹配规则范围内请求的 IPv6 地址</li><li>SRC-IP-CIDR: 规则会匹配源 IP 地址</li><li>SRC-PORT: 规则会匹配源端口地址</li><li>DST-PORT: 规则会匹配目的地端口地址</li><li>PROCESS-NAME: 规则会匹配这个进程名的程序</li><li>MATCH: 将其余数据包路由到策略。此规则是必需的</li></ul></li></ul><p>以下为本人根据 clash 提供的官方配置进行更改的自用配置。dns 设置为 fake-ip 模式，dns 服务器均采用 doh，防止国内而 dns 污染，并使用 yacd 模块。因为 clash 开源版不支持rule-set模块(clash-premium支持)，所以不能像 surge 一样简洁书写规则，嫌规则冗长的可以使用 clash-premium 闭源软件书写，其他模块书写规则一致</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>   1
 </span><span class=lnt>   2
 </span><span class=lnt>   3
 </span><span class=lnt>   4
@@ -1444,8 +1344,7 @@
 </span><span class=lnt>1329
 </span><span class=lnt>1330
 </span><span class=lnt>1331
-</span></code></pre></td><td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>mixed-port</span><span class=p>:</span><span class=w> </span><span class=m>7890</span><span class=w>
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>mixed-port</span><span class=p>:</span><span class=w> </span><span class=m>7890</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>allow-lan</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>mode</span><span class=p>:</span><span class=w> </span><span class=l>Rule</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>log-level</span><span class=p>:</span><span class=w> </span><span class=l>warning</span><span class=w>
@@ -2776,9 +2675,7 @@
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=l>GEOIP,CN,DIRECT</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=l>MATCH,Final</span><span class=w>
-</span></span></span></code></pre></td></tr></table></div></div><h2 id=tproxy代理设置>TProxy代理设置</h2><p>采用clash官方推荐的wiki的防火墙设置，来拦截流量，由于udp不支持redir，所以tcp采用redir，udp采用tproxy(也都可以采用tproxy)，dns拦截端口为上述文件设置的1053，将dns的udp查询均转发至1053端口</p><p>为了防止clash代理自身流量，有两种常用方式避免流量回环，cgroup和uid。第一种方式将clash加入特定cgroup足，比如自定义的noproxy组，第二种方式为使用clash用户来启动clash进程。接着使用iptables来匹配对于流量</p><p>官方推荐wiki的iptables规则如下</p><div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=tproxy代理设置>TProxy代理设置</h2><p>采用clash官方推荐的wiki的防火墙设置，来拦截流量，由于udp不支持redir，所以tcp采用redir，udp采用tproxy(也都可以采用tproxy)，dns拦截端口为上述文件设置的1053，将dns的udp查询均转发至1053端口</p><p>为了防止clash代理自身流量，有两种常用方式避免流量回环，cgroup和uid。第一种方式将clash加入特定cgroup足，比如自定义的noproxy组，第二种方式为使用clash用户来启动clash进程。接着使用iptables来匹配对于流量</p><p>官方推荐wiki的iptables规则如下</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -2820,8 +2717,7 @@
 </span><span class=lnt>40
 </span><span class=lnt>41
 </span><span class=lnt>42
-</span></code></pre></td><td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1>#tcp</span>
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1>#tcp</span>
 </span></span><span class=line><span class=cl>iptables -t nat -N clash
 </span></span><span class=line><span class=cl>iptables -t nat -A clash -d 0.0.0.0/8 -j RETURN
 </span></span><span class=line><span class=cl>iptables -t nat -A clash -d 10.0.0.0/8 -j RETURN
@@ -2863,9 +2759,7 @@
 </span></span><span class=line><span class=cl>iptables -t mangle -A OUTPUT -m cgroup --path <span class=s2>&#34;noproxy.slice&#34;</span> -j RETURN
 </span></span><span class=line><span class=cl><span class=c1># 使用uid来防止流量回环</span>
 </span></span><span class=line><span class=cl><span class=c1># iptables -t mangle -A clash-self -m owner --uid-owner clash -j RETURN</span>
-</span></span></code></pre></td></tr></table></div></div><h2 id=iptables规则持久化>iptables规则持久化</h2><p>iptables 规则在每次系统重启后，都会进行复原，因此如果设置错误导致无法上网时，可以删除防火墙对应规则或直接重启电脑解决</p><p>为了让iptables规则持久化，可以设置一个开机自启服务，自动运行对应脚本以设置防火墙。将上述 iptables 规则保存为为 <code>iptables.sh</code> ，并创建 <code>/etc/systemd/system/tproxy.service</code>，编辑设置内容如下</p><div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></span></code></pre></td></tr></table></div></div><h2 id=iptables规则持久化>iptables规则持久化</h2><p>iptables 规则在每次系统重启后，都会进行复原，因此如果设置错误导致无法上网时，可以删除防火墙对应规则或直接重启电脑解决</p><p>为了让iptables规则持久化，可以设置一个开机自启服务，自动运行对应脚本以设置防火墙。将上述 iptables 规则保存为为 <code>iptables.sh</code> ，并创建 <code>/etc/systemd/system/tproxy.service</code>，编辑设置内容如下</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -2877,8 +2771,7 @@
 </span><span class=lnt>10
 </span><span class=lnt>11
 </span><span class=lnt>12
-</span></code></pre></td><td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>[Unit]
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>[Unit]
 </span></span><span class=line><span class=cl>Description=Setup ip-rule and ip-route for tproxy local network traffic.
 </span></span><span class=line><span class=cl>Before=network-pre.target
 </span></span><span class=line><span class=cl>Wants=network-pre.target
@@ -2890,78 +2783,30 @@
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>[Install]
 </span></span><span class=line><span class=cl>WantedBy=multi-user.target
-</span></span></code></pre></td></tr></table></div></div><p>设置服务开机自启</p><div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
-</span></code></pre></td><td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>sudo systemctl <span class=nb>enable</span> tproxy.service
-</span></span></code></pre></td></tr></table></div></div><h2 id=启动服务>启动服务</h2><p>clash 需要部分网络代理<a href=https://wiki.archlinux.org/title/Capabilities target=_blank rel="noopener noreffer">能力</a>，编辑 clash@ 服务文件，添加 clash 的 capability 能力，</p><div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
-</span></code></pre></td><td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>sudo systemctl edit clash@.service
-</span></span></code></pre></td></tr></table></div></div><p>添加如下内容</p><div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></span></code></pre></td></tr></table></div></div><p>设置服务开机自启</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>sudo systemctl <span class=nb>enable</span> tproxy.service
+</span></span></code></pre></td></tr></table></div></div><h2 id=启动服务>启动服务</h2><p>clash 需要部分网络代理<a href=https://wiki.archlinux.org/title/Capabilities target=_blank rel="noopener noreffer">能力</a>，编辑 clash@ 服务文件，添加 clash 的 capability 能力，</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>sudo systemctl edit clash@.service
+</span></span></code></pre></td></tr></table></div></div><p>添加如下内容</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
-</span></code></pre></td><td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
 </span></span><span class=line><span class=cl>AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
-</span></span></code></pre></td></tr></table></div></div><ol>
-<li>
-<p><code>CAP_NET_RAW</code> 让应用可以处理 TProxy 带来的流量</p></li><li>
-<p><code>CAP_NET_BIND_SERVICE</code> 允许应用绑定 1000 以下的端口</p></li></ol><p>如果采用 cgroup 防止流量回环，还需要设置该服务所对应的 <a href=https://wiki.archlinux.org/title/cgroups#As_service target=_blank rel="noopener noreffer">Slice</a>，采用 UID 识别的话，则需要设置该服务的启动 USER，二选一即可，也可以同时都设置。若设置 UID 时，必须保证系统存在相应用户名</p><div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></span></code></pre></td></tr></table></div></div><ol><li><p><code>CAP_NET_RAW</code> 让应用可以处理 TProxy 带来的流量</p></li><li><p><code>CAP_NET_BIND_SERVICE</code> 允许应用绑定 1000 以下的端口</p></li></ol><p>如果采用 cgroup 防止流量回环，还需要设置该服务所对应的 <a href=https://wiki.archlinux.org/title/cgroups#As_service target=_blank rel="noopener noreffer">Slice</a>，采用 UID 识别的话，则需要设置该服务的启动 USER，二选一即可，也可以同时都设置。若设置 UID 时，必须保证系统存在相应用户名</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
-</span></code></pre></td><td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl># cgroup
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl># cgroup
 </span></span><span class=line><span class=cl>Slice = noproxy.slice
 </span></span><span class=line><span class=cl># UID
 </span></span><span class=line><span class=cl>User = username
-</span></span></code></pre></td></tr></table></div></div><p>同时设置 clash@$USER 服务后台自动，并立即启动</p><div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
-</span></code></pre></td><td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>sudo systemctl <span class=nb>enable</span> --now clash@<span class=nv>$USER</span>.service
-</span></span></code></pre></td></tr></table></div></div><h2 id=docker流量问题解决>docker流量问题解决</h2><p>为了解决 cgproxy 代理 bridge 联网的 docker 无法联网问题，需要进行如下而外设置</p><div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></span></code></pre></td></tr></table></div></div><p>同时设置 clash@$USER 服务后台自动，并立即启动</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>sudo systemctl <span class=nb>enable</span> --now clash@<span class=nv>$USER</span>.service
+</span></span></code></pre></td></tr></table></div></div><h2 id=docker流量问题解决>docker流量问题解决</h2><p>为了解决 cgproxy 代理 bridge 联网的 docker 无法联网问题，需要进行如下而外设置</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
-</span></code></pre></td><td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>sysctl -w net.bridge.bridge-nf-call-iptables<span class=o>=</span><span class=m>0</span>
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>sysctl -w net.bridge.bridge-nf-call-iptables<span class=o>=</span><span class=m>0</span>
 </span></span><span class=line><span class=cl>sysctl -w net.bridge.bridge-nf-call-ip6tables<span class=o>=</span><span class=m>0</span>
 </span></span><span class=line><span class=cl>sysctl -w net.bridge.bridge-nf-call-arptables<span class=o>=</span><span class=m>0</span>
-</span></span></code></pre></td></tr></table></div></div><h2 id=参考资料>参考资料</h2><p><a href=https://github.com/Dreamacro/clash/wiki target=_blank rel="noopener noreffer">Clash github Wik</a></p><p><a href=https://lancellc.gitbook.io/clash target=_blank rel="noopener noreffer">Unofficial Clash Wiki</a></p><p><a href=https://docs.cfw.lbyczf.com/ target=_blank rel="noopener noreffer">clash-win-docs-new</a></p><p><a href=https://github.com/springzfx/cgproxy/issues/10 target=_blank rel="noopener noreffer">容器(docker)桥接(bridge)模式时的代理问题</a></p><p><a href=https://github.com/escape0707/markdown-practice/blob/master/notes/how-to-use-clash-with-tproxy-and-fakeip-for-tcp-udp.md target=_blank rel="noopener noreffer">如何使用 Clash 的 TPROXY 功能进行透明代理</a></p></div><div class=post-footer id=post-footer>
-<div class=post-info>
-<div class=post-info-line>
-<div class=post-info-mod>
-<span>更新于 2022-03-07</span>
-</div><div class=post-info-license></div></div><div class=post-info-line>
-<div class=post-info-md><span>
-<a class=link-to-markdown href=/posts/archlinux%E5%AE%89%E8%A3%85.html/index.md target=_blank>阅读原始文档</a>
-</span></div><div class=post-info-share>
-<span><a href=javascript:void(0); title="分享到 Twitter" data-sharer=twitter data-url=https://luckyouo.github.io/posts/archlinux%E5%AE%89%E8%A3%85.html/ data-title=Clash安装与使用 data-via=xxxx data-hashtags=Clash><i class="fab fa-twitter fa-fw"></i></a><a href=javascript:void(0); title="分享到 Facebook" data-sharer=facebook data-url=https://luckyouo.github.io/posts/archlinux%E5%AE%89%E8%A3%85.html/ data-hashtag=Clash><i class="fab fa-facebook-square fa-fw"></i></a><a href=javascript:void(0); title="分享到 微博" data-sharer=weibo data-url=https://luckyouo.github.io/posts/archlinux%E5%AE%89%E8%A3%85.html/ data-title=Clash安装与使用><i class="fab fa-weibo fa-fw"></i></a></span>
-</div></div></div><div class=post-info-more>
-<section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/clash/>Clash</a></section><section>
-<span><a href=javascript:void(0); onclick=window.history.back()>返回</a></span>&nbsp;|&nbsp;<span><a href=/>主页</a></span>
-</section></div><div class=post-nav><a href=/posts/archlinux%E5%AE%89%E8%A3%85.html/ class=prev rel=prev title=Archlinux桌面系统安装><i class="fas fa-angle-left fa-fw"></i>Archlinux桌面系统安装</a>
-<a href=/posts/yadm%E4%BD%BF%E7%94%A8.html/ class=next rel=next title=Yadm的基本使用>Yadm的基本使用<i class="fas fa-angle-right fa-fw"></i></a></div></div><div id=comments></div></article></div></main><footer class=footer>
-<div class=footer-container>
-<div class=footer-line>
-<span id=run-time></span>
-</div><div class=footer-line>由 <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.93.3">Hugo</a> 强力驱动 | 主题 - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
-</div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2022</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank>luckyouo</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title=回到顶部>
-<i class="fas fa-arrow-up fa-fw"></i>
-</a><a href=# id=view-comments class=fixed-button title=查看评论>
-<i class="fas fa-comment fa-fw"></i>
-</a>
-</div><div class=sidebar_wo>
-<div id=leimu>
-<img src=https://cdn.jsdelivr.net/gh/lewky/lewky.github.io@master/images/b2t/leimuA.png alt=雷姆 onmouseover='this.src="https://cdn.jsdelivr.net/gh/lewky/lewky.github.io@master/images/b2t/leimuB.png"' onmouseout='this.src="https://cdn.jsdelivr.net/gh/lewky/lewky.github.io@master/images/b2t/leimuA.png"' title=回到顶部>
-</div><div class=sidebar_wo id=lamu>
-<img src=https://cdn.jsdelivr.net/gh/lewky/lewky.github.io@master/images/b2t/lamuA.png alt=雷姆 onmouseover='this.src="https://cdn.jsdelivr.net/gh/lewky/lewky.github.io@master/images/b2t/lamuB.png"' onmouseout='this.src="https://cdn.jsdelivr.net/gh/lewky/lewky.github.io@master/images/b2t/lamuA.png"' title=回到底部>
-</div></div><link rel=stylesheet href=/lib/katex/katex.min.css><link rel=stylesheet href=/lib/katex/copy-tex.min.css><link rel=stylesheet href=/lib/cookieconsent/cookieconsent.min.css><script type=text/javascript src=/lib/smooth-scroll/smooth-scroll.min.js></script><script type=text/javascript src=/lib/autocomplete/autocomplete.min.js></script><script type=text/javascript src=/lib/lunr/lunr.min.js></script><script type=text/javascript src=/lib/lunr/lunr.stemmer.support.min.js></script><script type=text/javascript src=/lib/lunr/lunr.zh.min.js></script><script type=text/javascript src=/lib/lazysizes/lazysizes.min.js></script><script type=text/javascript src=/lib/clipboard/clipboard.min.js></script><script type=text/javascript src=/lib/sharer/sharer.min.js></script><script type=text/javascript src=/lib/katex/katex.min.js></script><script type=text/javascript src=/lib/katex/auto-render.min.js></script><script type=text/javascript src=/lib/katex/copy-tex.min.js></script><script type=text/javascript src=/lib/katex/mhchem.min.js></script><script type=text/javascript src=/lib/cookieconsent/cookieconsent.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"复制到剪贴板",maxShownLines:10},comment:{},cookieconsent:{content:{dismiss:"同意",link:"了解更多",message:"本网站使用 Cookies 来改善您的浏览体验."},enable:!0,palette:{button:{background:"#f0f0f0"},popup:{background:"#1aa3ff"}},theme:"edgeless"},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},search:{highlightTag:"em",lunrIndexURL:"/index.json",lunrLanguageCode:"zh",lunrSegmentitURL:"/lib/lunr/lunr.segmentit.js",maxResultLength:10,noResultsFound:"没有找到结果",snippetLength:50,type:"lunr"}}</script><script type=text/javascript src=/js/theme.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/jquery@2.1.3/dist/jquery.min.js></script><script type=text/javascript src=/js/custom.js></script></body></html>
+</span></span></code></pre></td></tr></table></div></div><h2 id=参考资料>参考资料</h2><p><a href=https://github.com/Dreamacro/clash/wiki target=_blank rel="noopener noreffer">Clash github Wik</a></p><p><a href=https://lancellc.gitbook.io/clash target=_blank rel="noopener noreffer">Unofficial Clash Wiki</a></p><p><a href=https://docs.cfw.lbyczf.com/ target=_blank rel="noopener noreffer">clash-win-docs-new</a></p><p><a href=https://github.com/springzfx/cgproxy/issues/10 target=_blank rel="noopener noreffer">容器(docker)桥接(bridge)模式时的代理问题</a></p><p><a href=https://github.com/escape0707/markdown-practice/blob/master/notes/how-to-use-clash-with-tproxy-and-fakeip-for-tcp-udp.md target=_blank rel="noopener noreffer">如何使用 Clash 的 TPROXY 功能进行透明代理</a></p></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>更新于 2022-03-07</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=/posts/archlinux%E5%AE%89%E8%A3%85.html/index.md target=_blank>阅读原始文档</a></span></div><div class=post-info-share><span><a href=javascript:void(0); title="分享到 Twitter" data-sharer=twitter data-url=https://luckyouo.github.io/posts/archlinux%E5%AE%89%E8%A3%85.html/ data-title=Clash安装与使用 data-via=xxxx data-hashtags=Clash><i class="fab fa-twitter fa-fw"></i></a><a href=javascript:void(0); title="分享到 Facebook" data-sharer=facebook data-url=https://luckyouo.github.io/posts/archlinux%E5%AE%89%E8%A3%85.html/ data-hashtag=Clash><i class="fab fa-facebook-square fa-fw"></i></a><a href=javascript:void(0); title="分享到 微博" data-sharer=weibo data-url=https://luckyouo.github.io/posts/archlinux%E5%AE%89%E8%A3%85.html/ data-title=Clash安装与使用><i class="fab fa-weibo fa-fw"></i></a></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/clash/>Clash</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>返回</a></span>&nbsp;|&nbsp;<span><a href=/>主页</a></span></section></div><div class=post-nav><a href=/posts/archlinux%E5%AE%89%E8%A3%85.html/ class=prev rel=prev title=Archlinux桌面系统安装><i class="fas fa-angle-left fa-fw"></i>Archlinux桌面系统安装</a>
+<a href=/posts/yadm%E4%BD%BF%E7%94%A8.html/ class=next rel=next title=Yadm的基本使用>Yadm的基本使用<i class="fas fa-angle-right fa-fw"></i></a></div></div><div id=comments></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line><span id=run-time></span></div><div class=footer-line>由 <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.94.2">Hugo</a> 强力驱动 | 主题 - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2022</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank>luckyouo</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title=回到顶部><i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title=查看评论><i class="fas fa-comment fa-fw"></i></a></div><div class=sidebar_wo><div id=leimu><img src=https://cdn.jsdelivr.net/gh/lewky/lewky.github.io@master/images/b2t/leimuA.png alt=雷姆 onmouseover='this.src="https://cdn.jsdelivr.net/gh/lewky/lewky.github.io@master/images/b2t/leimuB.png"' onmouseout='this.src="https://cdn.jsdelivr.net/gh/lewky/lewky.github.io@master/images/b2t/leimuA.png"' title=回到顶部></div><div class=sidebar_wo id=lamu><img src=https://cdn.jsdelivr.net/gh/lewky/lewky.github.io@master/images/b2t/lamuA.png alt=雷姆 onmouseover='this.src="https://cdn.jsdelivr.net/gh/lewky/lewky.github.io@master/images/b2t/lamuB.png"' onmouseout='this.src="https://cdn.jsdelivr.net/gh/lewky/lewky.github.io@master/images/b2t/lamuA.png"' title=回到底部></div></div><link rel=stylesheet href=/lib/katex/katex.min.css><link rel=stylesheet href=/lib/katex/copy-tex.min.css><link rel=stylesheet href=/lib/cookieconsent/cookieconsent.min.css><script type=text/javascript src=/lib/smooth-scroll/smooth-scroll.min.js></script><script type=text/javascript src=/lib/autocomplete/autocomplete.min.js></script><script type=text/javascript src=/lib/lunr/lunr.min.js></script><script type=text/javascript src=/lib/lunr/lunr.stemmer.support.min.js></script><script type=text/javascript src=/lib/lunr/lunr.zh.min.js></script><script type=text/javascript src=/lib/lazysizes/lazysizes.min.js></script><script type=text/javascript src=/lib/clipboard/clipboard.min.js></script><script type=text/javascript src=/lib/sharer/sharer.min.js></script><script type=text/javascript src=/lib/katex/katex.min.js></script><script type=text/javascript src=/lib/katex/auto-render.min.js></script><script type=text/javascript src=/lib/katex/copy-tex.min.js></script><script type=text/javascript src=/lib/katex/mhchem.min.js></script><script type=text/javascript src=/lib/cookieconsent/cookieconsent.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"复制到剪贴板",maxShownLines:10},comment:{},cookieconsent:{content:{dismiss:"同意",link:"了解更多",message:"本网站使用 Cookies 来改善您的浏览体验."},enable:!0,palette:{button:{background:"#f0f0f0"},popup:{background:"#1aa3ff"}},theme:"edgeless"},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},search:{highlightTag:"em",lunrIndexURL:"/index.json",lunrLanguageCode:"zh",lunrSegmentitURL:"/lib/lunr/lunr.segmentit.js",maxResultLength:10,noResultsFound:"没有找到结果",snippetLength:50,type:"lunr"}}</script><script type=text/javascript src=/js/theme.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/jquery@2.1.3/dist/jquery.min.js></script><script type=text/javascript src=/js/custom.js></script></body></html>
