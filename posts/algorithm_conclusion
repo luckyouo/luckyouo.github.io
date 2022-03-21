@@ -1,5 +1,11 @@
-# 算法个人总结
-
+---
+title: "算法个人总结"
+date: 2022-03-19T17:16:43+08:00
+description: "算法适用范围个人总结"
+tags: ["算法"]
+categories: ["leetcode"]
+draft: false
+---
 
 ## 前言
 
@@ -20,4 +26,3 @@
 算法思想总结如下
 
 - [算法-前缀和](https://luckyouo.github.io/posts/%E7%AE%97%E6%B3%95-%E5%89%8D%E7%BC%80%E5%92%8C.html/)
-
