@@ -1,0 +1,371 @@
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=x-ua-compatible content="IE=edge, chrome=1"><title>Transformer 代码解析 - Luckyouo Blog</title><meta name=Description content="Transformer 代码分析"><meta property="og:title" content="Transformer 代码解析"><meta property="og:description" content="Transformer 代码分析"><meta property="og:type" content="article"><meta property="og:url" content="https://luckyouo.github.io/posts/transformer-%E4%BB%A3%E7%A0%81%E8%A7%A3%E6%9E%90.html/"><meta property="og:image" content="https://luckyouo.github.io/logo.png"><meta property="article:section" content="posts"><meta property="article:published_time" content="2022-03-26T14:00:37+08:00"><meta property="article:modified_time" content="2022-03-26T14:00:37+08:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://luckyouo.github.io/logo.png"><meta name=twitter:title content="Transformer 代码解析"><meta name=twitter:description content="Transformer 代码分析"><meta name=application-name content="LoveIt"><meta name=apple-mobile-web-app-title content="LoveIt"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://luckyouo.github.io/posts/transformer-%E4%BB%A3%E7%A0%81%E8%A7%A3%E6%9E%90.html/><link rel=prev href=https://luckyouo.github.io/posts/%E8%B4%A8%E5%9B%A0%E5%AD%90%E4%B8%AA%E6%95%B0%E8%AE%A1%E7%AE%97.html/><link rel=stylesheet href=/lib/normalize/normalize.min.css><link rel=stylesheet href=/css/style.min.css><link rel=stylesheet href=/lib/fontawesome-free/all.min.css><link rel=stylesheet href=/lib/animate/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Transformer 代码解析","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/luckyouo.github.io\/posts\/transformer-%E4%BB%A3%E7%A0%81%E8%A7%A3%E6%9E%90.html\/"},"genre":"posts","keywords":"深度学习, Transformer","wordcount":1694,"url":"https:\/\/luckyouo.github.io\/posts\/transformer-%E4%BB%A3%E7%A0%81%E8%A7%A3%E6%9E%90.html\/","datePublished":"2022-03-26T14:00:37+08:00","dateModified":"2022-03-26T14:00:37+08:00","publisher":{"@type":"Organization","name":""},"author":{"@type":"Person","name":"luckyouo"},"description":"Transformer 代码分析"}</script></head><body header-desktop=fixed header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"auto"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"auto"==="dark")&&document.body.setAttribute("theme","dark")</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><a href=https://github.com/luckyouo class=github-corner target=_blank title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="3.5rem" height="3.5rem" viewBox="0 0 250 250" style="fill:#70b7fd;color:#fff;position:absolute;top:0;border:0;left:0;transform:scale(-1,1)" aria-hidden="true"><path d="M0 0 115 115h15l12 27L250 250V0z"/><path d="M128.3 109C113.8 99.7 119 89.6 119 89.6 122 82.7 120.5 78.6 120.5 78.6 119.2 72 123.4 76.3 123.4 76.3 127.3 80.9 125.5 87.3 125.5 87.3 122.9 97.6 130.6 101.9 134.4 103.2" fill="currentcolor" style="transform-origin:130px 106px" class="octo-arm"/><path d="M115 115C114.9 115.1 118.7 116.5 119.8 115.4l13.9-13.8C136.9 99.2 139.9 98.4 142.2 98.6 133.8 88 127.5 74.4 143.8 58 148.5 53.4 154 51.2 159.7 51 160.3 49.4 163.2 43.6 171.4 40.1 171.4 40.1 176.1 42.5 178.8 56.2 183.1 58.6 187.2 61.8 190.9 65.4 194.5 69 197.7 73.2 200.1 77.6 213.8 80.2 216.3 84.9 216.3 84.9 212.7 93.1 206.9 96 205.4 96.6 205.1 102.4 203 107.8 198.3 112.5 181.9 128.9 168.3 122.5 157.7 114.1 157.9 116.9 156.7 120.9 152.7 124.9L141 136.5C139.8 137.7 141.6 141.9 141.8 141.8z" fill="currentcolor" class="octo-body"/></svg></a><div class=header-title><a href=/ title="Luckyouo Blog">Luckyouo Blogs</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/>归档 </a><a class=menu-item href=/tags/>标签 </a><a class=menu-item href=/categories/>分类 </a><a class=menu-item href=/friends/><i class="fas fa-fw fa-fan fa-spin"></i> 友链 </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<input type=text placeholder=搜索文章标题或内容... id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=搜索><i class="fas fa-search fa-fw"></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=清空><i class="fas fa-times-circle fa-fw"></i></a>
+<span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin"></i></span>
+</span><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题><i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title="Luckyouo Blog">Luckyouo Blogs</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder=搜索文章标题或内容... id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=搜索><i class="fas fa-search fa-fw"></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=清空><i class="fas fa-times-circle fa-fw"></i></a>
+<span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin"></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>取消</a></div><a class=menu-item href=/posts/ title>归档</a><a class=menu-item href=/tags/ title>标签</a><a class=menu-item href=/categories/ title>分类</a><a class=menu-item href=/friends/ title><i class="fas fa-fw fa-fan fa-spin"></i>友链</a><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题>
+<i class="fas fa-adjust fa-fw"></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>目录</h2><div class="toc-content always-active" id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">Transformer 代码解析</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>luckyouo</a></span>&nbsp;<span class=post-category>收录于 <a href=/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/><i class="far fa-folder fa-fw"></i>深度学习</a></span></div><div class=post-meta-line><i class="far fa-calendar fa-fw"></i>&nbsp;<time datetime=2022-03-26>2022-03-26</time>&nbsp;<i class="far fa-calendar-plus fa-fw"></i>&nbsp;<time datetime=2022-03-26>2022-03-26</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1694 字&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 4 分钟&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>目录</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ol><li><a href=#前言>前言</a></li><li><a href=#代码>代码</a><ol><li><a href=#导包>导包</a></li><li><a href=#逐位前馈网络>逐位前馈网络</a></li><li><a href=#残差和层规范化>残差和层规范化</a></li><li><a href=#编码块>编码块</a></li><li><a href=#解码块>解码块</a></li><li><a href=#编码器>编码器</a></li><li><a href=#解码器>解码器</a></li><li><a href=#训练与预测>训练与预测</a></li></ol></li></ol></nav></div></div><div class=content id=content><h2 id=前言>前言</h2><p><code>Transformer</code> 是 2017 年 Google 团队提出的新的一种 <code>NLP</code> 模型，采用 <code>Encoder-Decoder</code> （编码器-解码器）架构，使用 <code>self-attention</code> 机制。 其在 <code>seq2seq</code> 上表现出非常鲁棒的性能，并且在 <code>Transformer</code> 基础上，提出了众多变种类型，比较知名的有 <code>Bert</code> 和 <code>GPT</code> 。以上模型，在 github 中都有实现 <a href=https://github.com/huggingface/transformers target=_blank rel="noopener noreffer">State-of-the-art Machine Learning for JAX, PyTorch and TensorFlow</a></p><figure><a class=lightgallery href=/images/transformer.svg title=conter data-thumbnail=/images/transformer.svg data-sub-html="<h2>Transformer 模型框架)</h2>"><img class=lazyload src=/svg/loading.min.svg data-src=/images/transformer.svg data-srcset="/images/transformer.svg, /images/transformer.svg 1.5x, /images/transformer.svg 2x" data-sizes=auto alt=conter height=100 width=400></a><figcaption class=image-caption><code>Transformer 模型框架</code>)</figcaption></figure><h2 id=代码>代码</h2><p>为了更好的理解和运用 <code>Transformer</code> ，应理解 <code>Transformer</code> 代码实现过程</p><p>以下代码来自 <a href=https://zh-v2.d2l.ai/ target=_blank rel="noopener noreffer"><strong>动手学深度学习 PyTorch版</strong></a></p><h3 id=导包>导包</h3><p>因为在如下部分代码中使用了<a href=https://zh-v2.d2l.ai/ target=_blank rel="noopener noreffer"><strong>动手学深度学习 PyTorch版</strong></a> 使用了自身提供的库，需要将他们的库导入</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>import</span> <span class=nn>math</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>pandas</span> <span class=k>as</span> <span class=nn>pd</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>torch</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>torch</span> <span class=kn>import</span> <span class=n>nn</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>d2l</span> <span class=kn>import</span> <span class=n>torch</span> <span class=k>as</span> <span class=n>d2l</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=逐位前馈网络>逐位前馈网络</h3><p><code>逐位前馈网络</code> 实质就是一个 <code>MLP</code> 网络，含有两个 <code>全连接层</code> ，和一个 <code>ReLU</code> 层。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=k>class</span> <span class=nc>PositionWiseFFN</span><span class=p>(</span><span class=n>nn</span><span class=o>.</span><span class=n>Module</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;&#34;&#34;基于位置的前馈网络&#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>ffn_num_input</span><span class=p>,</span> <span class=n>ffn_num_hiddens</span><span class=p>,</span> <span class=n>ffn_num_outputs</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                 <span class=o>**</span><span class=n>kwargs</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=nb>super</span><span class=p>(</span><span class=n>PositionWiseFFN</span><span class=p>,</span> <span class=bp>self</span><span class=p>)</span><span class=o>.</span><span class=fm>__init__</span><span class=p>(</span><span class=o>**</span><span class=n>kwargs</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>dense1</span> <span class=o>=</span> <span class=n>nn</span><span class=o>.</span><span class=n>Linear</span><span class=p>(</span><span class=n>ffn_num_input</span><span class=p>,</span> <span class=n>ffn_num_hiddens</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>relu</span> <span class=o>=</span> <span class=n>nn</span><span class=o>.</span><span class=n>ReLU</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>dense2</span> <span class=o>=</span> <span class=n>nn</span><span class=o>.</span><span class=n>Linear</span><span class=p>(</span><span class=n>ffn_num_hiddens</span><span class=p>,</span> <span class=n>ffn_num_outputs</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=nf>forward</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>X</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=bp>self</span><span class=o>.</span><span class=n>dense2</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>relu</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>dense1</span><span class=p>(</span><span class=n>X</span><span class=p>)))</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=残差和层规范化>残差和层规范化</h3><p>和 <code>RNN</code> 类似，残差在 <code>Transformer</code> 中，使用的是 <code>batch normlization</code> ，而不是常用的 <code>layer normlization</code></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=c1>#@save</span>
+</span></span><span class=line><span class=cl><span class=k>class</span> <span class=nc>AddNorm</span><span class=p>(</span><span class=n>nn</span><span class=o>.</span><span class=n>Module</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;&#34;&#34;残差连接后进行层规范化&#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>normalized_shape</span><span class=p>,</span> <span class=n>dropout</span><span class=p>,</span> <span class=o>**</span><span class=n>kwargs</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=nb>super</span><span class=p>(</span><span class=n>AddNorm</span><span class=p>,</span> <span class=bp>self</span><span class=p>)</span><span class=o>.</span><span class=fm>__init__</span><span class=p>(</span><span class=o>**</span><span class=n>kwargs</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>dropout</span> <span class=o>=</span> <span class=n>nn</span><span class=o>.</span><span class=n>Dropout</span><span class=p>(</span><span class=n>dropout</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>ln</span> <span class=o>=</span> <span class=n>nn</span><span class=o>.</span><span class=n>LayerNorm</span><span class=p>(</span><span class=n>normalized_shape</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=nf>forward</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>X</span><span class=p>,</span> <span class=n>Y</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=bp>self</span><span class=o>.</span><span class=n>ln</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>dropout</span><span class=p>(</span><span class=n>Y</span><span class=p>)</span> <span class=o>+</span> <span class=n>X</span><span class=p>)</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=编码块>编码块</h3><p><code>Transformer</code> 中含有 6 层 编码块和 6 层 解码 块。在每个编码块中包含有一个注意力层、两个批量规范层和一个逐位前馈网络层，在每个批量规范层中都使用了残差连接</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=k>class</span> <span class=nc>EncoderBlock</span><span class=p>(</span><span class=n>nn</span><span class=o>.</span><span class=n>Module</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;&#34;&#34;transformer编码器块&#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>key_size</span><span class=p>,</span> <span class=n>query_size</span><span class=p>,</span> <span class=n>value_size</span><span class=p>,</span> <span class=n>num_hiddens</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                 <span class=n>norm_shape</span><span class=p>,</span> <span class=n>ffn_num_input</span><span class=p>,</span> <span class=n>ffn_num_hiddens</span><span class=p>,</span> <span class=n>num_heads</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                 <span class=n>dropout</span><span class=p>,</span> <span class=n>use_bias</span><span class=o>=</span><span class=kc>False</span><span class=p>,</span> <span class=o>**</span><span class=n>kwargs</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=nb>super</span><span class=p>(</span><span class=n>EncoderBlock</span><span class=p>,</span> <span class=bp>self</span><span class=p>)</span><span class=o>.</span><span class=fm>__init__</span><span class=p>(</span><span class=o>**</span><span class=n>kwargs</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>attention</span> <span class=o>=</span> <span class=n>d2l</span><span class=o>.</span><span class=n>MultiHeadAttention</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>            <span class=n>key_size</span><span class=p>,</span> <span class=n>query_size</span><span class=p>,</span> <span class=n>value_size</span><span class=p>,</span> <span class=n>num_hiddens</span><span class=p>,</span> <span class=n>num_heads</span><span class=p>,</span> <span class=n>dropout</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=n>use_bias</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>addnorm1</span> <span class=o>=</span> <span class=n>AddNorm</span><span class=p>(</span><span class=n>norm_shape</span><span class=p>,</span> <span class=n>dropout</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>ffn</span> <span class=o>=</span> <span class=n>PositionWiseFFN</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>            <span class=n>ffn_num_input</span><span class=p>,</span> <span class=n>ffn_num_hiddens</span><span class=p>,</span> <span class=n>num_hiddens</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>addnorm2</span> <span class=o>=</span> <span class=n>AddNorm</span><span class=p>(</span><span class=n>norm_shape</span><span class=p>,</span> <span class=n>dropout</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=nf>forward</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>X</span><span class=p>,</span> <span class=n>valid_lens</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=n>Y</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>addnorm1</span><span class=p>(</span><span class=n>X</span><span class=p>,</span> <span class=bp>self</span><span class=o>.</span><span class=n>attention</span><span class=p>(</span><span class=n>X</span><span class=p>,</span> <span class=n>X</span><span class=p>,</span> <span class=n>X</span><span class=p>,</span> <span class=n>valid_lens</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=bp>self</span><span class=o>.</span><span class=n>addnorm2</span><span class=p>(</span><span class=n>Y</span><span class=p>,</span> <span class=bp>self</span><span class=o>.</span><span class=n>ffn</span><span class=p>(</span><span class=n>Y</span><span class=p>))</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=解码块>解码块</h3><p>与编码块不同的是，在解码块中使用了<strong>两个注意力层</strong>，第一个注意层用来生成 <code>Query</code>，并将编码器的结果作为 <code>Key</code> 和 <code>Value</code> ，送入第二个注意层学习。在使用多头注意力机制时，将每个头的结果矩阵拼接起来，最后在传入全连接层计算。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=k>class</span> <span class=nc>DecoderBlock</span><span class=p>(</span><span class=n>nn</span><span class=o>.</span><span class=n>Module</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;&#34;&#34;解码器中第 i 个块&#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>key_size</span><span class=p>,</span> <span class=n>query_size</span><span class=p>,</span> <span class=n>value_size</span><span class=p>,</span> <span class=n>num_hiddens</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                 <span class=n>norm_shape</span><span class=p>,</span> <span class=n>ffn_num_input</span><span class=p>,</span> <span class=n>ffn_num_hiddens</span><span class=p>,</span> <span class=n>num_heads</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                 <span class=n>dropout</span><span class=p>,</span> <span class=n>i</span><span class=p>,</span> <span class=o>**</span><span class=n>kwargs</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=nb>super</span><span class=p>(</span><span class=n>DecoderBlock</span><span class=p>,</span> <span class=bp>self</span><span class=p>)</span><span class=o>.</span><span class=fm>__init__</span><span class=p>(</span><span class=o>**</span><span class=n>kwargs</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>i</span> <span class=o>=</span> <span class=n>i</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>attention1</span> <span class=o>=</span> <span class=n>d2l</span><span class=o>.</span><span class=n>MultiHeadAttention</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>            <span class=n>key_size</span><span class=p>,</span> <span class=n>query_size</span><span class=p>,</span> <span class=n>value_size</span><span class=p>,</span> <span class=n>num_hiddens</span><span class=p>,</span> <span class=n>num_heads</span><span class=p>,</span> <span class=n>dropout</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>addnorm1</span> <span class=o>=</span> <span class=n>AddNorm</span><span class=p>(</span><span class=n>norm_shape</span><span class=p>,</span> <span class=n>dropout</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>attention2</span> <span class=o>=</span> <span class=n>d2l</span><span class=o>.</span><span class=n>MultiHeadAttention</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>            <span class=n>key_size</span><span class=p>,</span> <span class=n>query_size</span><span class=p>,</span> <span class=n>value_size</span><span class=p>,</span> <span class=n>num_hiddens</span><span class=p>,</span> <span class=n>num_heads</span><span class=p>,</span> <span class=n>dropout</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>addnorm2</span> <span class=o>=</span> <span class=n>AddNorm</span><span class=p>(</span><span class=n>norm_shape</span><span class=p>,</span> <span class=n>dropout</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>ffn</span> <span class=o>=</span> <span class=n>PositionWiseFFN</span><span class=p>(</span><span class=n>ffn_num_input</span><span class=p>,</span> <span class=n>ffn_num_hiddens</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                                   <span class=n>num_hiddens</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>addnorm3</span> <span class=o>=</span> <span class=n>AddNorm</span><span class=p>(</span><span class=n>norm_shape</span><span class=p>,</span> <span class=n>dropout</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=nf>forward</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>X</span><span class=p>,</span> <span class=n>state</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=n>enc_outputs</span><span class=p>,</span> <span class=n>enc_valid_lens</span> <span class=o>=</span> <span class=n>state</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>state</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>        <span class=c1># 训练阶段，输出序列的所有词元都在同一时间处理，</span>
+</span></span><span class=line><span class=cl>        <span class=c1># 因此 `state[2][self.i]` 初始化为 `None`。</span>
+</span></span><span class=line><span class=cl>        <span class=c1># 预测阶段，输出序列是通过词元一个接着一个解码的，</span>
+</span></span><span class=line><span class=cl>        <span class=c1># 因此 `state[2][self.i]` 包含着直到当前时间步第 `i` 个块解码的输出表示</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>state</span><span class=p>[</span><span class=mi>2</span><span class=p>][</span><span class=bp>self</span><span class=o>.</span><span class=n>i</span><span class=p>]</span> <span class=ow>is</span> <span class=kc>None</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=n>key_values</span> <span class=o>=</span> <span class=n>X</span>
+</span></span><span class=line><span class=cl>        <span class=k>else</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=n>key_values</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>cat</span><span class=p>((</span><span class=n>state</span><span class=p>[</span><span class=mi>2</span><span class=p>][</span><span class=bp>self</span><span class=o>.</span><span class=n>i</span><span class=p>],</span> <span class=n>X</span><span class=p>),</span> <span class=n>axis</span><span class=o>=</span><span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>state</span><span class=p>[</span><span class=mi>2</span><span class=p>][</span><span class=bp>self</span><span class=o>.</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=n>key_values</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=bp>self</span><span class=o>.</span><span class=n>training</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=n>batch_size</span><span class=p>,</span> <span class=n>num_steps</span><span class=p>,</span> <span class=n>_</span> <span class=o>=</span> <span class=n>X</span><span class=o>.</span><span class=n>shape</span>
+</span></span><span class=line><span class=cl>            <span class=c1># `dec_valid_lens` 的开头: (`batch_size`, `num_steps`),</span>
+</span></span><span class=line><span class=cl>            <span class=c1># 其中每一行是 [1, 2, ..., `num_steps`]</span>
+</span></span><span class=line><span class=cl>            <span class=n>dec_valid_lens</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>arange</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>                <span class=mi>1</span><span class=p>,</span> <span class=n>num_steps</span> <span class=o>+</span> <span class=mi>1</span><span class=p>,</span> <span class=n>device</span><span class=o>=</span><span class=n>X</span><span class=o>.</span><span class=n>device</span><span class=p>)</span><span class=o>.</span><span class=n>repeat</span><span class=p>(</span><span class=n>batch_size</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>else</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=n>dec_valid_lens</span> <span class=o>=</span> <span class=kc>None</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=c1># 自注意力</span>
+</span></span><span class=line><span class=cl>        <span class=n>X2</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>attention1</span><span class=p>(</span><span class=n>X</span><span class=p>,</span> <span class=n>key_values</span><span class=p>,</span> <span class=n>key_values</span><span class=p>,</span> <span class=n>dec_valid_lens</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>Y</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>addnorm1</span><span class=p>(</span><span class=n>X</span><span class=p>,</span> <span class=n>X2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=c1># 编码器－解码器注意力。</span>
+</span></span><span class=line><span class=cl>        <span class=c1># `enc_outputs` 的开头: (`batch_size`, `num_steps`, `num_hiddens`)</span>
+</span></span><span class=line><span class=cl>        <span class=n>Y2</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>attention2</span><span class=p>(</span><span class=n>Y</span><span class=p>,</span> <span class=n>enc_outputs</span><span class=p>,</span> <span class=n>enc_outputs</span><span class=p>,</span> <span class=n>enc_valid_lens</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>Z</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>addnorm2</span><span class=p>(</span><span class=n>Y</span><span class=p>,</span> <span class=n>Y2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=bp>self</span><span class=o>.</span><span class=n>addnorm3</span><span class=p>(</span><span class=n>Z</span><span class=p>,</span> <span class=bp>self</span><span class=o>.</span><span class=n>ffn</span><span class=p>(</span><span class=n>Z</span><span class=p>)),</span> <span class=n>state</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=编码器>编码器</h3><p>在 <code>Transformer</code> 的编码器包含了多个编码块。可以使用 <code>nn.Sequential()</code> 生成多个编码块，构成编码器</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=k>class</span> <span class=nc>TransformerEncoder</span><span class=p>(</span><span class=n>d2l</span><span class=o>.</span><span class=n>Encoder</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;&#34;&#34;transformer编码器&#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>vocab_size</span><span class=p>,</span> <span class=n>key_size</span><span class=p>,</span> <span class=n>query_size</span><span class=p>,</span> <span class=n>value_size</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                 <span class=n>num_hiddens</span><span class=p>,</span> <span class=n>norm_shape</span><span class=p>,</span> <span class=n>ffn_num_input</span><span class=p>,</span> <span class=n>ffn_num_hiddens</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                 <span class=n>num_heads</span><span class=p>,</span> <span class=n>num_layers</span><span class=p>,</span> <span class=n>dropout</span><span class=p>,</span> <span class=n>use_bias</span><span class=o>=</span><span class=kc>False</span><span class=p>,</span> <span class=o>**</span><span class=n>kwargs</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=nb>super</span><span class=p>(</span><span class=n>TransformerEncoder</span><span class=p>,</span> <span class=bp>self</span><span class=p>)</span><span class=o>.</span><span class=fm>__init__</span><span class=p>(</span><span class=o>**</span><span class=n>kwargs</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>num_hiddens</span> <span class=o>=</span> <span class=n>num_hiddens</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>embedding</span> <span class=o>=</span> <span class=n>nn</span><span class=o>.</span><span class=n>Embedding</span><span class=p>(</span><span class=n>vocab_size</span><span class=p>,</span> <span class=n>num_hiddens</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>pos_encoding</span> <span class=o>=</span> <span class=n>d2l</span><span class=o>.</span><span class=n>PositionalEncoding</span><span class=p>(</span><span class=n>num_hiddens</span><span class=p>,</span> <span class=n>dropout</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>blks</span> <span class=o>=</span> <span class=n>nn</span><span class=o>.</span><span class=n>Sequential</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=n>num_layers</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>            <span class=bp>self</span><span class=o>.</span><span class=n>blks</span><span class=o>.</span><span class=n>add_module</span><span class=p>(</span><span class=s2>&#34;block&#34;</span><span class=o>+</span><span class=nb>str</span><span class=p>(</span><span class=n>i</span><span class=p>),</span>
+</span></span><span class=line><span class=cl>                <span class=n>EncoderBlock</span><span class=p>(</span><span class=n>key_size</span><span class=p>,</span> <span class=n>query_size</span><span class=p>,</span> <span class=n>value_size</span><span class=p>,</span> <span class=n>num_hiddens</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                             <span class=n>norm_shape</span><span class=p>,</span> <span class=n>ffn_num_input</span><span class=p>,</span> <span class=n>ffn_num_hiddens</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                             <span class=n>num_heads</span><span class=p>,</span> <span class=n>dropout</span><span class=p>,</span> <span class=n>use_bias</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=nf>forward</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>X</span><span class=p>,</span> <span class=n>valid_lens</span><span class=p>,</span> <span class=o>*</span><span class=n>args</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=c1># 因为位置编码值在 -1 和 1 之间，</span>
+</span></span><span class=line><span class=cl>        <span class=c1># 因此嵌入值乘以嵌入维度的平方根进行缩放，</span>
+</span></span><span class=line><span class=cl>        <span class=c1># 然后再与位置编码相加。</span>
+</span></span><span class=line><span class=cl>        <span class=n>X</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>pos_encoding</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>embedding</span><span class=p>(</span><span class=n>X</span><span class=p>)</span> <span class=o>*</span> <span class=n>math</span><span class=o>.</span><span class=n>sqrt</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>num_hiddens</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>attention_weights</span> <span class=o>=</span> <span class=p>[</span><span class=kc>None</span><span class=p>]</span> <span class=o>*</span> <span class=nb>len</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>blks</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=n>i</span><span class=p>,</span> <span class=n>blk</span> <span class=ow>in</span> <span class=nb>enumerate</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>blks</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>            <span class=n>X</span> <span class=o>=</span> <span class=n>blk</span><span class=p>(</span><span class=n>X</span><span class=p>,</span> <span class=n>valid_lens</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=bp>self</span><span class=o>.</span><span class=n>attention_weights</span><span class=p>[</span>
+</span></span><span class=line><span class=cl>                <span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=n>blk</span><span class=o>.</span><span class=n>attention</span><span class=o>.</span><span class=n>attention</span><span class=o>.</span><span class=n>attention_weights</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>X</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=解码器>解码器</h3><p>同编码器一样，使用使用 <code>nn.Sequential()</code> 生成多个解码块，构成解码器</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=k>class</span> <span class=nc>TransformerDecoder</span><span class=p>(</span><span class=n>d2l</span><span class=o>.</span><span class=n>AttentionDecoder</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>vocab_size</span><span class=p>,</span> <span class=n>key_size</span><span class=p>,</span> <span class=n>query_size</span><span class=p>,</span> <span class=n>value_size</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                 <span class=n>num_hiddens</span><span class=p>,</span> <span class=n>norm_shape</span><span class=p>,</span> <span class=n>ffn_num_input</span><span class=p>,</span> <span class=n>ffn_num_hiddens</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                 <span class=n>num_heads</span><span class=p>,</span> <span class=n>num_layers</span><span class=p>,</span> <span class=n>dropout</span><span class=p>,</span> <span class=o>**</span><span class=n>kwargs</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=nb>super</span><span class=p>(</span><span class=n>TransformerDecoder</span><span class=p>,</span> <span class=bp>self</span><span class=p>)</span><span class=o>.</span><span class=fm>__init__</span><span class=p>(</span><span class=o>**</span><span class=n>kwargs</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>num_hiddens</span> <span class=o>=</span> <span class=n>num_hiddens</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>num_layers</span> <span class=o>=</span> <span class=n>num_layers</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>embedding</span> <span class=o>=</span> <span class=n>nn</span><span class=o>.</span><span class=n>Embedding</span><span class=p>(</span><span class=n>vocab_size</span><span class=p>,</span> <span class=n>num_hiddens</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>pos_encoding</span> <span class=o>=</span> <span class=n>d2l</span><span class=o>.</span><span class=n>PositionalEncoding</span><span class=p>(</span><span class=n>num_hiddens</span><span class=p>,</span> <span class=n>dropout</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>blks</span> <span class=o>=</span> <span class=n>nn</span><span class=o>.</span><span class=n>Sequential</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=n>num_layers</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>            <span class=bp>self</span><span class=o>.</span><span class=n>blks</span><span class=o>.</span><span class=n>add_module</span><span class=p>(</span><span class=s2>&#34;block&#34;</span><span class=o>+</span><span class=nb>str</span><span class=p>(</span><span class=n>i</span><span class=p>),</span>
+</span></span><span class=line><span class=cl>                <span class=n>DecoderBlock</span><span class=p>(</span><span class=n>key_size</span><span class=p>,</span> <span class=n>query_size</span><span class=p>,</span> <span class=n>value_size</span><span class=p>,</span> <span class=n>num_hiddens</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                             <span class=n>norm_shape</span><span class=p>,</span> <span class=n>ffn_num_input</span><span class=p>,</span> <span class=n>ffn_num_hiddens</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                             <span class=n>num_heads</span><span class=p>,</span> <span class=n>dropout</span><span class=p>,</span> <span class=n>i</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>dense</span> <span class=o>=</span> <span class=n>nn</span><span class=o>.</span><span class=n>Linear</span><span class=p>(</span><span class=n>num_hiddens</span><span class=p>,</span> <span class=n>vocab_size</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=nf>init_state</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>enc_outputs</span><span class=p>,</span> <span class=n>enc_valid_lens</span><span class=p>,</span> <span class=o>*</span><span class=n>args</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=p>[</span><span class=n>enc_outputs</span><span class=p>,</span> <span class=n>enc_valid_lens</span><span class=p>,</span> <span class=p>[</span><span class=kc>None</span><span class=p>]</span> <span class=o>*</span> <span class=bp>self</span><span class=o>.</span><span class=n>num_layers</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=nf>forward</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>X</span><span class=p>,</span> <span class=n>state</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=n>X</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>pos_encoding</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>embedding</span><span class=p>(</span><span class=n>X</span><span class=p>)</span> <span class=o>*</span> <span class=n>math</span><span class=o>.</span><span class=n>sqrt</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>num_hiddens</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>_attention_weights</span> <span class=o>=</span> <span class=p>[[</span><span class=kc>None</span><span class=p>]</span> <span class=o>*</span> <span class=nb>len</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>blks</span><span class=p>)</span> <span class=k>for</span> <span class=n>_</span> <span class=ow>in</span> <span class=nb>range</span> <span class=p>(</span><span class=mi>2</span><span class=p>)]</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=n>i</span><span class=p>,</span> <span class=n>blk</span> <span class=ow>in</span> <span class=nb>enumerate</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>blks</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>            <span class=n>X</span><span class=p>,</span> <span class=n>state</span> <span class=o>=</span> <span class=n>blk</span><span class=p>(</span><span class=n>X</span><span class=p>,</span> <span class=n>state</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=c1># 解码器自注意力权重</span>
+</span></span><span class=line><span class=cl>            <span class=bp>self</span><span class=o>.</span><span class=n>_attention_weights</span><span class=p>[</span><span class=mi>0</span><span class=p>][</span>
+</span></span><span class=line><span class=cl>                <span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=n>blk</span><span class=o>.</span><span class=n>attention1</span><span class=o>.</span><span class=n>attention</span><span class=o>.</span><span class=n>attention_weights</span>
+</span></span><span class=line><span class=cl>            <span class=c1># “编码器－解码器”自注意力权重</span>
+</span></span><span class=line><span class=cl>            <span class=bp>self</span><span class=o>.</span><span class=n>_attention_weights</span><span class=p>[</span><span class=mi>1</span><span class=p>][</span>
+</span></span><span class=line><span class=cl>                <span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=n>blk</span><span class=o>.</span><span class=n>attention2</span><span class=o>.</span><span class=n>attention</span><span class=o>.</span><span class=n>attention_weights</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=bp>self</span><span class=o>.</span><span class=n>dense</span><span class=p>(</span><span class=n>X</span><span class=p>),</span> <span class=n>state</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nd>@property</span>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=nf>attention_weights</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=bp>self</span><span class=o>.</span><span class=n>_attention_weights</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=训练与预测>训练与预测</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=c1># 训练</span>
+</span></span><span class=line><span class=cl><span class=n>num_hiddens</span><span class=p>,</span> <span class=n>num_layers</span><span class=p>,</span> <span class=n>dropout</span><span class=p>,</span> <span class=n>batch_size</span><span class=p>,</span> <span class=n>num_steps</span> <span class=o>=</span> <span class=mi>32</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mf>0.1</span><span class=p>,</span> <span class=mi>64</span><span class=p>,</span> <span class=mi>10</span>
+</span></span><span class=line><span class=cl><span class=n>lr</span><span class=p>,</span> <span class=n>num_epochs</span><span class=p>,</span> <span class=n>device</span> <span class=o>=</span> <span class=mf>0.005</span><span class=p>,</span> <span class=mi>200</span><span class=p>,</span> <span class=n>d2l</span><span class=o>.</span><span class=n>try_gpu</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>ffn_num_input</span><span class=p>,</span> <span class=n>ffn_num_hiddens</span><span class=p>,</span> <span class=n>num_heads</span> <span class=o>=</span> <span class=mi>32</span><span class=p>,</span> <span class=mi>64</span><span class=p>,</span> <span class=mi>4</span>
+</span></span><span class=line><span class=cl><span class=n>key_size</span><span class=p>,</span> <span class=n>query_size</span><span class=p>,</span> <span class=n>value_size</span> <span class=o>=</span> <span class=mi>32</span><span class=p>,</span> <span class=mi>32</span><span class=p>,</span> <span class=mi>32</span>
+</span></span><span class=line><span class=cl><span class=n>norm_shape</span> <span class=o>=</span> <span class=p>[</span><span class=mi>32</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>train_iter</span><span class=p>,</span> <span class=n>src_vocab</span><span class=p>,</span> <span class=n>tgt_vocab</span> <span class=o>=</span> <span class=n>d2l</span><span class=o>.</span><span class=n>load_data_nmt</span><span class=p>(</span><span class=n>batch_size</span><span class=p>,</span> <span class=n>num_steps</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>encoder</span> <span class=o>=</span> <span class=n>TransformerEncoder</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>    <span class=nb>len</span><span class=p>(</span><span class=n>src_vocab</span><span class=p>),</span> <span class=n>key_size</span><span class=p>,</span> <span class=n>query_size</span><span class=p>,</span> <span class=n>value_size</span><span class=p>,</span> <span class=n>num_hiddens</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=n>norm_shape</span><span class=p>,</span> <span class=n>ffn_num_input</span><span class=p>,</span> <span class=n>ffn_num_hiddens</span><span class=p>,</span> <span class=n>num_heads</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=n>num_layers</span><span class=p>,</span> <span class=n>dropout</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>decoder</span> <span class=o>=</span> <span class=n>TransformerDecoder</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>    <span class=nb>len</span><span class=p>(</span><span class=n>tgt_vocab</span><span class=p>),</span> <span class=n>key_size</span><span class=p>,</span> <span class=n>query_size</span><span class=p>,</span> <span class=n>value_size</span><span class=p>,</span> <span class=n>num_hiddens</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=n>norm_shape</span><span class=p>,</span> <span class=n>ffn_num_input</span><span class=p>,</span> <span class=n>ffn_num_hiddens</span><span class=p>,</span> <span class=n>num_heads</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=n>num_layers</span><span class=p>,</span> <span class=n>dropout</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>net</span> <span class=o>=</span> <span class=n>d2l</span><span class=o>.</span><span class=n>EncoderDecoder</span><span class=p>(</span><span class=n>encoder</span><span class=p>,</span> <span class=n>decoder</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>d2l</span><span class=o>.</span><span class=n>train_seq2seq</span><span class=p>(</span><span class=n>net</span><span class=p>,</span> <span class=n>train_iter</span><span class=p>,</span> <span class=n>lr</span><span class=p>,</span> <span class=n>num_epochs</span><span class=p>,</span> <span class=n>tgt_vocab</span><span class=p>,</span> <span class=n>device</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 预测</span>
+</span></span><span class=line><span class=cl><span class=n>engs</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;go .&#39;</span><span class=p>,</span> <span class=s2>&#34;i lost .&#34;</span><span class=p>,</span> <span class=s1>&#39;he</span><span class=se>\&#39;</span><span class=s1>s calm .&#39;</span><span class=p>,</span> <span class=s1>&#39;i</span><span class=se>\&#39;</span><span class=s1>m home .&#39;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=n>fras</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;va !&#39;</span><span class=p>,</span> <span class=s1>&#39;j</span><span class=se>\&#39;</span><span class=s1>ai perdu .&#39;</span><span class=p>,</span> <span class=s1>&#39;il est calme .&#39;</span><span class=p>,</span> <span class=s1>&#39;je suis chez moi .&#39;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=n>eng</span><span class=p>,</span> <span class=n>fra</span> <span class=ow>in</span> <span class=nb>zip</span><span class=p>(</span><span class=n>engs</span><span class=p>,</span> <span class=n>fras</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>translation</span><span class=p>,</span> <span class=n>dec_attention_weight_seq</span> <span class=o>=</span> <span class=n>d2l</span><span class=o>.</span><span class=n>predict_seq2seq</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>        <span class=n>net</span><span class=p>,</span> <span class=n>eng</span><span class=p>,</span> <span class=n>src_vocab</span><span class=p>,</span> <span class=n>tgt_vocab</span><span class=p>,</span> <span class=n>num_steps</span><span class=p>,</span> <span class=n>device</span><span class=p>,</span> <span class=kc>True</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=n>eng</span><span class=si>}</span><span class=s1> =&gt; </span><span class=si>{</span><span class=n>translation</span><span class=si>}</span><span class=s1>, &#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>          <span class=sa>f</span><span class=s1>&#39;bleu </span><span class=si>{</span><span class=n>d2l</span><span class=o>.</span><span class=n>bleu</span><span class=p>(</span><span class=n>translation</span><span class=p>,</span> <span class=n>fra</span><span class=p>,</span> <span class=n>k</span><span class=o>=</span><span class=mi>2</span><span class=p>)</span><span class=si>:</span><span class=s1>.3f</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+</span></span></code></pre></td></tr></table></div></div></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>更新于 2022-03-26</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=/posts/transformer-%E4%BB%A3%E7%A0%81%E8%A7%A3%E6%9E%90.html/index.md target=_blank>阅读原始文档</a></span></div><div class=post-info-share><span><a href=javascript:void(0); title="分享到 Twitter" data-sharer=twitter data-url=https://luckyouo.github.io/posts/transformer-%E4%BB%A3%E7%A0%81%E8%A7%A3%E6%9E%90.html/ data-title="Transformer 代码解析" data-via=xxxx data-hashtags=深度学习,Transformer><i class="fab fa-twitter fa-fw"></i></a><a href=javascript:void(0); title="分享到 Facebook" data-sharer=facebook data-url=https://luckyouo.github.io/posts/transformer-%E4%BB%A3%E7%A0%81%E8%A7%A3%E6%9E%90.html/ data-hashtag=深度学习><i class="fab fa-facebook-square fa-fw"></i></a><a href=javascript:void(0); title="分享到 微博" data-sharer=weibo data-url=https://luckyouo.github.io/posts/transformer-%E4%BB%A3%E7%A0%81%E8%A7%A3%E6%9E%90.html/ data-title="Transformer 代码解析"><i class="fab fa-weibo fa-fw"></i></a></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/>深度学习</a>,&nbsp;<a href=/tags/transformer/>Transformer</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>返回</a></span>&nbsp;|&nbsp;<span><a href=/>主页</a></span></section></div><div class=post-nav><a href=/posts/%E8%B4%A8%E5%9B%A0%E5%AD%90%E4%B8%AA%E6%95%B0%E8%AE%A1%E7%AE%97.html/ class=prev rel=prev title=质因子个数计算><i class="fas fa-angle-left fa-fw"></i>质因子个数计算</a></div></div><div id=comments></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line><span id=run-time></span></div><div class=footer-line>由 <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.95.0">Hugo</a> 强力驱动 | 主题 - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2022</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank>luckyouo</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title=回到顶部><i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title=查看评论><i class="fas fa-comment fa-fw"></i></a></div><div class=sidebar_wo><div id=leimu><img src=https://cdn.jsdelivr.net/gh/lewky/lewky.github.io@master/images/b2t/leimuA.png alt=雷姆 onmouseover='this.src="https://cdn.jsdelivr.net/gh/lewky/lewky.github.io@master/images/b2t/leimuB.png"' onmouseout='this.src="https://cdn.jsdelivr.net/gh/lewky/lewky.github.io@master/images/b2t/leimuA.png"' title=回到顶部></div><div class=sidebar_wo id=lamu><img src=https://cdn.jsdelivr.net/gh/lewky/lewky.github.io@master/images/b2t/lamuA.png alt=雷姆 onmouseover='this.src="https://cdn.jsdelivr.net/gh/lewky/lewky.github.io@master/images/b2t/lamuB.png"' onmouseout='this.src="https://cdn.jsdelivr.net/gh/lewky/lewky.github.io@master/images/b2t/lamuA.png"' title=回到底部></div></div><link rel=stylesheet href=/lib/katex/katex.min.css><link rel=stylesheet href=/lib/katex/copy-tex.min.css><link rel=stylesheet href=/lib/cookieconsent/cookieconsent.min.css><script type=text/javascript src=/lib/smooth-scroll/smooth-scroll.min.js></script><script type=text/javascript src=/lib/autocomplete/autocomplete.min.js></script><script type=text/javascript src=/lib/lunr/lunr.min.js></script><script type=text/javascript src=/lib/lunr/lunr.stemmer.support.min.js></script><script type=text/javascript src=/lib/lunr/lunr.zh.min.js></script><script type=text/javascript src=/lib/lazysizes/lazysizes.min.js></script><script type=text/javascript src=/lib/clipboard/clipboard.min.js></script><script type=text/javascript src=/lib/sharer/sharer.min.js></script><script type=text/javascript src=/lib/katex/katex.min.js></script><script type=text/javascript src=/lib/katex/auto-render.min.js></script><script type=text/javascript src=/lib/katex/copy-tex.min.js></script><script type=text/javascript src=/lib/katex/mhchem.min.js></script><script type=text/javascript src=/lib/cookieconsent/cookieconsent.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"复制到剪贴板",maxShownLines:10},comment:{},cookieconsent:{content:{dismiss:"同意",link:"了解更多",message:"本网站使用 Cookies 来改善您的浏览体验."},enable:!0,palette:{button:{background:"#f0f0f0"},popup:{background:"#1aa3ff"}},theme:"edgeless"},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},search:{highlightTag:"em",lunrIndexURL:"/index.json",lunrLanguageCode:"zh",lunrSegmentitURL:"/lib/lunr/lunr.segmentit.js",maxResultLength:10,noResultsFound:"没有找到结果",snippetLength:50,type:"lunr"}}</script><script type=text/javascript src=/js/theme.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/jquery@2.1.3/dist/jquery.min.js></script><script type=text/javascript src=/js/custom.js></script></body></html>
