@@ -9,7 +9,7 @@
 
 
 
-## 代码
+## 基本结构
 
 为了更好的理解和运用 `Transformer` ，应理解 `Transformer` 代码实现过程
 
@@ -137,6 +137,10 @@ class DecoderBlock(nn.Module):
         Z = self.addnorm2(Y, Y2)
         return self.addnorm3(Z, self.ffn(Z)), state
 ```
+
+## 实现代码
+
+`Transformer` 模型分为两大部分，编码器和解码器，根据上述基本结构，就可以实现这两大部分
 
 ### 编码器
 
