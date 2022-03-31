@@ -80,6 +80,21 @@ class Main{
 
 该优先队列存储数据结构类型为 `int` 数组，且以下数组的索引 `1` 为对应数据降序排序
 
+### 二维数组
+
+有的时候需要对二维数组的某一维度进行排序，比如需要调用 `Arrays.sort()` 方法对二维数组排序，但原生排序只支持一维数组，故需要重写，例如对二维数组的第一维度进行升序排序
+
+```java
+Arrays.sort(intervals, new Comparator<int[]>() {
+    @Override
+    public int compare(int[] o1 , int[] o2){
+        return o1[0] - o2[0];
+    }
+});
+```
+
+
+
 ## 参考资料
 
 [Java PriorityQueue](https://www.cainiaojc.com/java/java-priorityqueue.html)
