@@ -25,3 +25,14 @@ for(int i = 0; i < n; i++){
 
 不要将 `i + "#"` 拼接好后在 `append` ，字符串拼接后会产生的新的字符串从而产生更多的开销
 
+### Comparator类的compare方法重写
+
+当需要在某数组某区间进行排序并且需要逆序是，则可以重写 `static <T> void sort(T[] a, int fromIndex, int toIndex, Comparator<? super T> c)` 方法，该方法返回类型为泛型，所以不能使用基本类型数组进行接受（数组泛型不会自动解包操作），需要使用包装类完成类型接受。
+
+```java
+public static void mySort(Integer[] nums, int idx) {
+	Arrays.sort(nums, 0, idx, (a, b) -> Integer.compare(b, a));
+}
+```
+
+
