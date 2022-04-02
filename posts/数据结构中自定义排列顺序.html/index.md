@@ -93,8 +93,6 @@ Arrays.sort(intervals, new Comparator<int[]>() {
 });
 ```
 
-
-
 ## 参考资料
 
 [Java PriorityQueue](https://www.cainiaojc.com/java/java-priorityqueue.html)
