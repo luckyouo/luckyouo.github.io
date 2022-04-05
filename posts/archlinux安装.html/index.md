@@ -1,227 +1,191 @@
-# Archlinux的基础系统安装流程
+# Clash安装与使用
 
 ## 前言
 
-第一次使用linux系统，查询linux各个版本的区别，最后看上了arch的aur，故选择arch作为主力linux系统(人的生命在于折腾，折腾就完事了)
+Clash 是一个跨平台、支持 SS/V2ray 等协议、基于规则的网络代理软件
 
-这篇主要记录了基本系统的安装，不包含桌面系统
+Clash 只是一个内核，为开源软件，而 Clash-premium 是闭源软件，后者多了scripts，rule-set和tun(windows只能使用该功能实现全局代理)
 
-## EFI模式验证
+从clash的内核衍生了众多版本，用的最多的有 Clash for windows (简称 cfw )，Open Clash，Clashx。其中cfw不仅支持windows，还支持macos和linux，open Clash只支持路由器的openwrt系统，Clashx只支持macos
 
-首先确认安装模式是否为EFI模式
+## 安装
 
-```code
-ls /sys/firmware/efi/efivars
-```
+在 arch 的官方仓库当中有根据 clash 内核打包好的组件，aur社区有打包好的 cfw 和 clash-user。其中cfw有ui界面，与 windows 上设置没有什么区别，而 clash-user 自带 clash 用户，可以根据用户的 uid 来设置防止流量回环
 
-## 系统时钟校正
+由于 linux 可以使用 tproxy 实现全局代理，可以直接使用官方仓库的 clash (或者 aur 的 clash-user ），来减少 clash 的资源占用( cfw 的 gui 需要占用资源)
 
 ```bash
-timedatectl set-ntp true
+sudo pacman -S clash
 ```
 
-## 进行网络连接
+使用`yacd`面板对Clash管理和流量监控
 
-arch系统网络连接方式主要有两种，有线连接和无线连接
-
-### 有线连接
-
-可以使用手机线与电脑进行连接，进行网络共享
-
-### 无线连接
-
-arch live系统默认为开启iwd,使用iwd进行无线网络连接
-
-```code
-iwctl
-device list
-station wlan0 get-networks
-station waln0 connect WIFI-NAME
+```bash
+yay -S yacd
 ```
 
-首先进入iwctl模式，查询当前设备无线网卡设备名,比如wlan0），再使用网卡查询当前wifi网络情况，最后对目标WIFI-NAME进行连接，提示输入密码进行确认
+## 文件配置
 
-## 数据分区及格式化
+clash 默认的配置文件位于用户目录下，而 clash-user 的配置位于`/etc/clash`目录下
 
-### 分区
+配置中主要参数解释：
 
-常见分区工具有cfdisk,gdisk等。为了方便，可以使用GUI的cfdisk进行分区
-
-1. 为了防止某些异常，优先对efi进行分区，大小500M～1G即可
-2. 剩下分区方式根据个人习惯进行。
-
-- 比以将home分区单独分区，缺点是home分区和其他分区大小需要控制好，防止某分区空间爆满而需要对文件系统挪动，
+- port: http(s)代理端口
   
-- 将剩余分区大小划分为一个分区，缺点是重装系统麻烦
+- socks-port: socks5代理端口
 
-为了节省存储空间，故采用第二种方式。分区完成后，对主分区进行加密(Optional)
+- redir-port: redir tcp代理端口
 
-### 加密(可选)
+- tproxy-port: tproxy udp(tcp)代理端口
 
-为了保证自己的数据安全，可以对主要分区内容进行加密，防止他人挂载直接进入系统读取文件。
+- mode: 代理方式，有全局代理(gloable)、规则代理(rule)和直连(direct)。其rle根据配置所提供的规则流量代理
 
-1. 使用LUKS对主分区进行加密，没有特殊要求采用默认参数即可
+- external-controller: clash提供的api控制地址
 
-- 默认使用手动输入密码对文件进行加密
+- external-ui: 外部控制ui地址
+
+- profile: clash部分存储设置模块
+
+  - store-selected: 策略组节点选择后，是否需要存储选择记录，默认不存储(false)
+
+  - store-fake-ip: 设置为 true 是，将 fake-ip 与真实 dns 的 ip 对应记录存储在本地，以达到持久存储 dns 记录，加快 dns 解析速度
   
-```code
-cryptsetup -y -v luksFormat /path/to/device
-```
+- dns: clash的dns模块
+  
+  - enable: 设置为 true 时开启 clash 内置的dns模块
 
-- 使用keyfile对文件进行加密
+  - listen: dns 的监听端口
 
-    首先生成所需要的keyfile文件，根据生成keyfile文件的类型不同，可以分为密码方式和随机字符或二进制。
+  - enhanced-mode: clash 提供两种 dns 查询模式，一种为正常 redir 转发模式，另一种为 fake-ip 模式，每次应用 dns 请求时，clash 将返回一个 fake 的 ip 地址，来达到加速建立 tcp 连接需求，但也会导致得到的 ip 不是真实的 ip，从而对某些网络调试带来麻烦
+  
+  - nameserver: dns 查询服务器，可以设置为 doh，tls 等dns查询方式。具体可以根根据个人习惯设置
 
-    为了简便，采用密码对文件进行加密，并将密码制作为keyfile,用作开机自动解密。
+  - fake-ip-filter: 过滤不使用 fake-ip 查来询dns的地址
 
-```code
-echo -n 'your_passphrase' > /etc/keyfile
-chown root:root /etc/keyfile; chmod 400 /etc/keyfile
-```
+- proxies: 代理节点设置模块，请根据官方要求进行设置
 
-2. 解密分区
+- proxy-groups: clash 的策略组，与 surge 类似。包含 relay(轮询)，url-test(ping最低优先)，load-balance(负载均衡)，fallback(按节点顺序优先使用可用节点)，select(手动选择节点)
 
-    cryptroot 为解密后对应的文件名，可以自定义
+- proxy-providers: 节点提供模块，一次可以提供多个级诶但，clash的`1.9.0`中增加了filter用来过滤节点
 
-```code
-cryptsetup open /path/to/device/ cryptroot
-```
+  - type: 节点组提供的类型，可选 http (远程提供)和 file (本地文件提供)
+  
+  - filter: 节点过滤方式，支持正则
 
-### 格式化
+- rules: 规则模块，以下是官方提供的说明，可以根据需要进行规则设置
+  - DOMAIN: 规则会匹配与请求完全相同的地址
+  - DOMAIN-SUFFIX: 规则会匹配与请求与主域名相同的地址，比如，`google.com`匹配`www.google.com`, `mail.google.com`和`google.com`本身，但不会匹配`content-google.com`
+  - DOMAIN-KEYWORD: 规则会匹配包含相应关键字的域名，除了 "apple" 会匹配 `www.apple.com`，"app" 同样也会匹配到
+  - GEOIP: 规则会匹配相应国家和地区的 IP 地址
+  - IP-CIDR: 规则会匹配规则范围内请求的 IP 地址
+  - IP-CIDR6: 规则会匹配规则范围内请求的 IPv6 地址
+  - SRC-IP-CIDR: 规则会匹配源 IP 地址
+  - SRC-PORT: 规则会匹配源端口地址
+  - DST-PORT: 规则会匹配目的地端口地址
+  - PROCESS-NAME: 规则会匹配这个进程名的程序
+  - MATCH: 将其余数据包路由到策略。此规则是必需的
 
-efi分区采用mkfs.fat进行格式化。主分区根据不同的文件类型特性进行选择格式化，比如mkfs.ext4格式化为ext4,mkfs.btrfs格式化为btrfs，其中ext4速度整体快于btrfs,而btrfs存在快照等特性。
+以下为本人根据 clash 提供的官方配置进行更改的自用配置。dns 设置为 fake-ip 模式，dns 服务器均采用 doh，防止国内而 dns 污染，并使用 yacd 模块。因为 clash 开源版不支持rule-set模块(clash-premium支持)，所以不能像 surge 一样简洁书写规则，嫌规则冗长的可以使用 clash-premium 闭源软件书写，其他模块书写规则一致
 
-```code
-mkfs.fat -F 32 /path/to/efi
-mkfs.ext4 /path/to/device
-```
+```yaml
+mixed-port: 7890
+allow-lan: true
+mode: Rule
+log-level: warning
+external-controller: 127.0.0.1:9090
+socks-port: 7891
+redir-port: 7892
+tproxy-port: 7893
+ipv6: false
+external-ui: '/usr/share/yacd'
+profile:
+  store-selected: false
+  store-fake-ip: true
+dns:
+  enable: true
+  listen: 0.0.0.0:1053
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  nameserver:
+    - https://223.5.5.5/dns-query
+    - https://doh.pub/dns-query
+    #- 114.114.114.114
+    #- 223.5.5.5
+  fallback:
+    - https://1.1.1.1/dns-query
+    - https://1.0.0.1/dns-query
+    - https://8.8.8.8/dns-query
+  fallback-filter:
+    geoip: true
+    geoip-code: CN
+  fake-ip-filter:
+    - '*.lan'
+    - '*.localhost'
+    - '*.local'
+    - 'lens.l.google.com'
+    - 'stun.l.google.com'
+    - '*.gitbook.io'
 
-## 挂载分区，并安装基本软件
 
-先挂载/mnt分区，在创建/mnt/boot分区，并挂载(也可以创建/mnt/efi分区并进行挂载，二者不同之处可以查看archwiki)
+proxy-providers:
+  HK_LOW:
+    type: file
+    path: ./cordcloud.yaml
+    interval: 3600
+    filter: '长沙联通转香港|广东移动转香港'
+    health-check:
+      enable: true
+      url: http://wifi.vivo.com.cn/generate_204
+      interval: 600
 
-```code
-mount /dev/mapper/cryptroot /mnt
-mount /path/to/efi /mnt/boot
-```
+  HK:
+    type: file
+    path: ./cordcloud.yaml
+    interval: 3600
+    filter: '深港专线'
+    health-check:
+      enable: true
+      url: http://wifi.vivo.com.cn/generate_204
+      interval: 600
 
-其中cryptroot为解密后分区所对应的名字，挂载时需要选择解密后的分区名
+  TW:
+    type: file
+    path: ./cordcloud.yaml
+    interval: 3600
+    filter: '台湾'
+    health-check:
+      enable: true
+      url: http://wifi.vivo.com.cn/generate_204
+      interval: 600
 
-使用pacstarp在/mnt分区中安装基本软件，并生成分区文件，最后进入安装系统(根据电脑CPU类型安装所需要的微码，intel的cpu安装intel-ucode，amd的安装amd-ucode)
+  JP:
+    type: file
+    path: ./cordcloud.yaml
+    interval: 3600
+    filter: '日本'
+    health-check:
+      enable: true
+      url: http://wifi.vivo.com.cn/generate_204
+      interval: 600
 
-```code
-pacstarp /mnt base base-devel linux linux-headers linux-firmware  sudo amd-ucode
-genfstab -U /mnt >> /mnt/etc/fstab
-arch-chroot /mnt
-```
+  SG:
+    type: file
+    path: ./cordcloud.yaml
+    interval: 3600
+    filter: '新加坡'
+    health-check:
+      enable: true
+      url: http://wifi.vivo.com.cn/generate_204
+      interval: 600
 
-## 更改镜像源并启用32位库
-
-由于国外镜像站网速限制，可以使用国内教育镜像站进行加速，镜像配置文件为/etc/pacman.d/mirrorlist，可以设置多个镜像站
-
-```code
-Server = https://mirrors.ustc.edu.cn/archlinux/$repo/os/$arch
-```
-
-由于部分软件需要32位库，比如wine,而默认32位库是注释掉了，需要取消注释才能启用，不需要32位软件的可以不进行该操作。pacman的默认库文件位/etc/pacman.conf，取消注释multilib库
-
-```code
-[multilib]
-Server = /etc/pacman.d/mirrorlist
-```
-
-## 修改密码
-
-修改root的密码
-
-```code
-passwd
-```
-
-## 基础软件安装
-
-安装基础软件，比如网络，编辑器等
-
-```code
-pacman -S networkmanager vim git wget curl dhcpcd iwd bash-completion dialog wpa_supplicant
-```
-
-## 时区和区域设置
-
-使用软链设置时区，比如设置位亚洲的上海时区，并同步
-
-```code
-ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-hwclock --systohc
-```
-
-区域设置，对应文件位/etc/locale.gen，编辑并取消所需要的区域设置，并生成对应文件
-
-```code
-vim /etc/locale.gen             # 取消en_US.UTF-8和zh_CN.UTF-8的注销
-locale-gen
-```
-
-向/etc/locale.conf导入本地语言设置，防止乱码
-
-```code
-echo 'LANG=en_US.UTF-8'  > /etc/locale.conf
-```
-
-## 主机名设置
-
-编辑/etc/hostname，设置主机名，比如arch，并根据主机名设置host文件
-
-```code
-echo arch > /etc/hostname
-cat > /etc/hosts <<EOF
-127.0.0.1 localhost
-::1 localhost
-127.0.1.1 arch.localdomain arch
-EOF
-```
-
-## 安装引导文件
-
-引导文件有grub和system-boot，system-boot需要手动写入启动文件，grub指令可以直接生成，较为方便，故采用grub(若efi分区挂载为/mnt/efi，则将efi-directory更改为/efi)
-
-```code
-pacman -S grub efibootmgr
-grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
-grub-mkconfig -o /boot/grub/grub.cfg
-```
-
-## 解密参数配置(可选)
-
-如果对磁盘设置了加密，必须设置一些hook和内核参数来告诉内核加密磁盘的位置
-
-具体操作可以参见[Archlinux自动解密磁盘](https://fate96.github.io/arch_auto_decrypt/)
-
-## 完成安装
-
-基本系统已经完成安装，退出系统，并取消文件挂载，重启既可以进入安装好的系统
-
-```code
-exit
-umount -a
-reboot
-```
-
-## 参考资料
-
-[Archlinux Installation guide](https://wiki.archlinux.org/title/installation_guide)
-
-[dm-crypt/Encrypting an entire system](https://wiki.archlinux.org/title/Dm-crypt/Encrypting_an_entire_system)
-
-[Arch Linux 安装使用教程 - ArchTutorial - Arch Linux Studio](https://archlinuxstudio.github.io/ArchLinuxTutorial/#/)
-
-[Arch Linux 搭建 java 开发环境](https://teaper.dev/)
-
-[2021 Archlinux双系统安装教程（超详细）](https://zhuanlan.zhihu.com/p/138951848)
-
-[Arch Linux Monthly Install: January 2022](https://www.youtube.com/watch?v=7btEUHjECAo&t=2362s)
-
-ttp://wifi.vivo.com.cn/generate_204
+  US:
+    type: file
+    path: ./cordcloud.yaml
+    interval: 3600
+    filter: '美国'
+    health-check:
+      enable: true
+      url: http://wifi.vivo.com.cn/generate_204
       interval: 600
 
 

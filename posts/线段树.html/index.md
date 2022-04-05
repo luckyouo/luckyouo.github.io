@@ -37,7 +37,7 @@ void update(int index, int val) 将 nums[index] 的值 更新 为 val
 int sumRange(int left, int right) 返回数组 nums 中索引 left 和索引 right 之间（ 包含 ）的nums元素的 和 （即，nums[left] + nums[left + 1], ..., nums[right]）
 ```
 
-线段树各层数量为等比数量，最大需要 `4n` 空间。根据二叉树性质，父节点 `i` 的两个子节点对应的索引分别为 `2 * i` 和 ` 2  * i + 1` ，`i` 从0开始编号，从而可以使用数组来表示线段树。
+线段树各层数量为等比数量，最大需要 `4n` 空间。根据二叉树性质，父节点 `i` 的两个子节点对应的索引分别为 `2 * i + 1 ` 和 ` 2  * i + 2` ，`i` 从0开始编号，从而可以使用数组来表示线段树。
 
 ```java
 class NumArray {
