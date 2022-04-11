@@ -35,4 +35,12 @@ public static void mySort(Integer[] nums, int idx) {
 }
 ```
 
+### 数组填充
+
+int double long 数组的默认初始化是 `0`， boolean 数组默认初始化为 `false` ，类的数组初始化为 `null`。 若需要对数组全部进行填充时，可以使用Arrays `api`完成，比如将 int 数组 arr 初始化为 -1。
+
+```java
+Arrays.fill(arr, -1)
+```
+
 

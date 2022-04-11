@@ -46,10 +46,10 @@ AOP 的底层采用代理机制方式实现。AOP 功能实现方式主要有三
 
    - 配置切入面、切入点和通知
 
-   ```java
+   ```xml
    <aop:config>
    <!--  -->
-   <aop:aspect ref="myAspect">
+   <aop:aspect ref="myAspect（切片的id）">
    <aop:pointcut id="mypointcut" expression="execution(public boolean com.cskaoyan.dao.impl.UserServiceImpl.register(String,String))"/>
    <aop:pointcut id="mypointcut2" expression="execution(* com..impl..*(..))"/>
    <aop:before method="before13" pointcut-ref="mypointcut2"/>
@@ -96,7 +96,11 @@ AOP 的底层采用代理机制方式实现。AOP 功能实现方式主要有三
 <aop:after method="MyAfter" pointcut-ref="myPointCut"/>
 ```
 
-2. 使用注解实现
+2. 使用注解实现，需要现在配置文件中引入自动代理
+
+```xml
+<aop:aspectj-autoproxy/>
+```
 
 ```java
 @Before("execution(public java.utils.list.com..*.addUser(..))")

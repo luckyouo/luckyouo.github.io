@@ -103,10 +103,15 @@ Spring 框架提供了三个对象来管理事务。
 </beans>
 ```
 
-接着配置事务
+接着配置事务，与 `aop:advisor` 配合一起使用。
 
 ```xml
-<tx:advice id="myadvice" transaction-manager="myTransactionManager">
+<aop:config>
+    <aop:point-cut id="mypointcut" expression="execution(* com..impl...*(..))"/>
+    <aop:advisor advice-ref="txAdvice" pointcut-ref="mypointcut"/>
+</aop:config>
+
+<tx:advice id="txAdvice" transaction-manager="myTransactionManager">
     <tx:attribues>
         <tx:method name="transferMoney" propagation="REQUIRED" isolation="DEFAULT"/>
     </tx:attribues>
@@ -114,6 +119,14 @@ Spring 框架提供了三个对象来管理事务。
 ```
 
 4. 通过spring tx 注解实现，在需要执行事务而方法中使用注解。（常用方式）
+
+首先配置注解驱动
+
+```xml
+<tx:annotation-direver transaction-manager="txManager"/>
+```
+
+接着在所需要执行事务的方法中配置注解
 
 ```java
 @Transactional(isolation=Isolation.Default, propagation=Propagation.REQUIRED)
