@@ -383,6 +383,180 @@ public class User implements Serializable{
 <cache/>
 ```
 
+## 逆向工程
+
+为了减少映射文件的书写，可以使用逆向工程生成映射文件。
+
+### 导包
+
+导包逆向工程的依赖和数据库的依赖
+
+```xml
+<dependency>
+    <groupId>org.mybatis.generator</groupId>
+    <artifactId>mybatis-generator-core</artifactId>
+    <version>1.4.1</version>
+</dependency>
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <version>8.0.12</version>
+    <scope>runtime</scope>
+</dependency>
+```
+
+### 配置文件设置
+
+在项目的根目录下配置逆向工程的配置 `generatorConfig.xml` 。
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <context id="testTables" targetRuntime="MyBatis3">
+        <commentGenerator>
+            <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+            <property name="suppressAllComments" value="true" />
+        </commentGenerator>
+        <!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/j13_jdbc_template?serverTimezone=GMT"
+                        userId="root"
+                        password="admin">
+            <property name="nullCatalogMeansCurrent" value="true"/>
+        </jdbcConnection>
+        <!--&lt;!&ndash;
+            for oracle
+           &ndash;&gt;
+        <jdbcConnection driverClass="oracle.jdbc.OracleDriver"
+            connectionURL="jdbc:oracle:thin:@127.0.0.1:1521:yycg"
+            userId="yycg"
+            password="yycg">
+        </jdbcConnection>-->
+
+        <!-- 默认false，
+            为false把JDBC DECIMAL 和 NUMERIC 类型解析为Integer，
+            为 true把JDBC DECIMAL 和 NUMERIC 类型解析为java.math.BigDecimal -->
+        <!--<javaTypeResolver>
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>-->
+
+        <!-- javaModelGenerator javaBean生成的配置信息
+             targetProject:生成PO类的位置
+             targetPackage：生成PO类的类名-->
+        <javaModelGenerator targetPackage="com.cskaoyan.bean"
+                            targetProject="./mybatis_demo8/src/main/java">
+            <!-- enableSubPackages:是否允许子包,是否让schema作为包的后缀
+                 即targetPackage.schemaName.tableName -->
+            <property name="enableSubPackages" value="true" />
+            <!-- 从数据库返回的值是否清理前后的空格 -->
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+
+        <!-- sqlMapGenerator Mapper映射文件的配置信息
+            targetProject:mapper映射文件生成的位置
+            targetPackage:生成mapper映射文件放在哪个包下-->
+        <sqlMapGenerator targetPackage="com.cskaoyan.mapper"
+                         targetProject="./mybatis_demo8/src/main/resources">
+            <!-- enableSubPackages:是否让schema作为包的后缀 -->
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <!--
+           javaClientGenerator 生成 Model对象(JavaBean)和 mapper XML配置文件 对应的Dao代码
+           targetProject:mapper接口生成的位置
+           targetPackage:生成mapper接口放在哪个包下
+
+           ANNOTATEDMAPPER
+           XMLMAPPER
+           MIXEDMAPPER
+        -->
+
+        <javaClientGenerator type="XMLMAPPER"
+                             targetPackage="com.cskaoyan.mapper"
+                             targetProject="./mybatis_demo8/src/main/java">
+            <!-- enableSubPackages:是否让schema作为包的后缀 -->
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator><!---->
+        <!-- 指定数据库表 -->
+
+            <!-- 指定所有数据库表 -->
+
+            <!--<table tableName="%"
+                   enableCountByExample="false"
+                   enableUpdateByExample="false"
+                   enableDeleteByExample="false"
+                   enableSelectByExample="false"
+                   enableInsert="false"
+                   enableDeleteByPrimaryKey="true"
+                   enableSelectByPrimaryKey="true"
+                   selectByExampleQueryId="false" ></table>-->
+
+               <!-- 指定数据库表，要生成哪些表，就写哪些表，要和数据库中对应，不能写错！ -->
+               <table  tableName="j13_user_t"
+                       enableCountByExample="false"
+                       enableUpdateByExample="false"
+                       enableDeleteByExample="false"
+                       enableSelectByExample="false"
+                       enableInsert="true"
+                       enableDeleteByPrimaryKey="true"
+                       enableSelectByPrimaryKey="true"
+                       selectByExampleQueryId="false"
+                       domainObjectName="User"
+               > </table>
+                <table tableName="j13_student_t" domainObjectName="Student"/>
+                <table tableName="j13_course_t" domainObjectName="Course"/>
+
+
+        <!--      <table schema="" tableName="orders"></table>
+             <table schema="" tableName="items"></table>
+             <table schema="" tableName="orderdetail"></table>
+      -->
+               <!-- 有些表的字段需要指定java类型
+                <table schema="" tableName="">
+                   <columnOverride column="" javaType="" />
+               </table> -->
+    </context>
+</generatorConfiguration>
+```
+
+### 引入逆向工程的 main 方法
+
+配置 main 方法，并运行，即可以生成配置文件中设置好的映射配置文件。
+
+```java
+public class Generator {
+    public void generator() throws Exception{
+        List<String> warnings = new ArrayList<String>();
+        boolean overwrite = true; //指向逆向工程配置文件
+        File configFile = new File("mybatis/generatorConfig.xml");
+        System.out.println(configFile.getAbsolutePath());
+        ConfigurationParser cp = new ConfigurationParser(warnings);
+        Configuration config = cp.parseConfiguration(configFile);
+        DefaultShellCallback callback = new DefaultShellCallback(overwrite);
+        MyBatisGenerator myBatisGenerator =
+                new MyBatisGenerator(config, callback, warnings);
+
+        myBatisGenerator.generate(null);
+    }
+
+    public static void main(String[] args) throws Exception {
+        try {
+            Generator generatorSqlmap = new Generator();
+            generatorSqlmap.generator();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+}
+```
+
 ## 其他
 
 1. 若映射文件和映射类在同一个包下，且名字相同时，则在映射文件中 resultType 通常用类名小写来代表返回类型。也可以在类名上使用 `@Alias` 注解，来规定返回使用类型别名。
