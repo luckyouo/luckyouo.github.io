@@ -193,7 +193,7 @@ defaultWebSecurityManager.setRealm(userRealm);
 
  <shiro:principal property="username"/>   显示用户身份中的属性值
 
-当认证出现错误时，返回给用户的不应该是一个异常，而是需要对其进行重定向进行重新认证，上述配置中的 `unauthorizedUrl` 异常对应为认证异常重定向的 url ，`loginUrl` 对应的为登陆的 url 。
+当认证出现错误时，返回给用户的不应该是一个异常，而是需要对其进行重定向进行重新认证，上述配置中的 `unauthorizedUrl` 异常对应为认证异常重定向的 url ，`loginUrl` 对应的为登陆的 url ，logout 为注销的的url ，该 url 可以不配置映射即可以使用。
 
 #### 使用配置类
 
