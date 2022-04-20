@@ -13,7 +13,7 @@ Dataset 是用来装数据集的抽象类，因此必须通过继承它来实例
 
 ### Sampler
 
-Sampler 是用来对 Dataset 对象进行抽样的，生成一系列的 index，并按照 batch 进行合并 index 返回。pytoch 内部实现的 Sampler 有如下几种：
+Sampler 是用来对 Dataset 对象进行抽样的，生成一系列的 index，并按照 batch 进行合并为 indices 返回。pytoch 内部实现的 Sampler 有如下几种：
 
 - SequentialSampler：顺序采样
 - RandomSampler：随机采样
