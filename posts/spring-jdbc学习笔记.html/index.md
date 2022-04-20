@@ -5,7 +5,7 @@
 
 Spring 提供了 `JDBCTemplate` 来操作jdbc，而让用户只需要关注sql语句即可。
 
-## JDBC使用流程
+## 使用流程
 
 ### 使用JDBCTemplate
 

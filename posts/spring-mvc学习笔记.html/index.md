@@ -7,7 +7,7 @@ MVC 三个单词分别为 `Model` 、 `View` 和 `Controller` ，MVC 模式是�
 
 {{< figure src="/images/spring_mvc.png" title="spring mvc流程图" >}}
 
-## 工作流程
+## 使用流程
 
 `Spring MVC` 提供了四大组件，**前端控制器（DispatcherServlet）、处理器映射器（HandlerMapping）、处理器适配器（HandlerAdapter）以及视图解析器（ViewResolver）**。
 
