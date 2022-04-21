@@ -9,6 +9,8 @@
 
 Java 微服务常用两个微服务有 Dubbo 和 Spring Cloud。Dubbo 使用 RPC（Reomote Process Call） 框架，性能更好，通常应用与大型服务上，而 Spring Cloud 是基于Spring  Boot 快捷开发，使用 http 通信，适用于中小型企业当中。
 
+{{< figure src="/images/dubbo.png" title="Dubbo 工作流程图" >}}
+
 ## 使用流程
 
 ### 导入依赖
@@ -306,7 +308,9 @@ spring.dubbo.registry=zookeeper://localhost:2181
 pring.dubbo.registry=zookeeper://localhost:2181
 ```
 
+## 参考资料
 
+[Dubbo 文档](https://dubbo.apache.org/zh/docs/)
 
 
 
