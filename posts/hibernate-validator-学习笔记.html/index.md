@@ -1,4 +1,4 @@
-# Hibernate Validator 基本使用
+# Hibernate Validator 学习笔记
 
 
 ## 前言

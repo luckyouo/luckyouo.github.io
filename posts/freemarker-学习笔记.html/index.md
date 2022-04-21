@@ -1,4 +1,4 @@
-# Freemarker 学习记录
+# Freemarker 学习笔记
 
 
 ## 前言
