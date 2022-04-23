@@ -178,3 +178,6 @@ def train(net, data_iter, lr, num_epochs, device=d2l.try_gpu()):
 
 [14.3. 用于预训练词嵌入的数据集](https://zh-v2.d2l.ai/chapter_natural-language-processing-pretraining/word-embedding-dataset.html)
 
+[14.4. 预训练word2vec](https://zh-v2.d2l.ai/chapter_natural-language-processing-pretraining/word2vec-pretraining.html)
+
+
