@@ -40,6 +40,8 @@
 
 ## 代码
 
+[382. 链表随机节点](https://leetcode-cn.com/problems/linked-list-random-node/)
+
 ```java
 class Solution {
     ListNode head;
@@ -63,11 +65,17 @@ class Solution {
 }
 ```
 
+## 其他
 
+[398. 随机数索引](https://leetcode-cn.com/problems/random-pick-index/)
+
+因为蓄水池抽样法的概率为等概率时间，通常可以用来等概率采样。等概率采用方法还可以通过 ArrayList 实现，但需要额外而空间复杂度 $O(n)$，而蓄水池采样的空间复杂度为固定常数 $O(1)$ ，可以利用时间复杂度换取空间复杂度。
 
 ## 参考链接
 
 [蓄水池抽样算法（Reservoir Sampling）](https://www.jianshu.com/p/7a9ea6ece2af)
 
 [382. 链表随机节点](https://leetcode-cn.com/problems/linked-list-random-node/)
+
+[398. 随机数索引](https://leetcode-cn.com/problems/random-pick-index/)
 
