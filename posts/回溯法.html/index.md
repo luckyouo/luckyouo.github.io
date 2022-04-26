@@ -84,8 +84,10 @@ class Solution {
             ans.add(new ArrayList<>(list));
             return;
         }
-
+		
+        // 查找单元素集合
         backtrack(ans, list, candidates, target, idx + 1);
+        // 查找多元素集合
         if(target - candidates[idx] >= 0){
             list.add(candidates[idx]);
             backtrack(ans, list, candidates, target - candidates[idx], idx);
