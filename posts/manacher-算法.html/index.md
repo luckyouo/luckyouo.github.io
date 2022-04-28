@@ -42,15 +42,21 @@ class Solution {
         }
         sb.append('^');
         int[] r = new int[sb.length()];
-
+		
+        // 半径数组
         r[0] = 1;
+        // 最大右边界
         int max = r[0];
+        // 最大右边界对应的索引位置
         int maxi = 0;
         for(int i = 1; i < r.length - 1; i++){
+            // 半径初始化
             r[i] = i < max ? Math.min(max - i + 1, r[2 * maxi - i]) : 1;
+            // 半径中心扩展
             while(sb.charAt(i - r[i]) == sb.charAt(i + r[i])){
                 r[i]++;              
             }
+            // 最大右边界变更判断
             if(i + r[i] - 1 >= max){
                 max = i + r[i] - 1;
                 maxi = i;
@@ -68,4 +74,7 @@ class Solution {
 
 [回文子字符串的个数](https://leetcode-cn.com/problems/a7VOhD/solution/hui-wen-zi-zi-fu-chuan-de-ge-shu-by-leet-ejfv/)
 
+[回文串的学习与应用](https://segmentfault.com/a/1190000022816480)
+
+[最长回文子串](https://leetcode-cn.com/problems/longest-palindromic-substring/)
 

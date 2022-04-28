@@ -25,6 +25,8 @@
 
 [344. 反转字符串](https://leetcode-cn.com/problems/reverse-string/)
 
+[ 盛最多水的容器](https://leetcode-cn.com/problems/container-with-most-water/) 体积问题转换为左右边界问题，而左右边界问题可以通过对撞指针在时间复杂度为 `O(n)` 完成。
+
 ### 滑动窗口
 
 `滑动窗口` 两个指针分别为窗口的左端和右端，并按一定的条件进行有移动。
