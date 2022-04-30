@@ -25,7 +25,7 @@ for(int i = 0; i < n; i++){
 
 不要将 `i + "#"` 拼接好后在 `append` ，字符串拼接后会产生的新的字符串从而产生更多的开销
 
-### Comparator类的compare方法重写
+### Comparator 类的 compare 方法重写
 
 当需要在某数组某区间进行排序并且需要逆序是，则可以重写 `static <T> void sort(T[] a, int fromIndex, int toIndex, Comparator<? super T> c)` 方法，该方法返回类型为泛型，所以不能使用基本类型数组进行接受（数组泛型不会自动解包操作），需要使用包装类完成类型接受。
 
@@ -80,7 +80,7 @@ public class Test {
 }
 ```
 
-参考：[Arrays.asList() 详解](https://www.jianshu.com/p/52cdcec633bd)
+参考：[Arrays.asList() 详解](https://www.jianshu.com/p/52cdcec633bd) 
 
 ### 基本数据类型排序
 
@@ -90,4 +90,7 @@ java 的内部排序默认是快排，数据是从大到小，但当需要从小
 2. 利用 java8 的流特性进行反转
 3. 内部排序之后再逆转
 4. 将 int[] 数组转换为 Integer[] 数组，利用包装类进行排序。（不能直接强制类型转换，只能循环复制，利用自动装箱和拆箱机机制）
+
+参考：[怎么进行java数组逆序排序？](https://segmentfault.com/q/1010000011728359) 
+
 
