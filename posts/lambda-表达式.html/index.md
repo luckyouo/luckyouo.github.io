@@ -14,7 +14,7 @@ java 的 `lambda` 表达式必须结合函数式接口来使用。函数式接�
 lambda 表达式的基本书写形式如下：
 
 ```java
-(T param1, T param2) -> operator(param1, param2)
+(T param1, T param2) -> {operator(param1, param2)}
 ```
 
 `lambda` 表达式使用样例
@@ -57,6 +57,78 @@ public class LambdaExpressions {
 }
 ```
 
+**[937. 重新排列日志文件](https://leetcode-cn.com/problems/reorder-data-in-log-files/)** 解题代码使用 lambda 表达式
+
+```java
+class Solution {
+    public String[] reorderLogFiles(String[] logs) {
+        Arrays.sort(logs, (log1, log2)->{
+			String[] split1 = log1.split(" ",2);
+			String[] split2 = log2.split(" ",2);
+			boolean isDigit1 = Character.isDigit(split1[1].charAt(0));
+			boolean isDigit2 = Character.isDigit(split2[1].charAt(0));
+			if (!isDigit1 && !isDigit2){
+				int cmp = split1[1].compareTo(split2[1]);
+				if (cmp !=0) return cmp;
+				return split1[0].compareTo(split2[0]);
+			}
+			return isDigit1 ? (isDigit2 ? 0:1) : -1;
+		});
+		return logs;
+    }
+}
+```
+
+函数调用的 lambda 表达式
+
+```java
+class Solution {
+    public String[] reorderLogFiles(String[] logs) {
+        int length = logs.length;
+        Pair[] arr = new Pair[length];
+        for (int i = 0; i < length; i++) {
+            arr[i] = new Pair(logs[i], i);
+        }
+        Arrays.sort(arr, (a, b) -> logCompare(a, b));
+        String[] reordered = new String[length];
+        for (int i = 0; i < length; i++) {
+            reordered[i] = arr[i].log;
+        }
+        return reordered;
+    }
+
+    public int logCompare(Pair pair1, Pair pair2) {
+        String log1 = pair1.log, log2 = pair2.log;
+        int index1 = pair1.index, index2 = pair2.index;
+        String[] split1 = log1.split(" ", 2);
+        String[] split2 = log2.split(" ", 2);
+        boolean isDigit1 = Character.isDigit(split1[1].charAt(0));
+        boolean isDigit2 = Character.isDigit(split2[1].charAt(0));
+        if (isDigit1 && isDigit2) {
+            return index1 - index2;
+        }
+        if (!isDigit1 && !isDigit2) {
+            int sc = split1[1].compareTo(split2[1]);
+            if (sc != 0) {
+                return sc;
+            }
+            return split1[0].compareTo(split2[0]);
+        }
+        return isDigit1 ? 1 : -1;
+    }
+}
+
+class Pair {
+    String log;
+    int index;
+
+    public Pair(String log, int index) {
+        this.log = log;
+        this.index = index;
+    }
+}
+```
+
 ## 注意事项
 
 1. 如果编译器可以根据接口类型推断出参数类型，则 `lambda` 表达式可以省略参数的类型。所以 `lambda` 表达式是运行时才确认的，故 lambda 表达式使用的数据必须是不可以变更的（`final` 类型），即是闭包的。
@@ -66,6 +138,8 @@ public class LambdaExpressions {
 3. 在 `lambda` 表达式中使用的关键字 `this` ，表示创建 `lambda` 表达式方法的 `this` 参数。
 4.  `lambda` 表达式内如果存在分支返回值时，则另外的分支必须也存在返回值，否则不合法。
 5. 尽量将 `lambda` 表达式看作为一个函数，而不是一个对象。
+6. **如果只有一条语句， 则大括号可以省略，且不需要 return 关键字，编译器会自动返回表达式值。如果使用大括号，则必须使用 return 返回表达式的值。返回值也函数式接口返回类型相同** 
+7. `lambda` 表达式后半段可以使用函数调用代替大括号内容
 
 ## 参考资料
 
@@ -74,4 +148,6 @@ public class LambdaExpressions {
 [Java中的函数式编程（三）lambda表达式](https://juejin.cn/post/7021531239072923678)
 
 [第十三章 函数式编程](https://wizardforcel.gitbooks.io/onjava8/content/book/13-Functional-Programming.html#Currying%E5%92%8CPartial-Evaluation) 
+
+[937. 重新排列日志文件](https://leetcode-cn.com/problems/reorder-data-in-log-files/) 
 
