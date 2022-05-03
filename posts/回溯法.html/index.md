@@ -97,6 +97,46 @@ class Solution {
 }
 ```
 
+## 回溯法 + 去重
+
+在某些算法的要求下，需要对结果进行去重，简单粗暴的方法就是通过 HashSet 去重，但是时间复杂度高，因为结果需要对比。也可以通过循环，对某些条件进行剪枝。
+
+[剑指 Offer II 082. 含有重复元素集合的组合](https://leetcode-cn.com/problems/4sjJUc/) 回溯法 + 循环剪枝去重
+
+```java
+class Solution {
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        List<List<Integer>> ans = new ArrayList<>();
+        backtrack(candidates, ans, new ArrayList<Integer>(), target, 0);
+        return ans;
+    }
+
+    public void backtrack(int[] candidates, List<List<Integer>> ans, List<Integer> list, int target, int idx) {
+        if (target == 0) {
+            ans.add(new ArrayList<>(list));
+            return;
+        }
+
+
+        for (int i = idx; i < candidates.length; i++) {
+            if (candidates[i] > target) {
+                return;
+            }
+
+            if (i > idx && candidates[i] == candidates[i - 1]) {
+                continue;
+            }
+
+
+            list.add(candidates[i]);
+            backtrack(candidates, ans, list, target - candidates[i], i + 1);
+            list.remove(list.size() - 1);
+        }
+    }
+}
+```
+
 ## 参考资料
 
 [五大基本算法之回溯算法 backtracking](https://houbb.github.io/2020/01/23/data-struct-learn-07-base-backtracking)
@@ -106,4 +146,6 @@ class Solution {
 [17. 电话号码的字母组合](https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/)
 
 [39. 组合总和](https://leetcode-cn.com/problems/combination-sum/)
+
+[剑指 Offer II 082. 含有重复元素集合的组合](https://leetcode-cn.com/problems/4sjJUc/) 
 
