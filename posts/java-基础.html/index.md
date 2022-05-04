@@ -97,12 +97,23 @@ java 的内部排序默认是快排，数据是从大到小，但当需要从小
 
 HashSet 是无序不可重复的集合，线程不安全的，底层基于HashMap，基于hashCode()。判断重复机制首先判断添加的元素的 hashCode() 是否相同，再通过 equals() 方法判断元素是否相等。
 
-当使用 HashSet 去重 Integer[] 等数组元素时，如果每次都是通过 new 添加元素，则无法达到去重的效果。
+当使用 HashSet 去重 Integer[] 等数组元素时，如果每次都是通过 new 添加元素，而Integr[] 数组对象没有重写 hashCode 和 equals 方法，故无法达到去重的效果
 
 ```java
 HashSet<Integer[]> set = new HashSet<>();
 set.add(new Integer[]{1, 2});
 set.add(new Integer[]{1,2 }); // 无法去重，因为 new 出来的对象 hashcode 不同，而 equals 方法默认是比较两个对象的地址，故也不同。
+```
+
+而 HashSet 去重 Collection 元素时，即使通过 new 创建一个对象，但 Collection 都已经重写了 hashCode 和 equals 方法，故可以去重。
+
+```java
+HashSet<List<Integer>> set = new HashSet<>();
+ArrayList<Integer> list = new ArrayList<>();
+list.add(1);
+list.add(2);
+set.add(new ArrayList<>(list));
+set.add(new ArrayList<>(list)); // set size 仍为 1
 ```
 
 
