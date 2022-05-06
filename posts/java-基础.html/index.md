@@ -116,4 +116,16 @@ set.add(new ArrayList<>(list));
 set.add(new ArrayList<>(list)); // set size 仍为 1
 ```
 
+### StringBuilder 插入
+
+使用 StringBuilder 底层的数据结构为字符数组，所以当执行频繁的插入操作时，尽量使用 append 方法在尾部插入。
+
+```java
+Deque<Character> stack = new LinkedList<>();
+while (!stack.isEmpty()){
+    sb.append(stack.pollFirst());
+    // sb.insert(0, stack.pollLast());
+}
+```
+
 
