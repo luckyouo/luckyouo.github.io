@@ -20,7 +20,7 @@ print(out)
 
 ### 除法运算
 
-python 中 `/` 除法会结果会自动转换为 float 类型，如果需保持整数类型是，需要使用 `//` 运算符。
+python3 中 `/` 除法，两个操作数会转换为 float 类型，结果而已为 float 类型，如果需保持整数类型是，需要使用 `//` 运算符。
 
 ```python
 a = 10
@@ -29,6 +29,48 @@ a = 10
 while a > 10:
     a /= 10
 ```
+
+#### 四舍五入
+
+使用 round 方法对结果四舍五入
+
+```python
+print(round(10 / 3))
+# 3
+```
+
+#### 取整数
+
+舍去小数部分，只留整数部分
+
+```python
+print(int (-7 / 6))
+# 0
+pirnt(round(-7 / 6))
+# -1
+```
+
+#### 向上取整
+
+使用 math 库中的 ceil 方法，对结果向上取整
+
+```python
+import math
+print(math.ceil(10 / 3))
+# 4
+```
+
+#### 取整数和小数部分
+
+使用 math 库中的 modf 方法，取结果的整数和小数部分，结果为二元组。
+
+```python
+import math
+print(math.modf(10 / 3))
+# (0.3333333333333335, 3.0)
+```
+
+参考： [Python除法：四舍五入，地板除，取整，取小数](http://www.juzicode.com/python-note-divide/) 
 
 ### nolocal 关键字
 
