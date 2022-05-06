@@ -128,4 +128,20 @@ while (!stack.isEmpty()){
 }
 ```
 
+### final 关键字
+
+final 定义的变量是不可以变的量，指的是变量不能更改对象引用，但是引用的对象内容是可以变更的。比如用 final 修饰 list 时，list的内容仍然可以发生变更，但使用 final 修饰基本类型或者包装类时，则变量对应的就是基本数据，不可以发生变更，否则编译异常。
+
+```java
+final Integer i = 1;
+
+i += 1; // 编译不通过
+
+final ArrayList<Integer> list = new ArrayList<>();
+list.add(2); // 编译通过
+```
+
+### toString
+
+在将对象输出时，会自动调用对象的 toString 方法。如果想利用 toString 方法打印对象地址，不能使用 this 来打印对象地址，而需要使用 `Object.toString()` 方法，即使用 `super.toString()` ，否则会出现循环调用，因为 this 对象也表示该对象，即对象再次调用自己的 toString 方法。
 
