@@ -9,7 +9,7 @@
 
 ### Array-Like(List/Tuple)
 
-python 内置没有 array 数组，但提供了 list 列表和 tuple 元组，二者底层都是通过数组实现。list 为长度可变数组，而 tuple 为长度固定的数组，一般来说 list 更加常用。列表 **没有** `isempty` 判空方法，通过 `if list:` 语句直接判断即可，若存在元素则返回 True ，否则返回 False。 
+python 内置没有 array 数组（有一个array 模块，存在一个 array 类），但提供了 list 列表和 tuple 元组，二者底层都是通过数组实现。list 为长度可变数组，而 tuple 为长度固定的数组，一般来说 list 更加常用。列表 **没有** `isempty` 判空方法，通过 `if list:` 语句直接判断即可，若存在元素则返回 True ，否则返回 False。 
 
 列表/数组的内置方法：
 
