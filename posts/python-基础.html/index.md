@@ -163,3 +163,127 @@ print(t) # t = (1, 2, [30, 40, 50, 60])
 1. reverse：为 True 时，进行逆序排列。
 2. key： 一个只有一个参数的函数，该函数会应用到所有元素上，并使用结果进行排序，默认恒等函数。
 
+### 装饰器
+
+python 的装饰期在模块加载之后就立即执行。装饰器其实就是一个高阶函数，是一个语法糖。参数化的装饰器本质为两层嵌套函数，外层相当于装饰器工厂，根据参数返回需要的装饰器。
+
+常用的装饰器：
+
+1. `functools.lru_cache()`
+
+该装饰器实现了备忘的功能，并使用最近最少用策略管理缓存。比如在需要递归的函数中使用
+
+```python
+import functools
+
+@functools.lru_cache()
+@clock # 自己实现的查看函数执行时间的装饰器
+def fib(n):
+    if n  < 2:
+        return n
+    return fib(n-1) + fib(n-2)
+```
+
+必须像常规函数那样调用 lru_cache。这一行中有一对括号: `@functools.lru_cache()`。这么做的原因是，`lru_cache` 可以接受配置参数。使用该装饰器之后，这样每个 n 都只会执行一次。
+
+该装饰器的签名 `functools.lru_cache(maxsize=128, typed=False)` 。maxsize 参数指定存储多少个调用的结果。缓存满了之后,旧的结果会被扔掉,腾出空间。为了得到最佳性能，maxsize 应该设为 2 的幂。typed 参数如果设为 True，把不同参数类型得到的结果分开保存，即把通常认为相等的浮点数和整数参数(如 1 和 1.0)区分开。
+
+因为 `lru_cache` 使用了哈希散列存储，所以被装饰器的函数中的的参数都必须是可以散列的。
+
+2. `functools.singledispatch`
+
+由于 python 函数不支持重载，所以如果需要编写同名方法的函数，只能使用 `if-else` 调用不同的函数执行，于是则各个函数之间耦合过于紧密。python3.4 增加了 `functools.singledispatch` 装饰器用于解决该问题。
+
+```python
+from functools import singledispatch
+from collections import abc
+import numbers
+import html
+
+@singledispatch ➊
+def htmlize(obj):
+    content = html.escape(repr(obj))
+    return '<pre>{}</pre>'.format(content)
+
+@htmlize.register(str) ➋
+def _(text):
+    content = html.escape(text).replace('\n', '<br>\n')
+    return '<p>{0}</p>'.format(content)
+
+@htmlize.register(numbers.Integral) ➍
+def _(n):
+	return '<pre>{0} (0x{0:x})</pre>'.format(n)
+
+@htmlize.register(tuple) ➎
+@htmlize.register(abc.MutableSequence)
+def _(seq):
+    inner = '</li>\n<li>'.join(htmlize(item) for item in seq)
+	return '<ul>\n<li>' + inner + '</li>\n</ul>'
+```
+
+singledispatch 创建一个自定义的 htmlize.register 装饰器，把多个函数绑在一起组成一个泛函数。
+
+
+
+### 作用域
+
+如果在函数体的内部定义了一个与全部变量同名的局部变量，则 python 会优先将该变量是作为局部变量，如果在赋值之前使用了该变量，则会抛出为引用的异常。
+
+```python
+b = 3
+def f(a):
+    print(a)
+    print(b) # b 为局部变量，为初始化使用抛出异常
+    b = 6
+```
+
+如果要在函数中使用全局变量，则应该使用 `global` 关键字。
+
+### 闭包
+
+闭包是一种函数，它会保留定义函数时存在的自由变量的绑定，这样调用函数时，虽然定义作用域不可用了，但是仍能使用那些绑定。当闭包内使用的是不可变量时，若发生变化，则会变成局部变量，而不是自由变量。因此，则闭包内使用不可变量时，需要使用 `nolocal` 关键字，将不可变量标记为自由变量。
+
+```python
+def make_averager():
+    series = []
+        def averager(new_value):
+            series.append(new_value) # 自由变量
+            total = sum(series)
+        	return total/len(series)
+    return averager
+```
+
+```python
+def make_averager():
+    count = 0
+    total = 0
+    def averager(new_value):
+        count += 1	# 局部变量
+        total += new_value # 局部变量
+        return total / count
+    return averager
+```
+
+### is 和 == 区别
+
+is 在 python 中比较的是两个对象的 id，在 cpython 解释器中，id 即为对象的内存地址。而 == 则是调用对象的 `__eq__` 方法。这与 java 实现存在差异，在 java 中 == 比较是内存的地址。速度来说， is 直接比较内存地址，而 == 则需要调用方法，故 is 更快。
+
+### 浅复制
+
+序列的构造方法和切片生成的结果都是浅复制，如果里面的元素都是不可变对象时，则没有差异，如果是引用对象时，则会同时发生变化，和 java 一致。
+
+copy 模块提供了 deepcopy 函数进行深拷贝。
+
+### 引用传参
+
+Python 唯一支持的参数传递模式是共享传参(call by sharing)，即引用传参数。共享传参指函数的各个形式参数获得实参中各个引用的副本。也就是说,函数内部的形参是实参的别名。
+
+所以不应该将可变量作为默认参数进行传递。如果使用可变对象作为默认参数，则所有默认参数都将共享一个参数，会出现奇怪 bug。
+
+### del
+
+del 语句删除名称,而不是对象。del 命令可能会导致对象被当作垃圾回收,但是仅当删除的变量保存的是对象的最后一个引用,或者无法得到对象时。
+
+当对象的引用数量归零后,垃圾回收程序会把对象销毁。但是,有时需要引用对象,而不让对象存在的时间超过所需时间。这经常用在缓存中。弱引用不会增加对象的引用数量。引用的目标对象称为所指对象(referent)。因此我们说,
+弱引用不会妨碍所指对象被当作垃圾回收。
+

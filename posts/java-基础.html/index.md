@@ -145,3 +145,7 @@ list.add(2); // 编译通过
 
 在将对象输出时，会自动调用对象的 toString 方法。如果想利用 toString 方法打印对象地址，不能使用 this 来打印对象地址，而需要使用 `Object.toString()` 方法，即使用 `super.toString()` ，否则会出现循环调用，因为 this 对象也表示该对象，即对象再次调用自己的 toString 方法。
 
+### 数组转 String
+
+Arrays.toString 方法是用来将一维数组转换 String。多为数组使用 Arrays.deepToString。
+
