@@ -82,6 +82,20 @@ public class Test {
 - `E lower(E e)` : 返回此集合中严格小于给定元素的最小元素，如果没有这样的元素，则返回 `null`
 - `boolean contains(Object o)` : 查询元素是否存在有序集合当中
 
+### TreeMap
+
+基于红黑树的 `NavigableMap` 实现。根据其键的自然顺序排序，或者由地图创建时提供的 `Comparator` 排序，具体取决于使用的构造函数，和 `TreeSet` 类似。
+
+- `Map.Entry<K, V> floorEntry(Key key)` : 返回与小于或等于给定键的最大键关联的键值映射，如果没有这样的键，则返回 null
+- `K floorKey(Key key)` ：返回小于或等于给定键的最大键，如果没有这样的键，则返回 null
+- `Map.Entry<K, V> ceilingEntry (Key key)` ： 返回与大于或等于给定键的最小键关联的键值映射，如果没有这样的键，则返回 null
+- `K ceilingKey(Key key)`  ：返回大于或等于给定键的最小键，如果没有这样的键，则返回 null
+- `Map.Entry<K, V> lowerEntry(Key key)` ： 返回与严格小于给定键的最大键关联的键值映射，如果没有这样的键，则返回 null
+- `K lowerKey(Key key)`  ：返回严格小于给定键的最大键，如果没有这样的键，则返回 null
+
+- `Map.Entry<K, V> higherEntry (Key key)`  ： 返回与严格大于给定键的最小键关联的键值映射，如果没有这样的键，则返回 null
+- `K highKey(Key key)` ：返回严格大于给定键的最小键，如果没有这样的键，则返回 null
+
 ### PriorityQueue
 
 `PriorityQueue` 默认实现为小顶堆，与`C++` 的优先队列默认为大顶堆不一样。

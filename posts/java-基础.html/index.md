@@ -149,3 +149,61 @@ list.add(2); // 编译通过
 
 Arrays.toString 方法是用来将一维数组转换 String。多为数组使用 Arrays.deepToString。
 
+### 双浮点数除法精确度
+
+当使用两个浮点数进行除法时，可能会出现结果与预期不一致的问题，其原因是使用浮点数无法正确表示某些小数，所以尽量减少使用浮点数做除法。
+
+```java
+double v1 = 0.7;
+double v2 = 0.025;
+double result = v1 / v2;
+System.out.println(result);
+// 27.999999999999996 而不是预期的 28
+```
+
+### Math.ceil 
+
+该方法主要作用是对一个浮点数向上取整。但是如果是对除法结果向上取整时，在 java 中除法的结果已经对结果向下取整了，即结果已经是一个整数，故与预期结果不一致。
+
+```java
+int x = 16;
+int y = 3;
+int ans =(int) Math.ceil(x / y);
+System.out.println(ans);
+// 5 而不是预期的 6
+```
+
+解决办法有三种：
+
+1. 改为浮点数除法，这样结果即为浮点数，在对其向上取整。弊端是存在双浮点数除法存在精度异常问题，需要注意使用
+
+```java
+int ans =(int) Math.ceil((double)x / y);
+System.out.println(ans);
+// 6
+```
+
+2. 利用模运算，若取余结果不为 0，则对除法结果进一
+
+```java
+int ans = x / y + ((x % y) == 0 ? 0 : 1)
+System.out.println(ans);
+// 6
+```
+
+3. 利用加法的一些技巧
+
+```java
+int ans = (x + y - 1) / y; // 该情况不适用于 y < 0
+
+int ans = (x - 1) / y + 1; // 该情况不适用于 a=0 和 b<1
+```
+
+[Java rounding up to an int using Math.ceil](https://stackoverflow.com/questions/7139382/java-rounding-up-to-an-int-using-math-ceil) 
+
+### System.arraycopy 和 Arrays.copyOf
+
+二者对数组的拷贝方式都是浅拷贝。调用 `list.toArray(T[])` 方法时，当传递的数组大小小于集合长度时，调用 `Arrays.copyOf` 方法进行拷贝，反之，则调用 `System.arraycopy` 进行拷贝。`Arrays.copyOf` 底层仍然是调用 `System.copyarray` 方法进行拷贝。故集合的 `toArray(T[])` 方法也为浅拷贝。
+
+**注意集合中的 toArray() 方法也是浅拷贝** 
+
