@@ -220,11 +220,89 @@ class NumArray {
 }
 ```
 
+## 动态开点线段树
+
+当离散点数量过大时，比如 $1e9$ 级别，直接创建线段树可能会内存超出，所以需要动态开点创建线段树，此时直接使用数组无法进行表示，需要使用节点对象数组。该节点需要维护信息的如下：
+
+- `ls/rs`: 分别代表当前节点的左右子节点在线段树数组 `tr` 中的下标；
+- `add`: 懒标记；
+- `val`: 为当前区间的所包含的点的数量
+
+[729. 我的日程安排表 I](https://leetcode.cn/problems/my-calendar-i/) 
+
+动态开点相比于原始的线段树实现，本质仍是使用「满二叉树」的形式进行存储，只不过是按需创建区间，如果我们是按照连续段进行查询或插入，最坏情况下仍然会占到 $O(4*n)$ 的空间，因此盲猜 $\log{n}$ 的常数在 4 左右，保守一点可以直接估算到 6，因此我们可以估算点数为 $6 * m * \log{n}$ ，其中 $n = 1e9$  和 $m = 1e3$ 分别代表值域大小和查询次数。
+
+当然一个比较实用的估点方式可以「尽可能的多开点数」，利用题目给定的空间上界和我们创建的自定义类（结构体）的大小，尽可能的多开（ Java 的 128M 可以开到 $5 * 10^6$ 以上）
+
+代码实现如下：
+
+```java
+class MyCalendar {
+    class Node {
+        int ls, rs, add, val;
+    }
+    int N = (int)1e9, M = 120010, cnt = 1;
+    Node[] tr = new Node[M];
+    void update(int u, int lc, int rc, int l, int r, int v) {
+        if (l <= lc && rc <= r) {
+            tr[u].val += (rc - lc + 1) * v;
+            tr[u].add += v;
+            return ;
+        }
+        lazyCreate(u);
+        pushdown(u, rc - lc + 1);
+        int mid = lc + rc >> 1;
+        if (l <= mid) update(tr[u].ls, lc, mid, l, r, v);
+        if (r > mid) update(tr[u].rs, mid + 1, rc, l, r, v);
+        pushup(u);
+    }
+    int query(int u, int lc, int rc, int l, int r) {
+        if (l <= lc && rc <= r) return tr[u].val;
+        lazyCreate(u);
+        pushdown(u, rc - lc + 1);
+        int mid = lc + rc >> 1, ans = 0;
+        if (l <= mid) ans = query(tr[u].ls, lc, mid, l, r);
+        if (r > mid) ans += query(tr[u].rs, mid + 1, rc, l, r);
+        return ans;
+    }
+    void lazyCreate(int u) {
+        if (tr[u] == null) tr[u] = new Node();
+        if (tr[u].ls == 0) {
+            tr[u].ls = ++cnt;
+            tr[tr[u].ls] = new Node();
+        }
+        if (tr[u].rs == 0) {
+            tr[u].rs = ++cnt;
+            tr[tr[u].rs] = new Node();
+        }
+    }
+    void pushdown(int u, int len) {
+        tr[tr[u].ls].add += tr[u].add; tr[tr[u].rs].add += tr[u].add;
+        tr[tr[u].ls].val += len / 2 * tr[u].add; tr[tr[u].rs].val += len / 2 * tr[u].add;
+        tr[u].add = 0;
+    }
+    void pushup(int u) {
+        tr[u].val = tr[tr[u].ls].val + tr[tr[u].rs].val;
+    }
+    public boolean book(int start, int end) {
+        if (query(1, 1, N + 1, start + 1, end) > 0) return false;
+        update(1, 1, N + 1, start + 1, end, 1);
+        return true;
+    }
+}
+```
+
 ## 参考资料
 
 [线段树](https://zh.wikipedia.org/wiki/%E7%B7%9A%E6%AE%B5%E6%A8%B9)
 
 [OI Wiki 线段树](https://oi-wiki.org/ds/seg/)
+
+[【宫水三叶】一题双解 :「模拟」&「线段树（动态开点](https://leetcode.cn/problems/my-calendar-i/solution/by-ac_oier-1znx/) 
+
+[算法学习笔记(49): 线段树的拓展](https://zhuanlan.zhihu.com/p/246255556) 
+
+[动态开点线段树](https://chenshouao.github.io/mkdocs/pages/Algorithm/ds/dynamicTree.html) 
 
 
 
