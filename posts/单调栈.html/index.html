@@ -1,0 +1,259 @@
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=x-ua-compatible content="IE=edge, chrome=1"><title>单调栈 - Luckyouo Blog</title><meta name=Description content="Luckyouo 的小窝"><meta property="og:title" content="单调栈"><meta property="og:description" content="前言 极值和最值不一样，极值是由区间范围所决定的，最值是由整个区间所决定的，当求极值的一个区间的影响范围时，由于涉及多个区间，如果直接暴力求，"><meta property="og:type" content="article"><meta property="og:url" content="https://luckyouo.github.io/posts/%E5%8D%95%E8%B0%83%E6%A0%88.html/"><meta property="og:image" content="https://luckyouo.github.io/logo.png"><meta property="article:section" content="posts"><meta property="article:published_time" content="2022-05-24T11:18:19+08:00"><meta property="article:modified_time" content="2022-05-24T14:45:20+08:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://luckyouo.github.io/logo.png"><meta name=twitter:title content="单调栈"><meta name=twitter:description content="前言 极值和最值不一样，极值是由区间范围所决定的，最值是由整个区间所决定的，当求极值的一个区间的影响范围时，由于涉及多个区间，如果直接暴力求，"><meta name=application-name content="LoveIt"><meta name=apple-mobile-web-app-title content="LoveIt"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://luckyouo.github.io/posts/%E5%8D%95%E8%B0%83%E6%A0%88.html/><link rel=prev href=https://luckyouo.github.io/posts/ssh-%E6%9C%AC%E5%9C%B0%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91%E5%92%8C%E8%BF%9C%E7%A8%8B%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91.html/><link rel=stylesheet href=/lib/normalize/normalize.min.css><link rel=stylesheet href=/css/style.min.css><link rel=stylesheet href=/lib/fontawesome-free/all.min.css><link rel=stylesheet href=/lib/animate/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"单调栈","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/luckyouo.github.io\/posts\/%E5%8D%95%E8%B0%83%E6%A0%88.html\/"},"genre":"posts","keywords":"单调栈, 区间极值","wordcount":1808,"url":"https:\/\/luckyouo.github.io\/posts\/%E5%8D%95%E8%B0%83%E6%A0%88.html\/","datePublished":"2022-05-24T11:18:19+08:00","dateModified":"2022-05-24T14:45:20+08:00","publisher":{"@type":"Organization","name":""},"author":{"@type":"Person","name":"luckyouo"},"description":""}</script></head><body header-desktop=fixed header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"auto"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"auto"==="dark")&&document.body.setAttribute("theme","dark")</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><a href=https://github.com/luckyouo class=github-corner target=_blank title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="3.5rem" height="3.5rem" viewBox="0 0 250 250" style="fill:#70b7fd;color:#fff;position:absolute;top:0;border:0;left:0;transform:scale(-1,1)" aria-hidden="true"><path d="M0 0 115 115h15l12 27L250 250V0z"/><path d="M128.3 109C113.8 99.7 119 89.6 119 89.6 122 82.7 120.5 78.6 120.5 78.6 119.2 72 123.4 76.3 123.4 76.3 127.3 80.9 125.5 87.3 125.5 87.3 122.9 97.6 130.6 101.9 134.4 103.2" fill="currentcolor" style="transform-origin:130px 106px" class="octo-arm"/><path d="M115 115C114.9 115.1 118.7 116.5 119.8 115.4l13.9-13.8C136.9 99.2 139.9 98.4 142.2 98.6 133.8 88 127.5 74.4 143.8 58 148.5 53.4 154 51.2 159.7 51 160.3 49.4 163.2 43.6 171.4 40.1 171.4 40.1 176.1 42.5 178.8 56.2 183.1 58.6 187.2 61.8 190.9 65.4 194.5 69 197.7 73.2 200.1 77.6 213.8 80.2 216.3 84.9 216.3 84.9 212.7 93.1 206.9 96 205.4 96.6 205.1 102.4 203 107.8 198.3 112.5 181.9 128.9 168.3 122.5 157.7 114.1 157.9 116.9 156.7 120.9 152.7 124.9L141 136.5C139.8 137.7 141.6 141.9 141.8 141.8z" fill="currentcolor" class="octo-body"/></svg></a><div class=header-title><a href=/ title="Luckyouo Blog">Luckyouo Blogs</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/>归档 </a><a class=menu-item href=/tags/>标签 </a><a class=menu-item href=/categories/>分类 </a><a class=menu-item href=/friends/><i class="fas fa-fw fa-fan fa-spin"></i> 友链 </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<input type=text placeholder=搜索文章标题或内容... id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=搜索><i class="fas fa-search fa-fw"></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=清空><i class="fas fa-times-circle fa-fw"></i></a>
+<span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin"></i></span>
+</span><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题><i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title="Luckyouo Blog">Luckyouo Blogs</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder=搜索文章标题或内容... id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=搜索><i class="fas fa-search fa-fw"></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=清空><i class="fas fa-times-circle fa-fw"></i></a>
+<span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin"></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>取消</a></div><a class=menu-item href=/posts/ title>归档</a><a class=menu-item href=/tags/ title>标签</a><a class=menu-item href=/categories/ title>分类</a><a class=menu-item href=/friends/ title><i class="fas fa-fw fa-fan fa-spin"></i>友链</a><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题>
+<i class="fas fa-adjust fa-fw"></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>目录</h2><div class="toc-content always-active" id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">单调栈</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>luckyouo</a></span>&nbsp;<span class=post-category>收录于 <a href=/categories/%E7%AE%97%E6%B3%95/><i class="far fa-folder fa-fw"></i>算法</a></span></div><div class=post-meta-line><i class="far fa-calendar fa-fw"></i>&nbsp;<time datetime=2022-05-24>2022-05-24</time>&nbsp;<i class="far fa-calendar-plus fa-fw"></i>&nbsp;<time datetime=2022-05-24>2022-05-24</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1808 字&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 4 分钟&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>目录</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ol><li><a href=#前言>前言</a></li><li><a href=#算法思想>算法思想</a></li><li><a href=#代码实现>代码实现</a><ol><li><a href=#1856-子数组最小乘积的最大值httpsleetcodecnproblemsmaximum-subarray-min-product><a href=https://leetcode.cn/problems/maximum-subarray-min-product/>1856. 子数组最小乘积的最大值</a></a></li><li><a href=#2281-巫师的总力量和httpsleetcodecnproblemssum-of-total-strength-of-wizards><a href=https://leetcode.cn/problems/sum-of-total-strength-of-wizards/>2281. 巫师的总力量和</a></a></li></ol></li><li><a href=#参考资料>参考资料</a></li></ol></nav></div></div><div class=content id=content><h2 id=前言>前言</h2><p>极值和最值不一样，极值是由区间范围所决定的，最值是由整个区间所决定的，当求极值的一个区间的影响范围时，由于涉及多个区间，如果直接暴力求，则需要 $O(n^2)$ 时间复杂度，而使用单调栈进行求解，时间复杂度为 $O(n)$ 。</p><figure><img src=/images/mono_stack.jpg><figcaption><h4>shiro 工作流程</h4></figcaption></figure><h2 id=算法思想>算法思想</h2><p>单调栈是指一个栈的值顺序是自增或自减的，比如求值最小值所影响的区间范围是，则使用单调递增的栈。从左至右遍历数组 $arr$，当遍历当数组元素 $a_i$ 时，栈中第一个小于数组元素的值即为当前元素 $a_i$ 作为最小值的左区间，若栈空或者栈中无元素小于当前元素，则左区间表示整个区间的左端。同理，也可以从右至左求该元素的最为最小值的右区间。</p><p>至此，数组的每个元素作为最值的影响范围都已经求出</p><h2 id=代码实现>代码实现</h2><h3 id=1856-子数组最小乘积的最大值httpsleetcodecnproblemsmaximum-subarray-min-product><a href=https://leetcode.cn/problems/maximum-subarray-min-product/ target=_blank rel="noopener noreffer">1856. 子数组最小乘积的最大值</a></h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-markdown data-lang=markdown><span class=line><span class=cl>一个数组的 最小乘积 定义为这个数组中 最小值 乘以 数组的 和 。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>比方说，数组 [3,2,5] （最小值是 2）的最小乘积为 2 <span class=ge>* (3+2+5) = 2 *</span> 10 = 20 。
+</span></span><span class=line><span class=cl>给你一个正整数数组 nums ，请你返回 nums 任意 非空子数组 的最小乘积 的 最大值 。由于答案可能很大，请你返回答案对  109 + 7 取余 的结果。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>请注意，最小乘积的最大值考虑的是取余操作 之前 的结果。题目保证最小乘积的最大值在 不取余 的情况下可以用 64 位有符号整数 保存。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>子数组 定义为一个数组的 连续 部分。
+</span></span></code></pre></td></tr></table></div></div><p>由于题目需要求最大值，所以区间范围应该为极值的最大影响范围，这与单调栈解决的方向完美契合，而区间和可以通过前缀和解决，因此该题是前缀和 + 单调栈的模板题目。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>class</span> <span class=nc>Solution</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=kt>int</span> <span class=nf>maxSumMinProduct</span><span class=o>(</span><span class=kt>int</span><span class=o>[]</span> <span class=n>nums</span><span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=kd>final</span> <span class=kt>int</span> <span class=n>mod</span> <span class=o>=</span> <span class=o>(</span><span class=kt>int</span><span class=o>)</span> <span class=o>(</span><span class=n>1e9</span> <span class=o>+</span> <span class=n>7</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>        <span class=kt>int</span> <span class=n>n</span> <span class=o>=</span> <span class=n>nums</span><span class=o>.</span><span class=na>length</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>        <span class=kt>int</span><span class=o>[]</span> <span class=n>left</span> <span class=o>=</span> <span class=k>new</span> <span class=kt>int</span><span class=o>[</span><span class=n>n</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>        <span class=kt>int</span><span class=o>[]</span> <span class=n>right</span> <span class=o>=</span> <span class=k>new</span> <span class=kt>int</span><span class=o>[</span><span class=n>n</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=n>ArrayDeque</span><span class=o>&lt;</span><span class=n>Integer</span><span class=o>&gt;</span> <span class=n>st</span> <span class=o>=</span> <span class=k>new</span> <span class=n>ArrayDeque</span><span class=o>&lt;&gt;();</span>
+</span></span><span class=line><span class=cl>        <span class=n>left</span><span class=o>[</span><span class=n>0</span><span class=o>]</span> <span class=o>=</span> <span class=n>0</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>        <span class=n>right</span><span class=o>[</span><span class=n>n</span><span class=o>-</span><span class=n>1</span><span class=o>]</span> <span class=o>=</span> <span class=n>n</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>        <span class=n>st</span><span class=o>.</span><span class=na>push</span><span class=o>(</span><span class=n>0</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=o>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=n>1</span><span class=o>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>n</span><span class=o>;</span> <span class=n>i</span><span class=o>++)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>while</span> <span class=o>(!</span><span class=n>st</span><span class=o>.</span><span class=na>isEmpty</span><span class=o>()</span> <span class=o>&amp;&amp;</span> <span class=n>nums</span><span class=o>[</span><span class=n>st</span><span class=o>.</span><span class=na>peek</span><span class=o>()]</span> <span class=o>&gt;=</span> <span class=n>nums</span><span class=o>[</span><span class=n>i</span><span class=o>]){</span>
+</span></span><span class=line><span class=cl>                <span class=n>st</span><span class=o>.</span><span class=na>pop</span><span class=o>();</span>
+</span></span><span class=line><span class=cl>            <span class=o>}</span>
+</span></span><span class=line><span class=cl>            <span class=n>left</span><span class=o>[</span><span class=n>i</span><span class=o>]</span> <span class=o>=</span> <span class=n>st</span><span class=o>.</span><span class=na>isEmpty</span><span class=o>()</span> <span class=o>?</span> <span class=n>0</span> <span class=o>:</span> <span class=n>st</span><span class=o>.</span><span class=na>peek</span><span class=o>()</span> <span class=o>+</span> <span class=n>1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>            <span class=n>st</span><span class=o>.</span><span class=na>push</span><span class=o>(</span><span class=n>i</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>        <span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=n>st</span> <span class=o>=</span> <span class=k>new</span> <span class=n>ArrayDeque</span><span class=o>&lt;&gt;();</span>
+</span></span><span class=line><span class=cl>        <span class=n>st</span><span class=o>.</span><span class=na>push</span><span class=o>(</span><span class=n>n</span><span class=o>-</span><span class=n>1</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=o>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=n>n</span> <span class=o>-</span> <span class=n>2</span><span class=o>;</span> <span class=n>i</span> <span class=o>&gt;=</span> <span class=n>0</span><span class=o>;</span> <span class=n>i</span><span class=o>--)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>while</span> <span class=o>(!</span><span class=n>st</span><span class=o>.</span><span class=na>isEmpty</span><span class=o>()</span> <span class=o>&amp;&amp;</span> <span class=n>nums</span><span class=o>[</span><span class=n>st</span><span class=o>.</span><span class=na>peek</span><span class=o>()]</span> <span class=o>&gt;=</span> <span class=n>nums</span><span class=o>[</span><span class=n>i</span><span class=o>]){</span>
+</span></span><span class=line><span class=cl>                <span class=n>st</span><span class=o>.</span><span class=na>pop</span><span class=o>();</span>
+</span></span><span class=line><span class=cl>            <span class=o>}</span>
+</span></span><span class=line><span class=cl>            <span class=n>right</span><span class=o>[</span><span class=n>i</span><span class=o>]</span> <span class=o>=</span> <span class=n>st</span><span class=o>.</span><span class=na>isEmpty</span><span class=o>()</span> <span class=o>?</span> <span class=n>n</span><span class=o>:</span> <span class=n>st</span><span class=o>.</span><span class=na>peek</span><span class=o>();</span>
+</span></span><span class=line><span class=cl>            <span class=n>st</span><span class=o>.</span><span class=na>push</span><span class=o>(</span><span class=n>i</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>        <span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=kt>long</span><span class=o>[]</span> <span class=n>prefix</span> <span class=o>=</span> <span class=k>new</span> <span class=kt>long</span><span class=o>[</span><span class=n>n</span><span class=o>+</span><span class=n>1</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=o>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=n>0</span><span class=o>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>n</span><span class=o>;</span> <span class=n>i</span><span class=o>++)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>            <span class=n>prefix</span><span class=o>[</span><span class=n>i</span><span class=o>+</span><span class=n>1</span><span class=o>]</span> <span class=o>=</span> <span class=n>prefix</span><span class=o>[</span><span class=n>i</span><span class=o>]</span> <span class=o>+</span> <span class=n>nums</span><span class=o>[</span><span class=n>i</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>        <span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=kt>long</span> <span class=n>max</span> <span class=o>=</span> <span class=n>0</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=o>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=n>0</span><span class=o>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>n</span><span class=o>;</span> <span class=n>i</span><span class=o>++)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>            <span class=kt>long</span> <span class=n>product</span> <span class=o>=</span> <span class=n>nums</span><span class=o>[</span><span class=n>i</span><span class=o>]</span> <span class=o>*</span> <span class=o>(</span><span class=n>prefix</span><span class=o>[</span><span class=n>right</span><span class=o>[</span><span class=n>i</span><span class=o>]]</span> <span class=o>-</span> <span class=n>prefix</span><span class=o>[</span><span class=n>left</span><span class=o>[</span><span class=n>i</span><span class=o>]])</span> <span class=o>;</span>
+</span></span><span class=line><span class=cl>            <span class=n>max</span> <span class=o>=</span> <span class=n>Math</span><span class=o>.</span><span class=na>max</span><span class=o>(</span><span class=n>max</span><span class=o>,</span> <span class=n>product</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>        <span class=o>}</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=o>(</span><span class=kt>int</span><span class=o>)</span> <span class=o>(</span><span class=n>max</span> <span class=o>%</span> <span class=n>mod</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>单调栈求左右区间范围时，可以通过一次遍历实现同时求左右区间，当一次遍历求左右区间范围时，需要初始化默认左右区间值，上题默认左区间范围为 $0$，默认右区间范围为 $n-1$ 。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>class</span> <span class=nc>Solution</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=kt>int</span> <span class=nf>maxSumMinProduct</span><span class=o>(</span><span class=kt>int</span><span class=o>[]</span> <span class=n>nums</span><span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=kd>final</span> <span class=kt>int</span> <span class=n>mod</span> <span class=o>=</span> <span class=o>(</span><span class=kt>int</span><span class=o>)</span> <span class=o>(</span><span class=n>1e9</span> <span class=o>+</span> <span class=n>7</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>        <span class=kt>int</span> <span class=n>n</span> <span class=o>=</span> <span class=n>nums</span><span class=o>.</span><span class=na>length</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>        <span class=kt>int</span><span class=o>[]</span> <span class=n>left</span> <span class=o>=</span> <span class=k>new</span> <span class=kt>int</span><span class=o>[</span><span class=n>n</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>        <span class=kt>int</span><span class=o>[]</span> <span class=n>right</span> <span class=o>=</span> <span class=k>new</span> <span class=kt>int</span><span class=o>[</span><span class=n>n</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=n>ArrayDeque</span><span class=o>&lt;</span><span class=n>Integer</span><span class=o>&gt;</span> <span class=n>st</span> <span class=o>=</span> <span class=k>new</span> <span class=n>ArrayDeque</span><span class=o>&lt;&gt;();</span>
+</span></span><span class=line><span class=cl>        <span class=n>left</span><span class=o>[</span><span class=n>0</span><span class=o>]</span> <span class=o>=</span> <span class=n>0</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>        <span class=n>Arrays</span><span class=o>.</span><span class=na>fill</span><span class=o>(</span><span class=n>right</span><span class=o>,</span> <span class=n>n</span><span class=o>-</span><span class=n>1</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=o>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=n>0</span><span class=o>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>n</span><span class=o>;</span> <span class=n>i</span><span class=o>++)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>while</span> <span class=o>(!</span><span class=n>st</span><span class=o>.</span><span class=na>isEmpty</span><span class=o>()</span> <span class=o>&amp;&amp;</span> <span class=n>nums</span><span class=o>[</span><span class=n>st</span><span class=o>.</span><span class=na>peek</span><span class=o>()]</span> <span class=o>&gt;=</span> <span class=n>nums</span><span class=o>[</span><span class=n>i</span><span class=o>])</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>                <span class=n>right</span><span class=o>[</span><span class=n>st</span><span class=o>.</span><span class=na>pop</span><span class=o>()]</span> <span class=o>=</span> <span class=n>i</span> <span class=o>-</span> <span class=n>1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>            <span class=o>}</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=o>(!</span><span class=n>st</span><span class=o>.</span><span class=na>isEmpty</span><span class=o>())</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>                <span class=n>left</span><span class=o>[</span><span class=n>i</span><span class=o>]</span> <span class=o>=</span> <span class=n>st</span><span class=o>.</span><span class=na>peek</span><span class=o>()</span> <span class=o>+</span> <span class=n>1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>            <span class=o>}</span>
+</span></span><span class=line><span class=cl>            <span class=n>st</span><span class=o>.</span><span class=na>push</span><span class=o>(</span><span class=n>i</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>        <span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=kt>long</span><span class=o>[]</span> <span class=n>prefix</span> <span class=o>=</span> <span class=k>new</span> <span class=kt>long</span><span class=o>[</span><span class=n>n</span> <span class=o>+</span> <span class=n>1</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=o>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=n>0</span><span class=o>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>n</span><span class=o>;</span> <span class=n>i</span><span class=o>++)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>            <span class=n>prefix</span><span class=o>[</span><span class=n>i</span> <span class=o>+</span> <span class=n>1</span><span class=o>]</span> <span class=o>=</span> <span class=n>prefix</span><span class=o>[</span><span class=n>i</span><span class=o>]</span> <span class=o>+</span> <span class=n>nums</span><span class=o>[</span><span class=n>i</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>        <span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=kt>long</span> <span class=n>max</span> <span class=o>=</span> <span class=n>0</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=o>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=n>0</span><span class=o>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>n</span><span class=o>;</span> <span class=n>i</span><span class=o>++)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>            <span class=kt>long</span> <span class=n>product</span> <span class=o>=</span> <span class=n>nums</span><span class=o>[</span><span class=n>i</span><span class=o>]</span> <span class=o>*</span> <span class=o>(</span><span class=n>prefix</span><span class=o>[</span><span class=n>right</span><span class=o>[</span><span class=n>i</span><span class=o>]</span> <span class=o>+</span> <span class=n>1</span><span class=o>]</span> <span class=o>-</span> <span class=n>prefix</span><span class=o>[</span><span class=n>left</span><span class=o>[</span><span class=n>i</span><span class=o>]]);</span>
+</span></span><span class=line><span class=cl>            <span class=n>max</span> <span class=o>=</span> <span class=n>Math</span><span class=o>.</span><span class=na>max</span><span class=o>(</span><span class=n>max</span><span class=o>,</span> <span class=n>product</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>        <span class=o>}</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=o>(</span><span class=kt>int</span><span class=o>)</span> <span class=o>(</span><span class=n>max</span> <span class=o>%</span> <span class=n>mod</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=2281-巫师的总力量和httpsleetcodecnproblemssum-of-total-strength-of-wizards><a href=https://leetcode.cn/problems/sum-of-total-strength-of-wizards/ target=_blank rel="noopener noreffer">2281. 巫师的总力量和</a></h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-markdown data-lang=markdown><span class=line><span class=cl>作为国王的统治者，你有一支巫师军队听你指挥。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>给你一个下标从 0 开始的整数数组 strength ，其中 strength[i] 表示第 i 位巫师的力量值。对于连续的一组巫师（也就是这些巫师的力量值是 strength 的 子数组），总力量 定义为以下两个值的 乘积 ：
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>1.</span> 巫师中 最弱 的能力值。
+</span></span><span class=line><span class=cl><span class=k>2.</span> 组中所有巫师的个人力量值 之和 。
+</span></span><span class=line><span class=cl>请你返回 所有 巫师组的 总 力量之和。由于答案可能很大，请将答案对 109 + 7 取余 后返回。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>子数组 是一个数组里 非空 连续子序列。
+</span></span></code></pre></td></tr></table></div></div><p>连续的一组巫师代表的就是一个连续区间范围，最弱的值则为极小值，因此该题目求的是极值影响的范围区间的所有包含该极值的子区间和与该极值的乘积的和。区间的范围可以通过单调栈求解，包含极值的子区间可以通过前缀和实现，而所有包含该极值的子区间的和与该极值乘积的和，通过公式求和，确认为前缀和的前缀和。</p><p>在范围 [L,R][<em>L</em>,<em>R</em>] 内的所有子数组的元素和的和可以表示为</p><p>$$\sum_{r=i+1}^{R+1}\sum_{l=L}^{i}s[r] - s[l]$$</p><p>通过变化求和可得</p><p>$$(i - L + 1)\sum_{r=i+1}^{R+1}s[r] - (R- i +1)\sum_{l=L}^is[l]$$</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>class</span> <span class=nc>Solution</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=kt>int</span> <span class=nf>totalStrength</span><span class=o>(</span><span class=kt>int</span><span class=o>[]</span> <span class=n>strength</span><span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=kd>final</span> <span class=n>var</span> <span class=n>mod</span> <span class=o>=</span> <span class=o>(</span><span class=kt>int</span><span class=o>)</span> <span class=n>1e9</span> <span class=o>+</span> <span class=n>7</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=n>var</span> <span class=n>n</span> <span class=o>=</span> <span class=n>strength</span><span class=o>.</span><span class=na>length</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>        <span class=n>var</span> <span class=n>left</span> <span class=o>=</span> <span class=k>new</span> <span class=kt>int</span><span class=o>[</span><span class=n>n</span><span class=o>];</span>  <span class=c1>// left[i] 为左侧严格小于 strength[i] 的最近元素位置（不存在时为 -1）
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>var</span> <span class=n>right</span> <span class=o>=</span> <span class=k>new</span> <span class=kt>int</span><span class=o>[</span><span class=n>n</span><span class=o>];</span> <span class=c1>// right[i] 为右侧小于等于 strength[i] 的最近元素位置（不存在时为 n）
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>Arrays</span><span class=o>.</span><span class=na>fill</span><span class=o>(</span><span class=n>right</span><span class=o>,</span> <span class=n>n</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>        <span class=n>var</span> <span class=n>st</span> <span class=o>=</span> <span class=k>new</span> <span class=n>ArrayDeque</span><span class=o>&lt;</span><span class=n>Integer</span><span class=o>&gt;();</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=o>(</span><span class=n>var</span> <span class=n>i</span> <span class=o>=</span> <span class=n>0</span><span class=o>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>n</span><span class=o>;</span> <span class=n>i</span><span class=o>++)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>while</span> <span class=o>(!</span><span class=n>st</span><span class=o>.</span><span class=na>isEmpty</span><span class=o>()</span> <span class=o>&amp;&amp;</span> <span class=n>strength</span><span class=o>[</span><span class=n>st</span><span class=o>.</span><span class=na>peek</span><span class=o>()]</span> <span class=o>&gt;=</span> <span class=n>strength</span><span class=o>[</span><span class=n>i</span><span class=o>])</span> <span class=n>right</span><span class=o>[</span><span class=n>st</span><span class=o>.</span><span class=na>pop</span><span class=o>()]</span> <span class=o>=</span> <span class=n>i</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>            <span class=n>left</span><span class=o>[</span><span class=n>i</span><span class=o>]</span> <span class=o>=</span> <span class=n>st</span><span class=o>.</span><span class=na>isEmpty</span><span class=o>()</span> <span class=o>?</span> <span class=o>-</span><span class=n>1</span> <span class=o>:</span> <span class=n>st</span><span class=o>.</span><span class=na>peek</span><span class=o>();</span>
+</span></span><span class=line><span class=cl>            <span class=n>st</span><span class=o>.</span><span class=na>push</span><span class=o>(</span><span class=n>i</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>        <span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=n>var</span> <span class=n>s</span> <span class=o>=</span> <span class=n>0L</span><span class=o>;</span> <span class=c1>// 前缀和
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>var</span> <span class=n>ss</span> <span class=o>=</span> <span class=k>new</span> <span class=kt>int</span><span class=o>[</span><span class=n>n</span> <span class=o>+</span> <span class=n>2</span><span class=o>];</span> <span class=c1>// 前缀和的前缀和
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=k>for</span> <span class=o>(</span><span class=n>var</span> <span class=n>i</span> <span class=o>=</span> <span class=n>1</span><span class=o>;</span> <span class=n>i</span> <span class=o>&lt;=</span> <span class=n>n</span><span class=o>;</span> <span class=o>++</span><span class=n>i</span><span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>            <span class=n>s</span> <span class=o>+=</span> <span class=n>strength</span><span class=o>[</span><span class=n>i</span> <span class=o>-</span> <span class=n>1</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>            <span class=n>ss</span><span class=o>[</span><span class=n>i</span> <span class=o>+</span> <span class=n>1</span><span class=o>]</span> <span class=o>=</span> <span class=o>(</span><span class=kt>int</span><span class=o>)</span> <span class=o>((</span><span class=n>ss</span><span class=o>[</span><span class=n>i</span><span class=o>]</span> <span class=o>+</span> <span class=n>s</span><span class=o>)</span> <span class=o>%</span> <span class=n>mod</span><span class=o>);</span> <span class=c1>// 注意取模后，下面计算两个 ss 相减，结果可能为负
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=n>var</span> <span class=n>ans</span> <span class=o>=</span> <span class=n>0L</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=o>(</span><span class=n>var</span> <span class=n>i</span> <span class=o>=</span> <span class=n>0</span><span class=o>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>n</span><span class=o>;</span> <span class=o>++</span><span class=n>i</span><span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>            <span class=kt>int</span> <span class=n>l</span> <span class=o>=</span> <span class=n>left</span><span class=o>[</span><span class=n>i</span><span class=o>]</span> <span class=o>+</span> <span class=n>1</span><span class=o>,</span> <span class=n>r</span> <span class=o>=</span> <span class=n>right</span><span class=o>[</span><span class=n>i</span><span class=o>]</span> <span class=o>-</span> <span class=n>1</span><span class=o>;</span> <span class=c1>// [l,r] 左闭右闭
+</span></span></span><span class=line><span class=cl><span class=c1></span>            <span class=n>var</span> <span class=n>tot</span> <span class=o>=</span> <span class=o>((</span><span class=kt>long</span><span class=o>)</span> <span class=o>(</span><span class=n>i</span> <span class=o>-</span> <span class=n>l</span> <span class=o>+</span> <span class=n>1</span><span class=o>)</span> <span class=o>*</span> <span class=o>(</span><span class=n>ss</span><span class=o>[</span><span class=n>r</span> <span class=o>+</span> <span class=n>2</span><span class=o>]</span> <span class=o>-</span> <span class=n>ss</span><span class=o>[</span><span class=n>i</span> <span class=o>+</span> <span class=n>1</span><span class=o>])</span> <span class=o>-</span> <span class=o>(</span><span class=kt>long</span><span class=o>)</span> <span class=o>(</span><span class=n>r</span> <span class=o>-</span> <span class=n>i</span> <span class=o>+</span> <span class=n>1</span><span class=o>)</span> <span class=o>*</span> <span class=o>(</span><span class=n>ss</span><span class=o>[</span><span class=n>i</span> <span class=o>+</span> <span class=n>1</span><span class=o>]</span> <span class=o>-</span> <span class=n>ss</span><span class=o>[</span><span class=n>l</span><span class=o>]))</span> <span class=o>%</span> <span class=n>mod</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>            <span class=n>ans</span> <span class=o>=</span> <span class=o>(</span><span class=n>ans</span> <span class=o>+</span> <span class=n>strength</span><span class=o>[</span><span class=n>i</span><span class=o>]</span> <span class=o>*</span> <span class=n>tot</span><span class=o>)</span> <span class=o>%</span> <span class=n>mod</span><span class=o>;</span> <span class=c1>// 累加贡献
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=o>}</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=o>(</span><span class=kt>int</span><span class=o>)</span> <span class=o>(</span><span class=n>ans</span> <span class=o>+</span> <span class=n>mod</span><span class=o>)</span> <span class=o>%</span> <span class=n>mod</span><span class=o>;</span> <span class=c1>// 防止算出负数
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=o>}</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=参考资料>参考资料</h2><p><a href=https://leetcode.cn/problems/maximum-subarray-min-product/ target=_blank rel="noopener noreffer">1856. 子数组最小乘积的最大值</a></p><p><a href=https://leetcode.cn/problems/sum-of-total-strength-of-wizards/ target=_blank rel="noopener noreffer">2281. 巫师的总力量和</a></p><p><a href=https://leetcode.cn/problems/sum-of-total-strength-of-wizards/solution/dan-diao-zhan-qian-zhui-he-de-qian-zhui-d9nki/ target=_blank rel="noopener noreffer">单调栈 + 前缀和的前缀和（Python/Java/C++/Go）</a></p><p><a href="https://leetcode.cn/link/?target=https%3A%2F%2Fwww.bilibili.com%2Fvideo%2FBV1RY4y157nW" target=_blank rel="noopener noreffer">【灵茶山艾府】第 294 场力扣周赛讲题 + 算法练习方法</a></p></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>更新于 2022-05-24</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=/posts/%E5%8D%95%E8%B0%83%E6%A0%88.html/index.md target=_blank>阅读原始文档</a></span></div><div class=post-info-share><span><a href=javascript:void(0); title="分享到 Twitter" data-sharer=twitter data-url=https://luckyouo.github.io/posts/%E5%8D%95%E8%B0%83%E6%A0%88.html/ data-title=单调栈 data-via=xxxx data-hashtags=单调栈,区间极值><i class="fab fa-twitter fa-fw"></i></a><a href=javascript:void(0); title="分享到 Facebook" data-sharer=facebook data-url=https://luckyouo.github.io/posts/%E5%8D%95%E8%B0%83%E6%A0%88.html/ data-hashtag=单调栈><i class="fab fa-facebook-square fa-fw"></i></a><a href=javascript:void(0); title="分享到 微博" data-sharer=weibo data-url=https://luckyouo.github.io/posts/%E5%8D%95%E8%B0%83%E6%A0%88.html/ data-title=单调栈><i class="fab fa-weibo fa-fw"></i></a></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/%E5%8D%95%E8%B0%83%E6%A0%88/>单调栈</a>,&nbsp;<a href=/tags/%E5%8C%BA%E9%97%B4%E6%9E%81%E5%80%BC/>区间极值</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>返回</a></span>&nbsp;|&nbsp;<span><a href=/>主页</a></span></section></div><div class=post-nav><a href=/posts/ssh-%E6%9C%AC%E5%9C%B0%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91%E5%92%8C%E8%BF%9C%E7%A8%8B%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91.html/ class=prev rel=prev title="SSH 本地端口转发和远程端口转发"><i class="fas fa-angle-left fa-fw"></i>SSH 本地端口转发和远程端口转发</a></div></div><div id=comments></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line><span id=run-time></span></div><div class=footer-line>由 <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.99.1">Hugo</a> 强力驱动 | 主题 - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2022</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank>luckyouo</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title=回到顶部><i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title=查看评论><i class="fas fa-comment fa-fw"></i></a></div><div class=sidebar_wo><div id=leimu><img src=https://cdn.jsdelivr.net/gh/lewky/lewky.github.io@master/images/b2t/leimuA.png alt=雷姆 onmouseover='this.src="https://cdn.jsdelivr.net/gh/lewky/lewky.github.io@master/images/b2t/leimuB.png"' onmouseout='this.src="https://cdn.jsdelivr.net/gh/lewky/lewky.github.io@master/images/b2t/leimuA.png"' title=回到顶部></div><div class=sidebar_wo id=lamu><img src=https://cdn.jsdelivr.net/gh/lewky/lewky.github.io@master/images/b2t/lamuA.png alt=雷姆 onmouseover='this.src="https://cdn.jsdelivr.net/gh/lewky/lewky.github.io@master/images/b2t/lamuB.png"' onmouseout='this.src="https://cdn.jsdelivr.net/gh/lewky/lewky.github.io@master/images/b2t/lamuA.png"' title=回到底部></div></div><link rel=stylesheet href=/lib/katex/katex.min.css><link rel=stylesheet href=/lib/katex/copy-tex.min.css><link rel=stylesheet href=/lib/cookieconsent/cookieconsent.min.css><script type=text/javascript src=/lib/smooth-scroll/smooth-scroll.min.js></script><script type=text/javascript src=/lib/autocomplete/autocomplete.min.js></script><script type=text/javascript src=/lib/lunr/lunr.min.js></script><script type=text/javascript src=/lib/lunr/lunr.stemmer.support.min.js></script><script type=text/javascript src=/lib/lunr/lunr.zh.min.js></script><script type=text/javascript src=/lib/lazysizes/lazysizes.min.js></script><script type=text/javascript src=/lib/clipboard/clipboard.min.js></script><script type=text/javascript src=/lib/sharer/sharer.min.js></script><script type=text/javascript src=/lib/katex/katex.min.js></script><script type=text/javascript src=/lib/katex/auto-render.min.js></script><script type=text/javascript src=/lib/katex/copy-tex.min.js></script><script type=text/javascript src=/lib/katex/mhchem.min.js></script><script type=text/javascript src=/lib/cookieconsent/cookieconsent.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"复制到剪贴板",maxShownLines:15},comment:{},cookieconsent:{content:{dismiss:"同意",link:"了解更多",message:"本网站使用 Cookies 来改善您的浏览体验."},enable:!0,palette:{button:{background:"#f0f0f0"},popup:{background:"#1aa3ff"}},theme:"edgeless"},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},search:{highlightTag:"em",lunrIndexURL:"/index.json",lunrLanguageCode:"zh",lunrSegmentitURL:"/lib/lunr/lunr.segmentit.js",maxResultLength:10,noResultsFound:"没有找到结果",snippetLength:50,type:"lunr"}}</script><script type=text/javascript src=/js/theme.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/jquery@2.1.3/dist/jquery.min.js></script><script type=text/javascript src=/js/custom.js></script></body></html>
