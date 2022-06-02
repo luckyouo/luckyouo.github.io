@@ -48,3 +48,23 @@ tensor([[ 9.4064e+13,  2.8000e+01,  9.3493e+13],
         [ 7.5751e+18,  7.1428e+18,  7.5955e+18]])
 ```
 
+###  torch.transpose(*input*, *dim0*, *dim1*) → Tensor
+
+将 input 的 tensor的 dim0 和 dim1 维度转置
+
+```python
+>>> x = torch.randn(2, 3)
+>>> x
+tensor([[ 1.0028, -0.9893,  0.5809],
+        [-0.1669,  0.7299,  0.4942]])
+>>> torch.transpose(x, 0, 1)
+tensor([[ 1.0028, -0.1669],
+        [-0.9893,  0.7299],
+        [ 0.5809,  0.4942]])
+```
+
+### torch.index_select(*input*, *dim*, *index*, ***, *out=None*) → Tensor
+
+返回一个新张量，该张量使用索引中的条目沿维度 dim 索引输入张量，该条目是 LongTensor
+
+
