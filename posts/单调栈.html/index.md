@@ -172,6 +172,33 @@ class Solution {
 
 ```
 
+### [2289. 使数组按非递减顺序排列](https://leetcode.cn/problems/steps-to-make-array-non-decreasing/)
+
+```markdown
+给你一个下标从 0 开始的整数数组 nums 。在一步操作中，移除所有满足 nums[i - 1] > nums[i] 的 nums[i] ，其中 0 < i < nums.length 。
+
+重复执行步骤，直到 nums 变为 非递减 数组，返回所需执行的操作数。
+```
+
+```java
+class Solution {
+    public int totalSteps(int[] nums) {
+        var ans = 0;
+        var st = new ArrayDeque<int[]>();
+        for (var num : nums) {
+            var maxT = 0;
+            while (!st.isEmpty() && st.peek()[0] <= num)
+                maxT = Math.max(maxT, st.pop()[1]);
+            maxT = st.isEmpty() ? 0 : maxT + 1; // 栈空表示该索引为当前最大值，所以值为 0；当栈不为空时，值最小为 1，所以需要将 +1 操作放置在循环外（因为循环可能一次也不执行），也可也将数组全部初始化为 1
+            ans = Math.max(ans, maxT);
+            st.push(new int[]{num, maxT});
+        }
+        return ans;
+    }
+}
+
+```
+
 ## 参考资料
 
 [1856. 子数组最小乘积的最大值](https://leetcode.cn/problems/maximum-subarray-min-product/) 
@@ -181,5 +208,7 @@ class Solution {
 [单调栈 + 前缀和的前缀和（Python/Java/C++/Go）](https://leetcode.cn/problems/sum-of-total-strength-of-wizards/solution/dan-diao-zhan-qian-zhui-he-de-qian-zhui-d9nki/) 
 
 [【灵茶山艾府】第 294 场力扣周赛讲题 + 算法练习方法](https://leetcode.cn/link/?target=https%3A%2F%2Fwww.bilibili.com%2Fvideo%2FBV1RY4y157nW) 
+
+[等价转换 + 利用单调性（Python/Java/C++/Go）](https://leetcode.cn/problems/steps-to-make-array-non-decreasing/solution/by-endlesscheng-s2yc/)
 
 
