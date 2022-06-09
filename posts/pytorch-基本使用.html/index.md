@@ -26,3 +26,28 @@ numpy 转 Tensor后，Tensor 的类型为 DoubleTensor，而不是默认的 Floa
 
 Tensor 是类，而 tenosr 是函数，Tensor 返回的是 FloatTensor，而 tensor 则根据提供的数据返回的 LongTensor、 FloatTensor 和 DoubleTensor 等类型。
 
+### Tensor插入维度
+
+Tensor 插入一个维度为 1 的常用方法为 unsqueeze(dim=dim)，对应的减少维度方法为 squeeze(dim=dim)。
+
+也可以像 Numpy 一样，使用 None 插入的一个维度为 1 新维度
+
+```python
+>>> n = torch.rand(3, 100, 100)
+>>> n[:, None].shape
+(3, 1, 100, 100)
+
+>>> n.unsqueeze(1).shape
+(3, 1, 100, 100)
+```
+
+其中 None 所在的维度表示所要插入维度的位置。默认是从头开始表示所要插入的维度，可以使用 `...` 表示表示最为一个维度相对的位置进行插入
+
+```python
+n[..., None] 等价于 n.unsqueeze(dim=-1)
+n[..., None, :] 等价于 n.unsqueeze(dim=-2)
+```
+
+[Indexing a tensor with None in PyTorch](https://stackoverflow.com/questions/69797614/indexing-a-tensor-with-none-in-pytorch)
+
+

@@ -40,7 +40,22 @@
 
 ## 代码
 
-[382. 链表随机节点](https://leetcode-cn.com/problems/linked-list-random-node/)
+### [382. 链表随机节点](https://leetcode-cn.com/problems/linked-list-random-node/)
+
+```markdown
+给你一个单链表，随机选择链表的一个节点，并返回相应的节点值。每个节点 被选中的概率一样 。
+
+实现 Solution 类：
+
+Solution(ListNode head) 使用整数数组初始化对象。
+int getRandom() 从链表中随机选择一个节点并返回该节点的值。链表中所有节点被选中的概率相等。
+```
+
+蓄水池大小选择为 1，若遍历当前节点的概率为 $1 / i$ 时，则替换为当前节点，所以替换的概率比为 $1/i$，没有被替换的概率为 $(i - 1/i$。第 i 个点被选择的概率公式如下：
+
+$$ p = 1 / i * i / (i + 1) * (i + 1) / (i + 2) * ... (n - 1)/n = 1 / n$$
+
+第一项为在第 i 个节点被选择的概率，后续为在 i 个节点后没有被替换的概率
 
 ```java
 class Solution {
@@ -59,6 +74,58 @@ class Solution {
                 ans = node.val;
             }
             ++i;
+        }
+        return ans;
+    }
+}
+```
+
+### [497. 非重叠矩形中的随机点](https://leetcode.cn/problems/random-point-in-non-overlapping-rectangles/)
+
+```markdown
+给定一个由非重叠的轴对齐矩形的数组 rects ，其中 rects[i] = [ai, bi, xi, yi] 表示 (ai, bi) 是第 i 个矩形的左下角点，(xi, yi) 是第 i 个矩形的右上角角点。设计一个算法来随机挑选一个被某一矩形覆盖的整数点。矩形周长上的点也算做是被矩形覆盖。所有满足要求的点必须等概率被返回。
+
+在一个给定的矩形覆盖的空间内任何整数点都有可能被返回。
+
+请注意 ，整数点是具有整数坐标的点。
+
+实现 Solution 类:
+
+Solution(int[][] rects) 用给定的矩形数组 rects 初始化对象。
+int[] pick() 返回一个随机的整数点 [u, v] 在给定的矩形所覆盖的空间内。
+```
+
+由于矩形中的点数多，所以可能全部存储，因此可以维持一个大小为 1 的蓄水池进行采样，若概率等于 $1/i$ 时，则选择矩形对应点。
+
+**注意每个矩形大小不一样，而题目要求选择点的概率一致，因此此处 i 应为替换为矩形的点的数量，即 count / total** 
+
+```java
+class Solution {
+    int[][] rects;
+    Random rand;
+
+    public Solution(int[][] rects) {
+        this.rects = rects;
+        this.rand = new Random();
+    }
+
+    public int[] pick() {
+        int[] ans = new int[2];
+        int total = 0;
+        for (int i = 0; i < rects.length; i++) {
+            int a = rects[i][0];
+            int b = rects[i][1];
+            int x = rects[i][2];
+            int y = rects[i][3];
+            int count = (x - a + 1) * (y - b + 1);
+            // 当前遍历总的点的数量
+            total += count;
+            // 若概率等于当前矩形的点的数量的百分比 i / total时，则进行替换
+            if(rand.nextInt(total) < count){
+                int x1 = rand.nextInt(x - a + 1) + a;
+                int y1 = rand.nextInt(y - b + 1) + b;
+                ans = new int[]{x1, y1};
+            }
         }
         return ans;
     }

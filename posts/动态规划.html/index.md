@@ -22,7 +22,7 @@
 
 ## 代码实现
 
-以 [剑指 Offer II 093. 最长斐波那契数列](https://leetcode-cn.com/problems/Q91FMA/) 题目为例
+### [剑指 Offer II 093. 最长斐波那契数列](https://leetcode-cn.com/problems/Q91FMA/) 
 
 ```markdown
 如果序列 X_1, X_2, ..., X_n 满足下列条件，就说它是 斐波那契式 的：
@@ -66,6 +66,42 @@ class Solution {
 ```
 
 注：解该题的重要思路就是确认 `dp` 数组表示的内容，即表示到达 `i`  和 `j` 的斐波纳契数列最大长度。
+
+### [300. 最长递增子序列](https://leetcode.cn/problems/longest-increasing-subsequence/)
+
+```markdown
+给你一个整数数组 nums ，找到其中最长严格递增子序列的长度。
+
+子序列 是由数组派生而来的序列，删除（或不删除）数组中的元素而不改变其余元素的顺序。例如，[3,6,2,7] 是数组 [0,3,1,6,2,2,7] 的子序列
+```
+
+求严格递增序列，当前位置若大于前面元素，则对应长度 + 1，否则最大长度不变，所以只需要求当前位置大于前面位置元素的最大长度。由此可以得到如下递推式子：
+
+$$dp[i] = max(dp[i], dp[j])$$
+
+其中 $ 0 <= j < i $
+
+所以实现代码如下：
+
+```java
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        int n = nums.length;
+        int[] dp = new int[n];
+        Arrays.fill(dp, 1);
+        int max = 1;
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if(nums[i] > nums[j]){
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                }
+            }
+            max = Math.max(max, dp[i]);
+        }
+        return max;
+    }
+}
+```
 
 ### 再优化
 
