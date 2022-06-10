@@ -136,6 +136,77 @@ class Solution {
 }
 ```
 
+### [516. 最长回文子序列](https://leetcode.cn/problems/longest-palindromic-subsequence/)
+
+```markdown
+给你一个字符串 s ，找出其中最长的回文子序列，并返回该序列的长度。
+
+子序列定义为：不改变剩余字符顺序的情况下，删除某些字符或者不删除任何字符形成的一个序列。
+```
+
+回文序列和回文子串都是动态规划的经典题目。子串指的是连续字符回文，而序列则不需要连续。
+
+**字串除了使用动态规划，还可以使用中心扩展法或者 Manacher 算法。**
+
+使用 $dp[i][j]$ 表示从 $i$ 到 $j$ 的最长回文序列，当 $s[i] = s[j]$ 时，则 $dp[i][j] = dp[i+1][j-1] + 2$ ，否则 $dp[i][j] = max(dp[i+1][j], dp[i][j-1])$ ，根据状态转移公式可知，$i$ 需要从大到下遍历，而 $j$ 需要从小到大遍历，初始 $dp[i][i] = 1$。 
+
+```java
+class Solution {
+    public int longestPalindromeSubseq(String s) {
+        int n = s.length();
+        int[][] dp = new int[n][n];
+        for (int i = n-1; i >= 0; i--) {
+            dp[i][i] = 1;
+            for (int j = i + 1; j < n; j++) {
+                if (s.charAt(i) == s.charAt(j)) {
+                    dp[i][j] = dp[i + 1][j - 1] + 2;
+                } else {
+                    dp[i][j] = Math.max(dp[i + 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+        return dp[0][n - 1];
+    }
+}
+```
+
+### [647. 回文子串](https://leetcode.cn/problems/palindromic-substrings/)
+
+```markdown
+给你一个字符串 s ，请你统计并返回这个字符串中 回文子串 的数目。
+
+回文字符串 是正着读和倒过来读一样的字符串。
+
+子字符串 是字符串中的由连续字符组成的一个序列。
+
+具有不同开始位置或结束位置的子串，即使是由相同的字符组成，也会被视作不同的子串。
+```
+
+使用 $dp[j]$ 表示 $j$ 到当前遍历 $i$ 是否为回文序列，若是，则计数 +1。因为 $i$ 和 $j$ 都为从左往右遍历，所以当前遍历的 $dp[j+1]$ 表示上一轮遍历值，即 $j+1$ 到 $i-1$ 是否为回文序列，则当前遍历轮次只需要判断 $s[i] == s[j] $ 和 $dp[j+1]$ 即可以判断 $j$ 至 $i$ 是否为回文序列。
+
+```java
+class Solution {
+    public int countSubstrings(String s) {
+        int n = s.length();
+        int[] dp = new int[n];
+        int cnt = 0;
+        for (int i = 0; i < n; i++) {
+            dp[i] = 1;
+            cnt++;
+            for (int j = 0; j < i; j++) {
+                if(s.charAt(i) == s.charAt(j) && dp[j+1] == 1){
+                    dp[j] = 1;
+                    cnt++;
+                }else{
+                    dp[j] = 0;
+                }
+            }
+        }
+        return cnt;
+    }
+}
+```
+
 ## 参考资料
 
 [动态规划](https://zh.wikipedia.org/wiki/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92)
