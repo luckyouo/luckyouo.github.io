@@ -199,6 +199,66 @@ class Solution {
 
 ```
 
+### [1124. 表现良好的最长时间段](https://leetcode.cn/problems/longest-well-performing-interval/)
+
+```markdown
+给你一份工作时间表 hours，上面记录着某一位员工每天的工作小时数。
+
+我们认为当员工一天中的工作小时数大于 8 小时的时候，那么这一天就是「劳累的一天」。
+
+所谓「表现良好的时间段」，意味在这段时间内，「劳累的天数」是严格 大于「不劳累的天数」。
+
+请你返回「表现良好时间段」的最大长度。
+```
+
+该题目是前缀和 + 单调栈结合题目。
+
+首先，该题目不难想到将初始数组转换为 1，-1 数组，即将大于 8 的设置为 1，其余的设置为 -1。
+
+根据题目要求，最大长度时间段为最大区间长度和大于 0 的子数组，显然需要使用前缀和来求区间和。暴力方法可以使用 $O(n^2)$ 的时间复杂度来求前缀和最大区间长度 $[i, j]$ ，其中 $pre[j] - pre[i] > 0$。考虑左区间边界 $i$ ，若存在 $k < i且 pre[k] >= pre[i]$ ，则需要判断 $pre[j] - pre[k] 大于 0 是否成立， 成立则 [k, j] 成为新的区间段，否则仍然为 [i, j]$ 。若 $pre[k] < pre[i]$，则直接抛弃 $i$ 。因此可以使用严格单调递减栈来维护左区间的可能选项。
+
+```java
+class Solution {
+    public int longestWPI(int[] hours) {
+        int n = hours.length;
+        for (int i = 0; i < n; i++) {
+            if(hours[i] > 8){
+                hours[i] = 1;
+            }else{
+                hours[i] = -1;
+            }
+        }
+		
+        // 前缀和
+        int[] presum = new int[n + 1];
+        for (int i = 1; i <= n; i++) {
+            presum[i] = presum[i - 1] + hours[i - 1];
+        }
+		
+        // 左区间单调栈
+        ArrayDeque<Integer> stack = new ArrayDeque<>();
+        for (int i = 0; i <= n; i++) {
+            if(stack.isEmpty() || presum[stack.peekLast()] > presum[i]){
+                stack.offer(i);
+            }
+        }
+		
+        // 反向遍历右区间
+        int p = n;
+        int ans = 0;
+        // 区间段小于最大范围时，直接退出循环
+        while (p > ans){
+            // 区间段满足要求时，遍历左区间
+            while (!stack.isEmpty() && presum[stack.peekLast()] < presum[p]){
+                ans = Math.max(ans, p - stack.pollLast());
+            }
+            p -= 1;
+        }
+        return ans;
+    }
+}
+```
+
 ## 参考资料
 
 [1856. 子数组最小乘积的最大值](https://leetcode.cn/problems/maximum-subarray-min-product/) 

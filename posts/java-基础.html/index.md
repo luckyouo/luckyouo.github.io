@@ -227,3 +227,84 @@ $java$ 内部 $Arrays$ 默认实现的二分查找是根据**递增顺序** 的�
 
 之所以返回 $-(1 + index) $ ，而不是 $-index$ ，是为了区别 $0$，即区别查找的元素正好为第一个元素和需要插入在一个元素前，否则二者返回结果都是 $0$。
 
+### int 乘法溢出问题
+
+当两个 int 类型相乘时，如果结果溢出，需要先将 int 作为 long，在进行乘法，否则两个 int 相乘结果已经溢出，再转 long，结果仍然为溢出结果。
+
+```java
+n = 100000;
+System.out.println(n * (n - 1));
+System.out.println((long) n * (n -1));
+
+// 1409965408
+// 9999900000
+```
+
+### for 循环应尽量遵循外小内大原则
+
+```java
+stratTime = System.nanoTime();  
+for (int i = 0; i <10000 ; i++) {  
+    for (int j = 0; j < 100; j++) {
+        for (int k = 0; k < 10; k++) {  
+            testFunction(i, j, k);
+        }
+    }
+}
+System.out.println("外大内小耗时："+ (endTime - stratTime));  
+
+stratTime = System.nanoTime();  
+for (int i = 0; i <10 ; i++) {  
+    for (int j = 0; j < 100; j++) {
+        for (int k = 0; k < 10000; k++) {  
+            testFunction(i, j, k);
+        }
+    }
+}
+endTime = System.nanoTime();  
+System.out.println("外小内大耗时："+(endTime - stratTime)); 
+
+// 外大内小耗时：1582127649  
+// 外小内大耗时：761666633  
+```
+
+由于内循环通常会存在创建对象对象的情况，所以外循环越小，创建对象的次数也就越少，也可以将对象创建放置在循环外，这样可以进一步减少时间。
+
+```java
+stratTime = System.nanoTime();  
+int i, j, k;
+for (i = 0; i <10 ; i++) {  
+    for (j = 0; j < 100; j++) {
+        for (k = 0; k < 10000; k++) {  
+            testFunction(i, j, k);
+        }
+    }
+}
+endTime = System.nanoTime();  
+System.out.println("提取出循环内变量后耗时："+(endTime - stratTime))
+// 外小内大耗时：761666633  
+// 提取出循环内变量后耗时：748479323
+```
+
+### for 循环应该消除判断终止时的方法调用
+
+```java
+stratTime = System.nanoTime();  
+for (int i = 0; i < list.size(); i++) {  
+      
+}  
+endTime = System.nanoTime();  
+System.out.println("未优化list耗时："+(endTime - stratTime));
+
+// 优化后
+stratTime = System.nanoTime();  
+int size = list.size();  
+for (int i = 0; i < size; i++) {  
+      
+}  
+endTime = System.nanoTime();  
+System.out.println("优化list耗时："+(endTime - stratTime));
+```
+
+[java性能优化笔记 —— for循环](https://segmentfault.com/a/1190000012688298)
+

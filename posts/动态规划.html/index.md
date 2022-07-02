@@ -207,6 +207,73 @@ class Solution {
 }
 ```
 
+### [940. 不同的子序列 II](https://leetcode.cn/problems/distinct-subsequences-ii/)
+
+```markdown
+给定一个字符串 s，计算 s 的 不同非空子序列 的个数。因为结果可能很大，所以返回答案需要对 10^9 + 7 取余 。
+
+字符串的 子序列 是经由原字符串删除一些（也可能不删除）字符但不改变剩余字符相对位置的一个新字符串。
+
+例如，"ace" 是 "abcde" 的一个子序列，但 "aec" 不是。
+
+1 <= s.length <= 2000
+s 仅由小写英文字母组成
+```
+
+当字符序列的元素数量固定时，比如序列中只含有小写字符，线性动态规划除了从序列长度开始规划外，也可以从子序列末尾元素结尾的元素类型进行规划。
+
+先考虑从序列长度规划，容易知道 $dp[i] = 2 * dp[i - 1] - duplicate[c]$ ，其中 $c$ 是 $i$ 处字符，$duplicate[c]$ 表示之前以 $c$ 结尾的序列数量。
+
+公式表示：在 $i$ 索引前的所有子序列和子序列与当前字符拼接的总数量和 - 重复序列数量，重复序列即之前 $c$ 结尾的子序列。
+
+```java
+class Solution {
+    public int distinctSubseqII(String S) {
+        int MOD = 1_000_000_007;
+        int N = S.length();
+        int[] dp = new int[N+1];
+        dp[0] = 1;
+
+        int[] last = new int[26];
+        Arrays.fill(last, -1);
+
+        for (int i = 0; i < N; ++i) {
+            int x = S.charAt(i) - 'a';
+            dp[i+1] = dp[i] * 2 % MOD;
+            if (last[x] >= 0)
+                dp[i+1] -= dp[last[x]];
+            dp[i+1] %= MOD;
+            last[x] = i;
+        }
+
+        dp[N]--;
+        if (dp[N] < 0) dp[N] += MOD;
+        return dp[N];
+    }
+}
+```
+
+由于递推公式 $dp$ 只与之前的元素有关，因此可以使用滚动数组表示，而此时就相当于使用序列末尾元素进行动态规划，公式如下：$dp[c] = sum + 1$ ，其中 $dp[c]$ 表示以 $c$ 结尾的总序列数量， $sum$ 表示字符 $c$ 之前的总序列数量，将之前的总序列后拼接当前元素的数量+单个元素 $1$，即当前以 $c$ 结尾的总序列数量。 
+
+```java
+class Solution {
+    public int distinctSubseqII(String s) {
+        int[] dp = new int[26];
+        int MOD = (int) (1e9+ 7);
+        long sum = 0;
+        for (char c : s.toCharArray()) {
+            // 先前的以 c 结尾的序列数量
+            long pre = dp[c - 'a'];
+            // 当前以 c 结尾的序列数量
+            dp[c - 'a'] = (int) ((sum + 1) % MOD);
+            // 当前序列总数量
+            sum = (sum - pre + dp[c - 'a']) % MOD;
+        }
+        return (int) (sum + MOD) % MOD;
+    }
+}
+```
+
 ## 参考资料
 
 [动态规划](https://zh.wikipedia.org/wiki/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92)
