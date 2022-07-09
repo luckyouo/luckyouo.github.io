@@ -274,11 +274,46 @@ class Solution {
 }
 ```
 
+### 计数问题 DP
+
+动态规划除了求解最优问题，还可以用来求排列组合、概率和期望。例如 n 的 m 划分问题
+
+```markdown
+有 n 个无区别的物品，将他们划分为不超过 m 组，求划分方法数对 M 去模
+```
+
+对该问题使用动态规划最关键的问题是，如何避免重复计数。常见的犯错问题是使用如下递推方程
+
+$$dp[i][j] = \sum_{k=0}^jdp[i-1[j-k]$$
+
+例如 1 + 1 + 2 和 1+ 2+ 1 就分别当做两种不同的划分方式了。
+
+实际上，可以使用如下递推方程
+
+$$dp[i][j] = dp[i][j-i] + dp[i-1][j]$$
+
+$dp[i][j]$ 表示将 $j $ 划分为 $i$ 组，当 $j$ 划分为 $i$ 组后，记为 $a_i$ ，则  $a_i - 1$ 可以看作为 $j - i$ 划分为 $i$ 组，而若$a_i =0$时，则表示将 $j$ 划分为 $i - 1$ 组
+
+```java
+int[][] dp = new int[m+1][n+1];
+
+dp[0][0] = 1;
+for(int i = 1; i <= m; i++){
+    for(int j = 1; j <= n; j++){
+        if(j - i >= 0){
+            dp[i][j] = (dp[i - 1][j] + dp[i][j-i]) % M;
+        }else{
+            dp[i][j] = dp[i-1][j];
+        }
+    }
+}
+```
+
+*注：将基数为 n 划分为 k 各非空集的方法的数目称为第二类 Stirling 数，而将基数 n 的集合划分为任意非空集合的方法的数目的数目称为 Bell 数*
+
 ## 参考资料
 
-[动态规划](https://zh.wikipedia.org/wiki/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92)
-
-[状态定义很是重要！](https://leetcode-cn.com/problems/length-of-longest-fibonacci-subsequence/solution/zhuang-tai-ding-yi-hen-shi-zhong-yao-by-christmas_/)
+[动态规划](https://zh.wikipedia.org/wiki/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92)[状态定义很是重要！](https://leetcode-cn.com/problems/length-of-longest-fibonacci-subsequence/solution/zhuang-tai-ding-yi-hen-shi-zhong-yao-by-christmas_/)
 
 [算法导论](https://book.douban.com/subject/20432061/)
 

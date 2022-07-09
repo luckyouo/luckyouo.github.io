@@ -1,0 +1,179 @@
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=x-ua-compatible content="IE=edge, chrome=1"><title>动态规划 背包问题 - Luckyouo Blog</title><meta name=Description content="Luckyouo 的小窝"><meta property="og:title" content="动态规划 背包问题"><meta property="og:description" content="前言 背包问题是动态规划的经典问题，也是最为常见的二维动态的规划。背包问题最简常见的有 0-1背包问题和完全背包问题。 0-1背包问题： 1 2 3 我们"><meta property="og:type" content="article"><meta property="og:url" content="https://luckyouo.github.io/posts/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98.html/"><meta property="og:image" content="https://luckyouo.github.io/logo.png"><meta property="article:section" content="posts"><meta property="article:published_time" content="2022-07-09T10:41:48+08:00"><meta property="article:modified_time" content="2022-07-09T13:58:35+08:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://luckyouo.github.io/logo.png"><meta name=twitter:title content="动态规划 背包问题"><meta name=twitter:description content="前言 背包问题是动态规划的经典问题，也是最为常见的二维动态的规划。背包问题最简常见的有 0-1背包问题和完全背包问题。 0-1背包问题： 1 2 3 我们"><meta name=application-name content="LoveIt"><meta name=apple-mobile-web-app-title content="LoveIt"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://luckyouo.github.io/posts/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98.html/><link rel=prev href=https://luckyouo.github.io/posts/%E4%BD%8D%E8%BF%90%E7%AE%97%E5%B8%B8%E7%94%A8%E6%8A%80%E5%B7%A7.html/><link rel=stylesheet href=/lib/normalize/normalize.min.css><link rel=stylesheet href=/css/style.min.css><link rel=stylesheet href=/lib/fontawesome-free/all.min.css><link rel=stylesheet href=/lib/animate/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"动态规划 背包问题","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/luckyouo.github.io\/posts\/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98.html\/"},"genre":"posts","keywords":"动态规划, 背包问题","wordcount":1294,"url":"https:\/\/luckyouo.github.io\/posts\/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98.html\/","datePublished":"2022-07-09T10:41:48+08:00","dateModified":"2022-07-09T13:58:35+08:00","publisher":{"@type":"Organization","name":""},"author":{"@type":"Person","name":"luckyouo"},"description":""}</script></head><body header-desktop=fixed header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"auto"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"auto"==="dark")&&document.body.setAttribute("theme","dark")</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><a href=https://github.com/luckyouo class=github-corner target=_blank title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="3.5rem" height="3.5rem" viewBox="0 0 250 250" style="fill:#70b7fd;color:#fff;position:absolute;top:0;border:0;left:0;transform:scale(-1,1)" aria-hidden="true"><path d="M0 0 115 115h15l12 27L250 250V0z"/><path d="M128.3 109C113.8 99.7 119 89.6 119 89.6 122 82.7 120.5 78.6 120.5 78.6 119.2 72 123.4 76.3 123.4 76.3 127.3 80.9 125.5 87.3 125.5 87.3 122.9 97.6 130.6 101.9 134.4 103.2" fill="currentcolor" style="transform-origin:130px 106px" class="octo-arm"/><path d="M115 115C114.9 115.1 118.7 116.5 119.8 115.4l13.9-13.8C136.9 99.2 139.9 98.4 142.2 98.6 133.8 88 127.5 74.4 143.8 58 148.5 53.4 154 51.2 159.7 51 160.3 49.4 163.2 43.6 171.4 40.1 171.4 40.1 176.1 42.5 178.8 56.2 183.1 58.6 187.2 61.8 190.9 65.4 194.5 69 197.7 73.2 200.1 77.6 213.8 80.2 216.3 84.9 216.3 84.9 212.7 93.1 206.9 96 205.4 96.6 205.1 102.4 203 107.8 198.3 112.5 181.9 128.9 168.3 122.5 157.7 114.1 157.9 116.9 156.7 120.9 152.7 124.9L141 136.5C139.8 137.7 141.6 141.9 141.8 141.8z" fill="currentcolor" class="octo-body"/></svg></a><div class=header-title><a href=/ title="Luckyouo Blog">Luckyouo Blogs</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/>归档 </a><a class=menu-item href=/tags/>标签 </a><a class=menu-item href=/categories/>分类 </a><a class=menu-item href=/friends/><i class='fas fa-fw fa-fan fa-spin'></i> 友链 </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<input type=text placeholder=搜索文章标题或内容... id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=搜索><i class="fas fa-search fa-fw"></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=清空><i class="fas fa-times-circle fa-fw"></i></a>
+<span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin"></i></span>
+</span><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题><i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title="Luckyouo Blog">Luckyouo Blogs</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder=搜索文章标题或内容... id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=搜索><i class="fas fa-search fa-fw"></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=清空><i class="fas fa-times-circle fa-fw"></i></a>
+<span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin"></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>取消</a></div><a class=menu-item href=/posts/ title>归档</a><a class=menu-item href=/tags/ title>标签</a><a class=menu-item href=/categories/ title>分类</a><a class=menu-item href=/friends/ title><i class='fas fa-fw fa-fan fa-spin'></i>友链</a><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题>
+<i class="fas fa-adjust fa-fw"></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>目录</h2><div class="toc-content always-active" id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">动态规划 背包问题</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>luckyouo</a></span>&nbsp;<span class=post-category>收录于 <a href=/categories/%E7%AE%97%E6%B3%95/><i class="far fa-folder fa-fw"></i>算法</a></span></div><div class=post-meta-line><i class="far fa-calendar fa-fw"></i>&nbsp;<time datetime=2022-07-09>2022-07-09</time>&nbsp;<i class="far fa-calendar-plus fa-fw"></i>&nbsp;<time datetime=2022-07-09>2022-07-09</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1294 字&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 3 分钟&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>目录</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ol><li><a href=#前言>前言</a></li><li><a href=#思路历程>思路历程</a></li><li><a href=#算法思想>算法思想</a><ol><li><a href=#0-1-背包问题>0-1 背包问题</a></li><li><a href=#完全背包问题>完全背包问题</a></li></ol></li><li><a href=#其他问题>其他问题</a><ol><li><a href=#种类问题>种类问题</a></li><li><a href=#背包容量太大问题>背包容量太大问题</a></li></ol></li><li><a href=#参考资料>参考资料</a></li></ol></nav></div></div><div class=content id=content><h2 id=前言>前言</h2><p>背包问题是动态规划的经典问题，也是最为常见的二维动态的规划。背包问题最简常见的有 0-1背包问题和完全背包问题。</p><p>0-1背包问题：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-markdown data-lang=markdown><span class=line><span class=cl>我们有n种物品，物品j的重量为wj，价格为pj。
+</span></span><span class=line><span class=cl>我们假定所有物品的重量和价格都是非负的。背包所能承受的最大重量为W。
+</span></span><span class=line><span class=cl>如果限定每种物品只能选择0个或1个，则问题称为0-1背包问题。
+</span></span></code></pre></td></tr></table></div></div><p>完全背包问题：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-markdown data-lang=markdown><span class=line><span class=cl>和上题类似，但可选择的物品是无限的，不需要考虑物品的数量
+</span></span></code></pre></td></tr></table></div></div><p>根据上述两个问题，还存在多重背包等变形问题。</p><h2 id=思路历程>思路历程</h2><p>背包的解法最为简单也是最暴力的方法，就是回溯搜索，但时间复杂度也是二次方的。考虑到所搜的过程中，有大量重复子结构，因此可以使用记忆搜索来减少不必要的重复搜索，最后考虑的状态转移方程，则可以将记忆搜索转换为动态规划。</p><p>$$暴力搜索 -> 记忆化搜索 -> 动态规划$$</p><h2 id=算法思想>算法思想</h2><h3 id=0-1-背包问题>0-1 背包问题</h3><p>由于每个物品都存在两个状态，即选择与未选择，因此可以根据物品的不同状态进行转移。记 $dp[i][j]$ 为 前 $i$ 各物品选择时，容量 为 $j$ 是最大的价值，则存在如下状态转移方程。</p><p>$$dp[i][j] = max(dp[i-1][j], dp[i-1][j - w[i]] + v[i])$$</p><p>其逆推方程如下：</p><p>$$dp[i][j] = max(dp[i+1][j], dp[i+1][j - w[i]] + v[i])$$</p><p>因此使用两层循环既可以求解，时间复杂度为 $O(mn)$，其中 $n$ 为物品总件数，$m$ 为容量大小</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// for(int i = 0; i &lt; n; i++) {
+</span></span></span><span class=line><span class=cl><span class=c1>//     for(int j = 0; j &lt;= m; j++) {
+</span></span></span><span class=line><span class=cl><span class=c1>//         if(j - weight[i] &gt;= 0){
+</span></span></span><span class=line><span class=cl><span class=c1>//             dp[i][j] = Math.max(dp[i-1][j], dp[i-1][j - weight[i]] + value[i]);
+</span></span></span><span class=line><span class=cl><span class=c1>//         }else{
+</span></span></span><span class=line><span class=cl><span class=c1>//             dp[i][j] = dp[i-1][j];
+</span></span></span><span class=line><span class=cl><span class=c1>//         } 
+</span></span></span><span class=line><span class=cl><span class=c1>//     }
+</span></span></span><span class=line><span class=cl><span class=c1>// }
+</span></span></span><span class=line><span class=cl><span class=c1></span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>for</span><span class=o>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=n>0</span><span class=o>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>n</span><span class=o>;</span> <span class=n>i</span><span class=o>++)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span><span class=o>(</span><span class=kt>int</span> <span class=n>j</span> <span class=o>=</span> <span class=n>w</span><span class=o>[</span><span class=n>i</span><span class=o>];</span> <span class=n>j</span> <span class=o>&lt;=</span> <span class=n>m</span><span class=o>;</span> <span class=n>j</span><span class=o>++)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=n>dp</span><span class=o>[</span><span class=n>i</span><span class=o>][</span><span class=n>j</span><span class=o>]</span> <span class=o>=</span> <span class=n>Math</span><span class=o>.</span><span class=na>max</span><span class=o>(</span><span class=n>dp</span><span class=o>[</span><span class=n>i</span><span class=o>-</span><span class=n>1</span><span class=o>][</span><span class=n>j</span><span class=o>],</span> <span class=n>dp</span><span class=o>[</span><span class=n>i</span><span class=o>-</span><span class=n>1</span><span class=o>][</span><span class=n>j</span> <span class=o>-</span> <span class=n>weight</span><span class=o>[</span><span class=n>i</span><span class=o>]]</span> <span class=o>+</span> <span class=n>value</span><span class=o>[</span><span class=n>i</span><span class=o>]);</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=完全背包问题>完全背包问题</h3><p>由于每个物品都有无限个，因此按照 0-1 背包思想可知，</p><p>$$dp[i][j] = max(dp[i-1][j], dp[i-1][j - k * w[i]] + k * v[i])$$</p><p>其中 $j - k * w[i] >= 0$，需要遍历所有 $k$ ，因此按照上述递推，则需要三重循环。将上述变形如下</p><p>$$dp[i][j] = max(dp[i-1][j], dp[i][j - w[i] + v[i])$$</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// for(int i = 0; i &lt; n; i++) {
+</span></span></span><span class=line><span class=cl><span class=c1>//     for(int j = 0; j &lt;= m; j++) {
+</span></span></span><span class=line><span class=cl><span class=c1>//         if(j - weight[i] &gt;= 0){
+</span></span></span><span class=line><span class=cl><span class=c1>//             dp[i][j] = Math.max(dp[i-1][j], dp[i][j - weight[i]] + value[i]);
+</span></span></span><span class=line><span class=cl><span class=c1>//         }else{
+</span></span></span><span class=line><span class=cl><span class=c1>//             dp[i][j] = dp[i-1][j];
+</span></span></span><span class=line><span class=cl><span class=c1>//         } 
+</span></span></span><span class=line><span class=cl><span class=c1>//     }
+</span></span></span><span class=line><span class=cl><span class=c1>// }
+</span></span></span><span class=line><span class=cl><span class=c1></span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>for</span><span class=o>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=n>0</span><span class=o>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>n</span><span class=o>;</span> <span class=n>i</span><span class=o>++)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span><span class=o>(</span><span class=kt>int</span> <span class=n>j</span> <span class=o>=</span> <span class=n>w</span><span class=o>[</span><span class=n>i</span><span class=o>];</span> <span class=n>j</span> <span class=o>&lt;=</span> <span class=n>m</span><span class=o>;</span> <span class=n>j</span><span class=o>++)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=n>dp</span><span class=o>[</span><span class=n>i</span><span class=o>][</span><span class=n>j</span><span class=o>]</span> <span class=o>=</span> <span class=n>Math</span><span class=o>.</span><span class=na>max</span><span class=o>(</span><span class=n>dp</span><span class=o>[</span><span class=n>i</span><span class=o>-</span><span class=n>1</span><span class=o>][</span><span class=n>j</span><span class=o>],</span> <span class=n>dp</span><span class=o>[</span><span class=n>i</span><span class=o>][</span><span class=n>j</span> <span class=o>-</span> <span class=n>weight</span><span class=o>[</span><span class=n>i</span><span class=o>]]</span> <span class=o>+</span> <span class=n>value</span><span class=o>[</span><span class=n>i</span><span class=o>]);</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=其他问题>其他问题</h2><h3 id=种类问题>种类问题</h3><p>在上述两个经典问题中，求解的是价值最大问题，因此与物品顺序选择无关，所以两个循环可以更换顺序，当是求解种类时，则必须考虑顺序，及外层循环为物品，内层循环为背包容量，例如</p><p><a href=https://leetcode.cn/problems/coin-change-2/ target=_blank rel="noopener noreffer">518. 零钱兑换 II</a></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-markdown data-lang=markdown><span class=line><span class=cl>给你一个整数数组 coins 表示不同面额的硬币，另给一个整数 amount 表示总金额。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>请你计算并返回可以凑成总金额的硬币组合数。如果任何硬币组合都无法凑出总金额，返回 0 。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>假设每一种面额的硬币有无限个。 
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>题目数据保证结果符合 32 位带符号整数。
+</span></span></code></pre></td></tr></table></div></div><p>由于计算的是选择种类，所以必须考虑顺序，不能将循环顺序更换</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>class</span> <span class=nc>Solution</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=kt>int</span> <span class=nf>change</span><span class=o>(</span><span class=kt>int</span> <span class=n>amount</span><span class=o>,</span> <span class=kt>int</span><span class=o>[]</span> <span class=n>coins</span><span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=kt>int</span> <span class=n>n</span> <span class=o>=</span> <span class=n>coins</span><span class=o>.</span><span class=na>length</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>        <span class=kt>int</span><span class=o>[][]</span> <span class=n>dp</span> <span class=o>=</span> <span class=k>new</span> <span class=kt>int</span><span class=o>[</span><span class=n>n</span> <span class=o>+</span> <span class=n>1</span><span class=o>][</span><span class=n>amount</span> <span class=o>+</span> <span class=n>1</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=o>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=n>0</span><span class=o>;</span> <span class=n>i</span> <span class=o>&lt;=</span> <span class=n>n</span><span class=o>;</span> <span class=n>i</span><span class=o>++)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>            <span class=n>dp</span><span class=o>[</span><span class=n>i</span><span class=o>][</span><span class=n>0</span><span class=o>]</span> <span class=o>=</span> <span class=n>1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>        <span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=o>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=n>1</span><span class=o>;</span> <span class=n>i</span> <span class=o>&lt;=</span> <span class=n>n</span><span class=o>;</span> <span class=n>i</span><span class=o>++)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>for</span> <span class=o>(</span><span class=kt>int</span> <span class=n>j</span> <span class=o>=</span> <span class=n>1</span><span class=o>;</span> <span class=n>j</span> <span class=o>&lt;=</span> <span class=n>amount</span><span class=o>;</span> <span class=n>j</span><span class=o>++)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>                <span class=k>if</span> <span class=o>(</span><span class=n>j</span> <span class=o>&gt;=</span> <span class=n>coins</span><span class=o>[</span><span class=n>i</span> <span class=o>-</span> <span class=n>1</span><span class=o>])</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>                    <span class=n>dp</span><span class=o>[</span><span class=n>i</span><span class=o>][</span><span class=n>j</span><span class=o>]</span> <span class=o>=</span> <span class=n>dp</span><span class=o>[</span><span class=n>i</span> <span class=o>-</span> <span class=n>1</span><span class=o>][</span><span class=n>j</span><span class=o>]</span> <span class=o>+</span> <span class=n>dp</span><span class=o>[</span><span class=n>i</span><span class=o>][</span><span class=n>j</span> <span class=o>-</span> <span class=n>coins</span><span class=o>[</span><span class=n>i</span> <span class=o>-</span> <span class=n>1</span><span class=o>]];</span>
+</span></span><span class=line><span class=cl>                <span class=o>}</span> <span class=k>else</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>                    <span class=n>dp</span><span class=o>[</span><span class=n>i</span><span class=o>][</span><span class=n>j</span><span class=o>]</span> <span class=o>=</span> <span class=n>dp</span><span class=o>[</span><span class=n>i</span> <span class=o>-</span> <span class=n>1</span><span class=o>][</span><span class=n>j</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>                <span class=o>}</span>
+</span></span><span class=line><span class=cl>            <span class=o>}</span>
+</span></span><span class=line><span class=cl>        <span class=o>}</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>dp</span><span class=o>[</span><span class=n>n</span><span class=o>][</span><span class=n>amount</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>class</span> <span class=nc>Solution</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=kt>int</span> <span class=nf>change</span><span class=o>(</span><span class=kt>int</span> <span class=n>amount</span><span class=o>,</span> <span class=kt>int</span><span class=o>[]</span> <span class=n>coins</span><span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=n>HashSet</span><span class=o>&lt;</span><span class=n>Integer</span><span class=o>&gt;</span> <span class=n>set</span> <span class=o>=</span> <span class=k>new</span> <span class=n>HashSet</span><span class=o>&lt;&gt;();</span>
+</span></span><span class=line><span class=cl>        <span class=kt>int</span> <span class=n>n</span> <span class=o>=</span> <span class=n>coins</span><span class=o>.</span><span class=na>length</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>        <span class=kt>int</span><span class=o>[]</span> <span class=n>dp</span> <span class=o>=</span> <span class=k>new</span> <span class=kt>int</span><span class=o>[</span><span class=n>amount</span> <span class=o>+</span> <span class=n>1</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>        <span class=n>dp</span><span class=o>[</span><span class=n>0</span><span class=o>]</span> <span class=o>=</span> <span class=n>1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=o>(</span><span class=kt>int</span> <span class=n>coin</span> <span class=o>:</span> <span class=n>coins</span><span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>for</span> <span class=o>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=n>coin</span><span class=o>;</span> <span class=n>i</span> <span class=o>&lt;=</span> <span class=n>amount</span><span class=o>;</span> <span class=n>i</span><span class=o>++)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>                <span class=n>dp</span><span class=o>[</span><span class=n>i</span><span class=o>]</span> <span class=o>+=</span> <span class=n>dp</span><span class=o>[</span><span class=n>i</span> <span class=o>-</span> <span class=n>coin</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>            <span class=o>}</span>
+</span></span><span class=line><span class=cl>        <span class=o>}</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>dp</span><span class=o>[</span><span class=n>amount</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=背包容量太大问题>背包容量太大问题</h3><p>如果背包的容量 $m$ 远大于各个 0-1 背包各个物品的重量 $w_i$ 时，则可以取 $max(m, n * w_{max}(i))$ 为最大容量，从而减少时间复杂度和空间复杂度。</p><h2 id=参考资料>参考资料</h2><p><a href=https://programmercarl.com/%E8%83%8C%E5%8C%85%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%8001%E8%83%8C%E5%8C%85-1.html#_01-%E8%83%8C%E5%8C%85 target=_blank rel="noopener noreffer">动态规划：关于01背包问题，你该了解这些！</a></p><p><a href=https://programmercarl.com/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80%E5%AE%8C%E5%85%A8%E8%83%8C%E5%8C%85.html#%E5%AE%8C%E5%85%A8%E8%83%8C%E5%8C%85 target=_blank rel="noopener noreffer">完全背包</a></p></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>更新于 2022-07-09</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=/posts/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98.html/index.md target=_blank>阅读原始文档</a></span></div><div class=post-info-share><span><a href=javascript:void(0); title="分享到 Twitter" data-sharer=twitter data-url=https://luckyouo.github.io/posts/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98.html/ data-title="动态规划 背包问题" data-via=xxxx data-hashtags=动态规划,背包问题><i class="fab fa-twitter fa-fw"></i></a><a href=javascript:void(0); title="分享到 Facebook" data-sharer=facebook data-url=https://luckyouo.github.io/posts/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98.html/ data-hashtag=动态规划><i class="fab fa-facebook-square fa-fw"></i></a><a href=javascript:void(0); title="分享到 微博" data-sharer=weibo data-url=https://luckyouo.github.io/posts/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98.html/ data-title="动态规划 背包问题"><i class="fab fa-weibo fa-fw"></i></a></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/>动态规划</a>,&nbsp;<a href=/tags/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/>背包问题</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>返回</a></span>&nbsp;|&nbsp;<span><a href=/>主页</a></span></section></div><div class=post-nav><a href=/posts/%E4%BD%8D%E8%BF%90%E7%AE%97%E5%B8%B8%E7%94%A8%E6%8A%80%E5%B7%A7.html/ class=prev rel=prev title=位运算常用技巧><i class="fas fa-angle-left fa-fw"></i>位运算常用技巧</a></div></div><div id=comments></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line><span id=run-time></span></div><div class=footer-line>由 <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.101.0">Hugo</a> 强力驱动 | 主题 - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2022</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank>luckyouo</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title=回到顶部><i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title=查看评论><i class="fas fa-comment fa-fw"></i></a></div><div class=sidebar_wo><div id=leimu><img src=https://cdn.jsdelivr.net/gh/lewky/lewky.github.io@master/images/b2t/leimuA.png alt=雷姆 onmouseover='this.src="https://cdn.jsdelivr.net/gh/lewky/lewky.github.io@master/images/b2t/leimuB.png"' onmouseout='this.src="https://cdn.jsdelivr.net/gh/lewky/lewky.github.io@master/images/b2t/leimuA.png"' title=回到顶部></div><div class=sidebar_wo id=lamu><img src=https://cdn.jsdelivr.net/gh/lewky/lewky.github.io@master/images/b2t/lamuA.png alt=雷姆 onmouseover='this.src="https://cdn.jsdelivr.net/gh/lewky/lewky.github.io@master/images/b2t/lamuB.png"' onmouseout='this.src="https://cdn.jsdelivr.net/gh/lewky/lewky.github.io@master/images/b2t/lamuA.png"' title=回到底部></div></div><link rel=stylesheet href=/lib/katex/katex.min.css><link rel=stylesheet href=/lib/katex/copy-tex.min.css><link rel=stylesheet href=/lib/cookieconsent/cookieconsent.min.css><script type=text/javascript src=/lib/smooth-scroll/smooth-scroll.min.js></script><script type=text/javascript src=/lib/autocomplete/autocomplete.min.js></script><script type=text/javascript src=/lib/lunr/lunr.min.js></script><script type=text/javascript src=/lib/lunr/lunr.stemmer.support.min.js></script><script type=text/javascript src=/lib/lunr/lunr.zh.min.js></script><script type=text/javascript src=/lib/lazysizes/lazysizes.min.js></script><script type=text/javascript src=/lib/clipboard/clipboard.min.js></script><script type=text/javascript src=/lib/sharer/sharer.min.js></script><script type=text/javascript src=/lib/katex/katex.min.js></script><script type=text/javascript src=/lib/katex/auto-render.min.js></script><script type=text/javascript src=/lib/katex/copy-tex.min.js></script><script type=text/javascript src=/lib/katex/mhchem.min.js></script><script type=text/javascript src=/lib/cookieconsent/cookieconsent.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"复制到剪贴板",maxShownLines:15},comment:{},cookieconsent:{content:{dismiss:"同意",link:"了解更多",message:"本网站使用 Cookies 来改善您的浏览体验."},enable:!0,palette:{button:{background:"#f0f0f0"},popup:{background:"#1aa3ff"}},theme:"edgeless"},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},search:{highlightTag:"em",lunrIndexURL:"/index.json",lunrLanguageCode:"zh",lunrSegmentitURL:"/lib/lunr/lunr.segmentit.js",maxResultLength:10,noResultsFound:"没有找到结果",snippetLength:50,type:"lunr"}}</script><script type=text/javascript src=/js/theme.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/jquery@2.1.3/dist/jquery.min.js></script><script type=text/javascript src=/js/custom.js></script></body></html>
