@@ -308,3 +308,10 @@ System.out.println("优化list耗时："+(endTime - stratTime));
 
 [java性能优化笔记 —— for循环](https://segmentfault.com/a/1190000012688298)
 
+### Java 的取模运算
+
+常用的取模运算符号为 %，比如 x % y，但该取模的结果正负与 x 相同，若 x 为负，则结果也为负。如果要与 y 保持相同符号，则应该使用 `Math.floorMod` 方法
+
+
+
+
