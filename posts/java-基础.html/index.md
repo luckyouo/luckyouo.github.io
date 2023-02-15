@@ -312,6 +312,15 @@ System.out.println("优化list耗时："+(endTime - stratTime));
 
 常用的取模运算符号为 %，比如 x % y，但该取模的结果正负与 x 相同，若 x 为负，则结果也为负。如果要与 y 保持相同符号，则应该使用 `Math.floorMod` 方法
 
+### java 超 int
+
+超 int 结果时，会将高位截断，如果需要取模时，需要在强制类型转换前进行取模运算，否则结果运算错误。
+
+```java
+long a = Long.MAX_VALUE:
+int ans = (int) (a % mod);
+```
+
 
 
 
