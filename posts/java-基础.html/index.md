@@ -321,6 +321,15 @@ long a = Long.MAX_VALUE:
 int ans = (int) (a % mod);
 ```
 
+### ArrayDeque
 
+Java 内部的 ArrayDeque 是通过循环数组实现时，所以作为队列其效率高于 LinkedList。
 
+### HashMap
+
+jdk 1.7 之前是通过冲突链表实现的，这种情况不适合长链表需要查找的的情况。1.8 之后，当冲突的链表元素超过 8 个时，则会转换为红黑树
+
+### HashSet
+
+HashSet 只是简单的对 HashMap 进行了包装，具体实现方法都会调用 HashMap 方法
 
