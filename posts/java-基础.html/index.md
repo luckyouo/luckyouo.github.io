@@ -333,3 +333,47 @@ jdk 1.7 之前是通过冲突链表实现的，这种情况不适合长链表需
 
 HashSet 只是简单的对 HashMap 进行了包装，具体实现方法都会调用 HashMap 方法
 
+### Math.pow 方法
+
+java 中的 Math.pow(x, y) 两个参数类型都是 double，其返回结果也是 double
+
+在java 的 double 结果中，数据精度存在如下要求
+
+```markdown
+Precision limitations on integer values
+- Integers from −2^53 to 2^53 (−9,007,199,254,740,992 to 9,007,199,254,740,992) can be exactly represented
+- Integers between 2^53 and 2^54 = 18,014,398,509,481,984 round to a multiple of 2 (even number)
+- Integers between 2^54 and 2^55 = 36,028,797,018,963,968 round to a multiple of 4
+```
+
+所以当结果结果大于 2^53 时，java 的 double 不再保证精度准确。
+
+```java
+int p = 54;
+System.out.println((Math.pow(2, p)));
+// 1.8014398509481984E16
+System.out.println((Math.pow(2, p) - 1));
+// 1.8014398509481984E16
+System.out.println((Math.pow(2, p) - 2));
+// 1.8014398509481982E16
+System.out.println((Math.pow(2, p) - 3));
+// 1.801439850948198E16
+System.out.println((Math.pow(2, p) - 4));
+// 11.801439850948198E16
+
+System.out.println((long)(Math.pow(2, p)));
+// 18014398509481984
+System.out.println((long)(Math.pow(2, p) - 1));
+// 18014398509481984
+System.out.println((long)(Math.pow(2, p) - 2));
+// 18014398509481982
+System.out.println((long)(Math.pow(2, p) - 3));
+// 18014398509481980
+System.out.println((long)(Math.pow(2, p) - 4));
+// 18014398509481980
+```
+
+[Double-precision floating-point format](https://en.wikipedia.org/wiki/Double-precision_floating-point_format#Precision_limitations_on_integer_values)
+
+[[int64(math.Pow(2, 63) - 1) results in -9223372036854775808 rather than 9223372036854775807](https://stackoverflow.com/questions/72920132/int64math-pow2-63-1-results-in-9223372036854775808-rather-than-922337203)](https://stackoverflow.com/questions/72920132/int64math-pow2-63-1-results-in-9223372036854775808-rather-than-922337203)
+
