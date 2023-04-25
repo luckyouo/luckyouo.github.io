@@ -169,6 +169,13 @@ public class OrderCloseListener {
 spring.rabbitmq.listener.simple.acknowledge-mode=manual
 ```
 
+前两个确认配置文件修改方式如下：
+
+```xml
+spring.rabbitmq.publisher-returns=true 
+spring.rabbitmq.template.mandatory=true
+```
+
 在服务完成后，使用 Channel 对象确认 ack
 
 ```java
