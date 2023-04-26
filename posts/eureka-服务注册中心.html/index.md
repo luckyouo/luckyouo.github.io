@@ -403,5 +403,5 @@ public class DeptConsumerController {
 
 [狂神说SpringCloud学习笔记](https://www.kuangstudy.com/bbs/1374942542566551554)
 
-[【狂神说Java】SpringCloud最新教程IDEA版](https://www.bilibili.com/video/BV1jJ411S7xr/?p=10&spm_id_from=333.788.top_right_bar_window_history.content.click&vd_source=b6eb6fd64ed675d7acddef5b0467fac9)
+[狂神说Java SpringCloud最新教程IDEA版](https://www.bilibili.com/video/BV1jJ411S7xr/?p=10&spm_id_from=333.788.top_right_bar_window_history.content.click&vd_source=b6eb6fd64ed675d7acddef5b0467fac9)
 
