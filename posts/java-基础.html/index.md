@@ -377,3 +377,20 @@ System.out.println((long)(Math.pow(2, p) - 4));
 
 [[int64(math.Pow(2, 63) - 1) results in -9223372036854775808 rather than 9223372036854775807](https://stackoverflow.com/questions/72920132/int64math-pow2-63-1-results-in-9223372036854775808-rather-than-922337203)](https://stackoverflow.com/questions/72920132/int64math-pow2-63-1-results-in-9223372036854775808-rather-than-922337203)
 
+### TreeSet 的比较值唯一
+
+因为 TreeSet 的数据结果为红黑树，所以比较的值唯一，即只能保存唯一的比较值。
+
+TreeSet 存储索引（索引唯一，且各不相同）是，并重写了比较方法，但索引对应的值相同时，也只会保存一个索引，即只保存唯一的比较值。
+
+```java
+int[] arr = {1, 1, 2};
+TreeSet<Integer> set = new TreeSet<>();
+for(int i = 0; i < arr.length; i++){
+  set.add(i);
+}
+System.out.println(set.size());
+// 2 而不是 3，因为索引 0 和 1 的比较值相同，所以索引 1 不会存储
+```
+
+
